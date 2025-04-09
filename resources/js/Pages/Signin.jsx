@@ -18,9 +18,9 @@ function Signin() {
   }
 
   return (
-    <div className="min-h-screen flex bg-[#0D0630] text-gray-900 font-sans">
+    <div className="min-h-screen flex  text-gray-900 font-sans">
       {/* Left Section */}
-      <div className="w-1/2 bg-[#0D0630] text-white flex flex-col justify-center items-start p-12 space-y-6 rounded-l-xl">
+      <div className="w-1/2 bg-[#0D0630] text-white flex flex-col justify-center items-start p-12 space-y-6 ">
         <img src={QtechLogo} alt="Qtech Logo" className="h-12 mb-4"/>
         <h1 className="text-3xl font-bold">We simply position ourselves</h1>
         <p className="text-sm text-gray-300">
