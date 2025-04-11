@@ -11,32 +11,28 @@ import { TbTicket } from "react-icons/tb";
 
 export const links = [
   {
+    title: "Main Menu",
     links: [
       {
-        title: "Main",
         name: "Dashboard",
         icon: <MdOutlineDashboard />,
         path: "/dashboard",
       },
+
       {
         name: "Tickets",
         icon: <TbTicket />,
         path: "/tickets",
       },
       {
-        name: "Notification",
-        icon: <MdNotificationsNone />,
-        path: "/notification",
-      },
-      {
-        name: "Profile",
-        icon: <FiUser />,
-        path: "/profile",
-      },
-      {
         name: "Agents",
         icon: <MdOutlineSupportAgent />,
         path: "/agent",
+      },
+      {
+        name: "Notification",
+        icon: <MdNotificationsNone />,
+        path: "/notification",
       },
     ],
     linkk: [
@@ -46,16 +42,39 @@ export const links = [
         path: "/settings",
       },
       {
+        name: "Profile",
+        icon: <FiUser />,
+        path: "/profile",
+      },
+    ],
+  },
+];
+
+export const linkk = [
+  {
+    title: "Settings",
+    linkk: [
+      {
+        name: "Settings",
+        icon: <MdSettings />,
+        path: "/settings",
+      },
+      {
+        name: "Profile",
+        icon: <FiUser />,
+        path: "/profile",
+      },
+    ],
+  },
+];
+
+export const logout = [
+  {
+    logout: [
+      {
         name: "Logout",
         icon: <MdOutlineLogout />,
         path: "/logout",
-      },
-    ],
-    user: [
-      {
-        name: "renzeryll09@gmail.com",
-        icon: <FiUser />,
-        path: "/user",
       },
     ],
   },

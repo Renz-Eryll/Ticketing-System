@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MdMenuOpen } from "react-icons/md";
-import { links } from "../data/links";
+import { links, linkk, logout } from "../data/links";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export const Sidebar = () => {
@@ -76,10 +76,14 @@ export const Sidebar = () => {
           </h1>
           <div className="mt-6 border-t border-gray-500" />
         </div>
-
         <div className="mt-10 px-3">
           {links.map((section, index) => (
             <div key={index} className="text-sm p-3 space-y-3">
+              {section.title && (
+                <h3 className="text-gray-400 uppercase text-xs tracking-wider px-4">
+                  {section.title}
+                </h3>
+              )}
               {section.links.map((link) => (
                 <Link
                   to={link.path}
@@ -89,14 +93,14 @@ export const Sidebar = () => {
                     if (screenSize < 1024) setActiveMenu(false);
                   }}
                   className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300
-                    ${
-                      active === link.name
-                        ? "bg-[#1D4ED8] text-white"
-                        : "text-white hover:bg-[#1a1445]"
-                    }
-                  `}
+            ${
+              active === link.name
+                ? "bg-[#1D4ED8] text-white"
+                : "text-white hover:bg-[#1a1445]"
+            }
+          `}
                 >
-                  <span className="text-xl ">{link.icon}</span>
+                  <span className="text-xl">{link.icon}</span>
                   {activeMenu && <span>{link.name}</span>}
                 </Link>
               ))}
@@ -104,9 +108,14 @@ export const Sidebar = () => {
           ))}
         </div>
 
-        <div className="mt-18 px-3">
-          {links.map((section, index) => (
+        <div className="mt-15 px-3">
+          {linkk.map((section, index) => (
             <div key={index} className="text-sm p-3 space-y-3">
+              {section.title && (
+                <h3 className="text-gray-400 uppercase text-xs tracking-wider px-4">
+                  {section.title}
+                </h3>
+              )}
               {section.linkk.map((link) => (
                 <Link
                   to={link.path}
@@ -116,26 +125,26 @@ export const Sidebar = () => {
                     if (screenSize < 1024) setActiveMenu(false);
                   }}
                   className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300
-                    ${
-                      active === link.name
-                        ? "bg-[#1D4ED8] text-white"
-                        : "text-white hover:bg-[#1a1445]"
-                    }
-                  `}
+            ${
+              active === link.name
+                ? "bg-[#1D4ED8] text-white"
+                : "text-white hover:bg-[#1a1445]"
+            }
+          `}
                 >
-                  <span className="text-xl ">{link.icon}</span>
+                  <span className="text-xl">{link.icon}</span>
                   {activeMenu && <span>{link.name}</span>}
                 </Link>
               ))}
             </div>
           ))}
           <div className="p-3">
-            <div className="mt-3 border-t border-gray-500" />
+            <div className="mt-5 border-t border-gray-500" />
           </div>
-          <div className="mt-2">
-            {links.map((section, index) => (
+          <div className="">
+            {logout.map((section, index) => (
               <div key={index} className="text-sm p-3 space-y-3">
-                {section.user.map((link) => (
+                {section.logout.map((link) => (
                   <Link
                     to={link.path}
                     key={link.name}
