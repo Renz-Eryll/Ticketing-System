@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SignupImage from "../assets/hero-3.png";
 import QtechLogo from "../assets/qtechlogo.png";
-import { Link, Navigate, } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
@@ -15,9 +15,8 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [redirect, setRedirect] = useState(false);
 
-  
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +52,8 @@ const Signup = () => {
         return;
       }
       
-      setSuccess("Signup successful! Redirecting...");
+      setSuccess("Signup successful!");
+      navigate('/')
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");
