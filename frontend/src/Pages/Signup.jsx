@@ -1,7 +1,8 @@
 import { useState } from "react";
 import SignupImage from "../assets/hero-3.png";
 import QtechLogo from "../assets/qtechlogo.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate, } from "react-router-dom";
+
 
 
 
@@ -12,6 +13,9 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   
 
@@ -22,7 +26,7 @@ const Signup = () => {
       return;
     }
   
-
+    try {
       const response = await fetch("http://localhost:8000/api/register", {
         method: "POST",
         headers: {
@@ -33,27 +37,29 @@ const Signup = () => {
           name,
           email,
           password,
-          password_confirmation: confirmPassword
+          password_confirmation: confirmPassword,
         }),
       });
   
+      let data = null;
   
-      if (response.ok) {
-        alert("Registration successful!");
-      } else {
-        // Check if there is a body and parse it
-        const data = await response.text(); // First, try to get raw text
-        let jsonData = {};
-        try {
-          jsonData = JSON.parse(data);  // Try parsing the text as JSON
-        } catch (e) {
-          console.error("Error parsing JSON:", e);
-        }
-        alert(jsonData.message || "Registration failed");
+      const text = await response.text(); // get the raw text
+      if (text) {
+        data = JSON.parse(text); // safely parse if not empty
       }
-   
   
+      if (!response.ok) {
+        setError(data?.message || "Registration failed.");
+        return;
+      }
+      
+      setSuccess("Signup successful! Redirecting...");
+    } catch (err) {
+      console.error("Signup failed:", err);
+      setError("An unexpected error occurred.");
+    }
   };
+  
   return (
     <div className="min-h-screen flex text-gray-950 font-sans">
       {/* Left Section */}
@@ -147,6 +153,8 @@ const Signup = () => {
               </a>
             </label>
           </div>
+          {error && <div className="text-red-500 text-sm">{error}</div>}
+          {success && <div className="text-green-500 text-sm">{success}</div>}
 
           <button
             type="submit"

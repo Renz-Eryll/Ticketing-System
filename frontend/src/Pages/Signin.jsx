@@ -1,23 +1,48 @@
 import { useState } from "react";
 import SignupImage from "../assets/signup.jpg";
 import QtechLogo from "../assets/qtechlogo.png"
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+
 
 
 function Signin() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate(); 
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    // TODO: CAll API to authenticate user
-    // For now, we'll just log the form data
-
-    alert("Form submitted!");
-  }
-
+      try{
+        const response = await fetch("http://localhost:8000/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          })
+        });
+        if (!response.ok) {
+          throw new Error("Login failed");
+        }
+    
+        // Optional: extract data if needed
+        const data = await response.json();
+        console.log("Login successful:", data);
+    
+        navigate("/dashboard");
+      } catch (err) {
+        console.error("Login failed:", err);
+        setError("Invalid email or password.");
+      }
+};
   return (
     <div className="min-h-screen flex  text-gray-900 font-sans">
       {/* Left Section */}
@@ -38,9 +63,9 @@ function Signin() {
       {/* Right Section */}
       <div className="w-1/2 bg-white p-12 rounded-r-xl flex flex-col justify-center">
         <div className="flex justify-end mb-4">
-          <a href="/" className="text-sm font-medium text-black">
+          <Link to="/About" className="text-sm font-medium text-black">
             About Us
-          </a>
+          </Link>
         </div>
 
         <h2 className="text-2xl font-bold text-blue-600 mb-2">Sign In</h2>
@@ -49,11 +74,14 @@ function Signin() {
           <Link to="/Signup" className="text-blue-600 font-medium hover:underline">Signup</Link>
         </p>
 
+
         <form onSubmit={handleSubmit} className="space-y-4">
          
           <input
             type="email"
             placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail (e.target.value) }
             className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
 
@@ -62,6 +90,8 @@ function Signin() {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword (e.target.value)}
               className="w-full border rounded-md px-4 py-2 pr-16 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
             <button
@@ -72,7 +102,7 @@ function Signin() {
               {showPassword ? "Hide" : "Show"}
             </button>
           </div>
-
+          {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
   
           <button
             type="submit"
