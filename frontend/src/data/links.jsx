@@ -11,7 +11,7 @@ import { TbTicket } from "react-icons/tb";
 
 export const links = [
   {
-    title: "Main Menu",
+    title: "Menu",
     links: [
       {
         name: "Dashboard",

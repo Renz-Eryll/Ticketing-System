@@ -79,8 +79,12 @@ export const Sidebar = () => {
         <div className="mt-10 px-3">
           {links.map((section, index) => (
             <div key={index} className="text-sm p-3 space-y-3">
-              {section.title && (
-                <h3 className="text-gray-400 uppercase text-xs tracking-wider px-4">
+              {activeMenu && section.title && (
+                <h3
+                  className={`text-gray-400 uppercase text-xs tracking-wider px-4 transition-opacity duration-500 ${
+                    activeMenu ? "opacity-100" : "opacity-0"
+                  }`}
+                >
                   {section.title}
                 </h3>
               )}
@@ -111,8 +115,12 @@ export const Sidebar = () => {
         <div className="mt-15 px-3">
           {linkk.map((section, index) => (
             <div key={index} className="text-sm p-3 space-y-3">
-              {section.title && (
-                <h3 className="text-gray-400 uppercase text-xs tracking-wider px-4">
+              {activeMenu && section.title && (
+                <h3
+                  className={`text-gray-400 uppercase text-xs tracking-wider px-4 transition-opacity duration-500 ${
+                    activeMenu ? "opacity-100" : "opacity-0"
+                  }`}
+                >
                   {section.title}
                 </h3>
               )}
