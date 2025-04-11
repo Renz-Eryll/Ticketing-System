@@ -1,12 +1,13 @@
 import { useState } from "react";
 import SignupImage from "../assets/hero-3.png";
 import QtechLogo from "../assets/qtechlogo.png";
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
+=======
+import { Link, Navigate } from "react-router-dom";
+>>>>>>> renz-front-end
 
-
-
-
-const Signup = () => {
+export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [name, setName] = useState("");
@@ -17,15 +18,18 @@ const Signup = () => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
+<<<<<<< HEAD
   const navigate = useNavigate(); 
 
+=======
+>>>>>>> renz-front-end
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
-  
+
     try {
       const response = await fetch("http://localhost:8000/api/register", {
         method: "POST",
@@ -40,22 +44,27 @@ const Signup = () => {
           password_confirmation: confirmPassword,
         }),
       });
-  
+
       let data = null;
-  
+
       const text = await response.text(); // get the raw text
       if (text) {
         data = JSON.parse(text); // safely parse if not empty
       }
-  
+
       if (!response.ok) {
         setError(data?.message || "Registration failed.");
         return;
       }
+<<<<<<< HEAD
       setTimeout(() => {
         setSuccess("Signup successful!");
         navigate('/')
       }, 1500);
+=======
+
+      setSuccess("Signup successful! Redirecting...");
+>>>>>>> renz-front-end
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");
@@ -63,12 +72,12 @@ const Signup = () => {
       setLoading(true); 
     }
   };
-  
+
   return (
     <div className="min-h-screen flex text-gray-950 font-sans">
       {/* Left Section */}
       <div className="w-1/2 bg-[#0D0630] text-white flex flex-col justify-center items-start p-12 space-y-6">
-        <img src={QtechLogo} alt="Qtech Logo" className="h-12 mb-4"/>
+        <img src={QtechLogo} alt="Qtech Logo" className="h-12 mb-4" />
         <h1 className="text-3xl font-bold">We simply position ourselves</h1>
         <p className="text-sm text-gray-300">
           as an ICT company for those who have no ICT department.
@@ -78,13 +87,12 @@ const Signup = () => {
           alt="Cloud Visual"
           className="rounded-lg max-w-md mt-4"
         />
-      
       </div>
 
       {/* Right Section */}
       <div className="w-1/2 bg-white p-12 rounded-r-xl flex flex-col justify-center">
         <div className="flex justify-end mb-4">
-          <Link to= "#" className="text-sm font-medium text-black">
+          <Link to="#" className="text-sm font-medium text-black">
             About Us
           </Link>
         </div>
@@ -92,7 +100,9 @@ const Signup = () => {
         <h2 className="text-2xl font-bold text-blue-600 mb-2">Sign Up</h2>
         <p className="text-sm mb-4">
           Already have an account?{" "}
-          <Link to="/" className="text-blue-600 font-medium hover:underline">Signin</Link>
+          <Link to="/" className="text-blue-600 font-medium hover:underline">
+            Signin
+          </Link>
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -172,6 +182,6 @@ const Signup = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Signup;
