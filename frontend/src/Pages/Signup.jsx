@@ -15,6 +15,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate(); 
 
@@ -51,12 +52,15 @@ const Signup = () => {
         setError(data?.message || "Registration failed.");
         return;
       }
-      
-      setSuccess("Signup successful!");
-      navigate('/')
+      setTimeout(() => {
+        setSuccess("Signup successful!");
+        navigate('/')
+      }, 1500);
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");
+    }finally {
+      setLoading(true); 
     }
   };
   
@@ -159,8 +163,10 @@ const Signup = () => {
           <button
             type="submit"
             className="w-full bg-blue-600 text-white rounded-md py-2 font-semibold hover:bg-blue-700 transition"
+            disabled={loading}
           >
             Sign up
+            {loading ? "SignUp ..." : "Sign Up"}
           </button>
         </form>
       </div>

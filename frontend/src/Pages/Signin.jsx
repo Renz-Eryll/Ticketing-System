@@ -11,12 +11,17 @@ function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate(); 
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
       try{
         const response = await fetch("http://localhost:8000/api/login", {
           method: "POST",
@@ -35,12 +40,17 @@ function Signin() {
     
         // Optional: extract data if needed
         const data = await response.json();
-        console.log("Login successful:", data);
-    
-        navigate("/dashboard");
+        
+        setTimeout(() => {
+          console.log("Login successful:", data);
+          navigate("/dashboard");
+        }, 1500);
+        
       } catch (err) {
         console.error("Login failed:", err);
         setError("Invalid email or password.");
+      }finally {
+        setLoading(true); 
       }
 };
   return (
@@ -81,7 +91,7 @@ function Signin() {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail (e.target.value) }
+            onChange={(e) => setEmail(e.target.value) }
             className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
 
@@ -91,7 +101,7 @@ function Signin() {
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword (e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full border rounded-md px-4 py-2 pr-16 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
             <button
@@ -102,13 +112,15 @@ function Signin() {
               {showPassword ? "Hide" : "Show"}
             </button>
           </div>
+
           {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
   
           <button
             type="submit"
             className="w-full bg-blue-600 text-white rounded-md py-2 font-semibold hover:bg-blue-700 transition"
+            disabled={loading}
           >
-            Sign In
+           {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
       </div>
