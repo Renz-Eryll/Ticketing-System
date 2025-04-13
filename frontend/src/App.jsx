@@ -15,8 +15,9 @@ import { Notification } from "./pages/admin/Notification";
 import { Profile } from "./pages/admin/Profile";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
+import AgentDashboard from "./pages/agent/AgentDashboard";
+import CustomerDashboard from "./pages/customers/CustomerDasboard";
 
-// Layout wrapper for pages that need Navbar + Sidebar
 const Layout = ({ children }) => {
   return (
     <div className="flex">
@@ -37,39 +38,16 @@ function AppRoutes() {
 
   return (
     <Routes>
+      {/* Auth Routes */}
       <Route path="/" element={<Signin />} />
       <Route path="/signup" element={<Signup />} />
 
-      {/* Routes with layout */}
+      {/* Admin Routes */}
       <Route
-        path="/dashboard"
+        path="/admin/dashboard"
         element={
           <Layout>
             <Dashboard />
-          </Layout>
-        }
-      />
-      <Route
-        path="/tickets"
-        element={
-          <Layout>
-            <Tickets />
-          </Layout>
-        }
-      />
-      <Route
-        path="/notification"
-        element={
-          <Layout>
-            <Notification />
-          </Layout>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <Layout>
-            <Profile />
           </Layout>
         }
       />
@@ -78,6 +56,50 @@ function AppRoutes() {
         element={
           <Layout>
             <Agent />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin/notification"
+        element={
+          <Layout>
+            <Notification />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin/tickets"
+        element={
+          <Layout>
+            <Tickets />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin/profile"
+        element={
+          <Layout>
+            <Profile />
+          </Layout>
+        }
+      />
+
+      {/* Agent Routes */}
+      <Route
+        path="/agent/dashboard"
+        element={
+          <Layout>
+            <AgentDashboard />
+          </Layout>
+        }
+      />
+
+      {/* Customer Routes */}
+      <Route
+        path="/customer/dashboard"
+        element={
+          <Layout>
+            <CustomerDashboard />
           </Layout>
         }
       />

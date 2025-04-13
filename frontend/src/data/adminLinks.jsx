@@ -16,13 +16,12 @@ export const links = [
       {
         name: "Dashboard",
         icon: <MdOutlineDashboard />,
-        path: "/dashboard",
+        path: "/admin/dashboard",
       },
-
       {
         name: "Tickets",
         icon: <TbTicket />,
-        path: "/tickets",
+        path: "/admin/tickets",
       },
       {
         name: "Agents",
@@ -32,7 +31,7 @@ export const links = [
       {
         name: "Notification",
         icon: <MdNotificationsNone />,
-        path: "/notification",
+        path: "/admin/notification",
       },
     ],
     linkk: [
@@ -44,7 +43,7 @@ export const links = [
       {
         name: "Profile",
         icon: <FiUser />,
-        path: "/profile",
+        path: "/admin/profile",
       },
     ],
   },
@@ -62,7 +61,7 @@ export const linkk = [
       {
         name: "Profile",
         icon: <FiUser />,
-        path: "/profile",
+        path: "/admin/profile",
       },
     ],
   },

@@ -35,7 +35,7 @@ export const Agent = () => {
 
   const onSubmit = (data) => {
     console.log("Submitted Agent:", data);
-    // TODO: send data to backend
+
     reset();
     setIsAddModalOpen(false);
   };
