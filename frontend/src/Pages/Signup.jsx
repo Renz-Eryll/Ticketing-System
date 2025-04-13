@@ -96,6 +96,7 @@ export const Signup = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            autoFocus={true}
           />
           <input
             type="email"
@@ -159,7 +160,7 @@ export const Signup = () => {
             className="w-full bg-blue-600 text-white rounded-md py-2 font-semibold hover:bg-blue-700 transition"
             disabled={loading}
           >
-            Sign up
+            
             {loading ? "SignUp ..." : "Sign Up"}
           </button>
         </form>
