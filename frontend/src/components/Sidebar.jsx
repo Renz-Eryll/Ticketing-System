@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MdMenuOpen } from "react-icons/md";
-import { useStateContext } from "../contexts/ContextProvider";
 import { links, linkk, logout } from "../data/adminLinks";
-import { agentLinks, agentLogout } from "../data/agentLinks";
-import { customerLinks, customerLogout } from "../data/customerLinks";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export const Sidebar = () => {
-  const { activeMenu, setActiveMenu, screenSize, setScreenSize, userRole } =
+  const { activeMenu, setActiveMenu, screenSize, setScreenSize } =
     useStateContext();
   const location = useLocation();
   const [active, setActive] = useState("");
@@ -33,21 +31,6 @@ export const Sidebar = () => {
       setActive(matchedLink.name);
     }
   }, [location]);
-
-  const getLinks = () => {
-    if (userRole === "admin") return { links, linkk, logout };
-    if (userRole === "agent")
-      return { links: agentLinks, linkk: agentLinks, logout: agentLogout };
-    if (userRole === "customer")
-      return {
-        links: customerLinks,
-        linkk: customerLinks,
-        logout: customerLogout,
-      };
-    return { links, linkk, logout };
-  };
-
-  const { links: roleLinks, linkk: roleLinkk, logout: roleLogout } = getLinks();
 
   return (
     <>
@@ -92,10 +75,8 @@ export const Sidebar = () => {
           </h1>
           <div className="mt-6 border-t border-gray-500" />
         </div>
-
-        {/* Menu Links */}
         <div className="mt-10 px-3">
-          {roleLinks.map((section, index) => (
+          {links.map((section, index) => (
             <div key={index} className="text-sm p-3 space-y-3">
               {activeMenu && section.title && (
                 <h3
@@ -115,12 +96,12 @@ export const Sidebar = () => {
                     if (screenSize < 1024) setActiveMenu(false);
                   }}
                   className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300
-                    ${
-                      active === link.name
-                        ? "bg-[#1D4ED8] text-white"
-                        : "text-white hover:bg-[#1a1445]"
-                    }
-                  `}
+            ${
+              active === link.name
+                ? "bg-[#1D4ED8] text-white"
+                : "text-white hover:bg-[#1a1445]"
+            }
+          `}
                 >
                   <span className="text-xl">{link.icon}</span>
                   {activeMenu && <span>{link.name}</span>}
@@ -130,9 +111,8 @@ export const Sidebar = () => {
           ))}
         </div>
 
-        {/* Settings Links */}
-        <div className="mt-10 px-3">
-          {roleLinkk.map((section, index) => (
+        <div className="mt-15 px-3">
+          {linkk.map((section, index) => (
             <div key={index} className="text-sm p-3 space-y-3">
               {activeMenu && section.title && (
                 <h3
@@ -152,12 +132,12 @@ export const Sidebar = () => {
                     if (screenSize < 1024) setActiveMenu(false);
                   }}
                   className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300
-                    ${
-                      active === link.name
-                        ? "bg-[#1D4ED8] text-white"
-                        : "text-white hover:bg-[#1a1445]"
-                    }
-                  `}
+            ${
+              active === link.name
+                ? "bg-[#1D4ED8] text-white"
+                : "text-white hover:bg-[#1a1445]"
+            }
+          `}
                 >
                   <span className="text-xl">{link.icon}</span>
                   {activeMenu && <span>{link.name}</span>}
@@ -165,31 +145,29 @@ export const Sidebar = () => {
               ))}
             </div>
           ))}
-        </div>
-
-        {/* Logout Section */}
-        <div className="p-3">
-          <div className="mt-5 border-t border-gray-500" />
-        </div>
-        <div className="px-3">
-          {roleLogout.map((section, index) => (
-            <div key={index} className="text-sm p-3 space-y-3">
-              {section.logout.map((link) => (
-                <Link
-                  to={link.path}
-                  key={link.name}
-                  onClick={() => {
-                    setActive(link.name);
-                    if (screenSize < 1024) setActiveMenu(false);
-                  }}
-                  className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300`}
-                >
-                  <span className="text-xl ">{link.icon}</span>
-                  {activeMenu && <span>{link.name}</span>}
-                </Link>
-              ))}
-            </div>
-          ))}
+          <div className="p-3">
+            <div className="mt-5 border-t border-gray-500" />
+          </div>
+          <div className="">
+            {logout.map((section, index) => (
+              <div key={index} className="text-sm p-3 space-y-3">
+                {section.logout.map((link) => (
+                  <Link
+                    to={link.path}
+                    key={link.name}
+                    onClick={() => {
+                      setActive(link.name);
+                      if (screenSize < 1024) setActiveMenu(false);
+                    }}
+                    className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300`}
+                  >
+                    <span className="text-xl ">{link.icon}</span>
+                    {activeMenu && <span>{link.name}</span>}
+                  </Link>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
