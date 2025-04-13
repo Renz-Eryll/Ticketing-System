@@ -34,6 +34,9 @@ export const Signin = () => {
       const data = await response.json();
       console.log("Login successful:", data);
 
+      const { user } = data;
+      localStorage.setItem('user', JSON.stringify(user));
+
       // Navigate to the dashboard after successful login
       navigate("/dashboard");
     } catch (err) {

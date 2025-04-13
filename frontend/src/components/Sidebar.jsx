@@ -47,13 +47,16 @@ export const Sidebar = () => {
     });
 
     if (result.isConfirmed) {
+      // clear user data from localstorage
+      localStorage.removeItem('user');
+
       await Swal.fire({
         title: "Success!",
         text: "You have been logged out.",
         icon: "success"
       });
 
-      navigate('/signin');
+      navigate('/');
     }
 
 
