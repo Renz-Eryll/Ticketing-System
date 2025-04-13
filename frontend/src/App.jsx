@@ -8,11 +8,11 @@ import {
 import "./App.css";
 import { Sidebar } from "./components/Sidebar";
 import { Navbar } from "./components/Navbar";
-import { Dashboard } from "./Pages/Dashboard";
-import { Agent } from "./pages/Agent";
-import { Tickets } from "./pages/Tickets";
-import { Notification } from "./pages/Notification";
-import { Profile } from "./pages/Profile";
+import { Dashboard } from "./pages/admin/Dashboard";
+import { Agent } from "./pages/admin/Agent";
+import { Tickets } from "./pages/admin/Tickets";
+import { Notification } from "./pages/admin/Notification";
+import { Profile } from "./pages/admin/Profile";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 
