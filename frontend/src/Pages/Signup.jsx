@@ -49,6 +49,8 @@ export const Signup = () => {
       }
 
       setSuccess("Signup successful! Redirecting...");
+      location.assign('/signin');
+      
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");

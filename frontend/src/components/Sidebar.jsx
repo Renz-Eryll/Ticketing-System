@@ -3,12 +3,15 @@ import { Link, useLocation } from "react-router-dom";
 import { MdMenuOpen } from "react-icons/md";
 import { links, linkk, logout } from "../data/links";
 import { useStateContext } from "../contexts/ContextProvider";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 export const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize, setScreenSize } =
     useStateContext();
   const location = useLocation();
   const [active, setActive] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,6 +35,29 @@ export const Sidebar = () => {
       setActive(matchedLink.name);
     }
   }, [location]);
+
+  const HandleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure to Logout?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#0D0630",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Continue to Logout!"
+    });
+
+    if (result.isConfirmed) {
+      await Swal.fire({
+        title: "Success!",
+        text: "You have been logged out.",
+        icon: "success"
+      });
+
+      navigate('/signin');
+    }
+
+
+  }
 
   return (
     <>
@@ -154,11 +180,12 @@ export const Sidebar = () => {
               <div key={index} className="text-sm p-3 space-y-3">
                 {section.logout.map((link) => (
                   <Link
-                    to={link.path}
+                    to={'#'}
                     key={link.name}
                     onClick={() => {
                       setActive(link.name);
                       if (screenSize < 1024) setActiveMenu(false);
+                      HandleLogout()
                     }}
                     className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300`}
                   >
