@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MdMenuOpen } from "react-icons/md";
-import { links, linkk, logout } from "../data/links";
+import { links, linkk, logout } from "../data/adminLinks";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export const Sidebar = () => {
