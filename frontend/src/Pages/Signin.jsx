@@ -14,41 +14,6 @@ export const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD
-    if (!email || !password) {
-      setError("Please fill in all fields.");
-      return;
-    }
-      try{
-        const response = await fetch("http://localhost:8000/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          })
-        });
-        if (!response.ok) {
-          throw new Error("Login failed");
-        }
-    
-        // Optional: extract data if needed
-        const data = await response.json();
-        
-        setTimeout(() => {
-          console.log("Login successful:", data);
-          navigate("/dashboard");
-        }, 1500);
-        
-      } catch (err) {
-        console.error("Login failed:", err);
-        setError("Invalid email or password.");
-      }finally {
-        setLoading(true); 
-=======
     try {
       const response = await fetch("http://localhost:8000/api/login", {
         method: "POST",
@@ -63,7 +28,6 @@ export const Signin = () => {
       });
       if (!response.ok) {
         throw new Error("Login failed");
->>>>>>> renz-front-end
       }
 
       // Optional: extract data if needed
@@ -119,11 +83,7 @@ export const Signin = () => {
             type="email"
             placeholder="Email"
             value={email}
-<<<<<<< HEAD
-            onChange={(e) => setEmail(e.target.value) }
-=======
             onChange={(e) => setEmail(e.target.value)}
->>>>>>> renz-front-end
             className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
 

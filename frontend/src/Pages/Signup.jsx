@@ -1,11 +1,7 @@
 import { useState } from "react";
 import SignupImage from "../assets/hero-3.png";
 import QtechLogo from "../assets/qtechlogo.png";
-<<<<<<< HEAD
-import { Link, useNavigate } from "react-router-dom";
-=======
 import { Link, Navigate } from "react-router-dom";
->>>>>>> renz-front-end
 
 export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,11 +14,6 @@ export const Signup = () => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-<<<<<<< HEAD
-  const navigate = useNavigate(); 
-
-=======
->>>>>>> renz-front-end
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -56,15 +47,8 @@ export const Signup = () => {
         setError(data?.message || "Registration failed.");
         return;
       }
-<<<<<<< HEAD
-      setTimeout(() => {
-        setSuccess("Signup successful!");
-        navigate('/')
-      }, 1500);
-=======
 
       setSuccess("Signup successful! Redirecting...");
->>>>>>> renz-front-end
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");
