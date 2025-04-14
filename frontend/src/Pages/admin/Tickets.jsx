@@ -15,7 +15,7 @@ export const Tickets = () => {
       agent: "John Doe",
       date: "March 1, 2025",
       status: "Unresolved",
-      customer: "Renz Eryll",
+      customer: "Customer Name",
       description: "Payment terminal not processing transactions",
     },
     {
@@ -25,7 +25,7 @@ export const Tickets = () => {
       priority: "Primary",
       agent: "John Doe",
       status: "Resolved",
-      customer: "Renz",
+      customer: "Pangalan ng nag - ticket",
       description: "Payment terminal not processing transactions",
     },
   ];
