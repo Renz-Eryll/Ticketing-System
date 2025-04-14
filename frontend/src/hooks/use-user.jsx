@@ -17,11 +17,6 @@ const useUser = () => {
     }
   }, []);
 
-  // comment  this
-  if (!user) {
-    return { role: "admin", name: "Dev Admin" };
-  }
-
   return user;
 };
 
