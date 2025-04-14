@@ -161,7 +161,7 @@ export const Agent = () => {
 
       {/* Add Agent Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50">
+        <div className="fixed inset-0 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-15">
             <h2 className="text-lg font-semibold mb-4">Add New Agent</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
