@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SignupImage from "../assets/hero-3.png";
 import QtechLogo from "../assets/qtechlogo.png";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,7 +12,8 @@ export const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [redirect, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,9 +50,13 @@ export const Signup = () => {
       }
 
       setSuccess("Signup successful! Redirecting...");
+      navigate('/');
+
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");
+    }finally {
+      setLoading(true); 
     }
   };
 
@@ -94,6 +99,7 @@ export const Signup = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            autoFocus={true}
           />
           <input
             type="email"
@@ -155,8 +161,10 @@ export const Signup = () => {
           <button
             type="submit"
             className="w-full bg-blue-600 text-white rounded-md py-2 font-semibold hover:bg-blue-700 transition"
+            disabled={loading}
           >
-            Sign up
+            
+            {loading ? "SignUp ..." : "Sign Up"}
           </button>
         </form>
       </div>

@@ -8,6 +8,7 @@ export const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -32,6 +33,9 @@ export const Signin = () => {
       // Optional: extract data if needed
       const data = await response.json();
       console.log("Login successful:", data);
+
+      const { user } = data;
+      localStorage.setItem('user', JSON.stringify(user));
 
       // Navigate to the dashboard after successful login
       navigate("/dashboard");
@@ -84,6 +88,7 @@ export const Signin = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            autoFocus={true}
           />
 
           {/* Password */}
@@ -103,13 +108,15 @@ export const Signin = () => {
               {showPassword ? "Hide" : "Show"}
             </button>
           </div>
+
           {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
 
           <button
             type="submit"
             className="w-full bg-blue-600 text-white rounded-md py-2 font-semibold hover:bg-blue-700 transition"
+            disabled={loading}
           >
-            Sign In
+           {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
       </div>
