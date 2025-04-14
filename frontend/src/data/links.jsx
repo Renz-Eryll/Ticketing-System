@@ -9,7 +9,7 @@ import {
 import { FiUser } from "react-icons/fi";
 import { TbTicket } from "react-icons/tb";
 
-export const links = [
+export const sidebarlinks = [
   {
     title: "Menu",
     links: [
@@ -49,7 +49,7 @@ export const links = [
   },
 ];
 
-export const linkk = [
+export const settingLink = [
   {
     title: "Settings",
     linkk: [

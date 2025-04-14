@@ -33,7 +33,7 @@ const TicketDetails = () => {
       <div className="flex gap-4">
         <div>
           <IoMdArrowBack
-            className="text-4xl"
+            className="text-4xl cursor-pointer"
             onClick={() => navigate("/admin/tickets")}
           />
         </div>

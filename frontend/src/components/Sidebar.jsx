@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MdMenuOpen } from "react-icons/md";
-import { links, linkk, logout } from "../data/links";
+import { sidebarlinks, logout, settingLink } from "../data/links";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 export const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize, setScreenSize } =
@@ -27,7 +27,7 @@ export const Sidebar = () => {
 
   useEffect(() => {
     const currentPath = location.pathname;
-    const matchedLink = links
+    const matchedLink = sidebarlinks
       .flatMap((section) => section.links)
       .find((link) => link.path === currentPath);
     if (matchedLink) {
@@ -42,24 +42,22 @@ export const Sidebar = () => {
       showCancelButton: true,
       confirmButtonColor: "#0D0630",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Continue to Logout!"
+      confirmButtonText: "Continue to Logout!",
     });
 
     if (result.isConfirmed) {
       // clear user data from localstorage
-      localStorage.removeItem('user');
+      localStorage.removeItem("user");
 
       await Swal.fire({
         title: "Success!",
         text: "You have been logged out.",
-        icon: "success"
+        icon: "success",
       });
 
-      navigate('/');
+      navigate("/");
     }
-
-
-  }
+  };
 
   return (
     <>
@@ -105,7 +103,7 @@ export const Sidebar = () => {
           <div className="mt-6 border-t border-gray-500" />
         </div>
         <div className="mt-10 px-3">
-          {links.map((section, index) => (
+          {sidebarlinks.map((section, index) => (
             <div key={index} className="text-sm p-3 space-y-3">
               {activeMenu && section.title && (
                 <h3
@@ -141,7 +139,7 @@ export const Sidebar = () => {
         </div>
 
         <div className="mt-15 px-3">
-          {linkk.map((section, index) => (
+          {settingLink.map((section, index) => (
             <div key={index} className="text-sm p-3 space-y-3">
               {activeMenu && section.title && (
                 <h3
@@ -182,12 +180,12 @@ export const Sidebar = () => {
               <div key={index} className="text-sm p-3 space-y-3">
                 {section.logout.map((link) => (
                   <Link
-                    to={'#'}
+                    to={"#"}
                     key={link.name}
                     onClick={() => {
                       setActive(link.name);
                       if (screenSize < 1024) setActiveMenu(false);
-                      HandleLogout()
+                      HandleLogout();
                     }}
                     className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300`}
                   >
