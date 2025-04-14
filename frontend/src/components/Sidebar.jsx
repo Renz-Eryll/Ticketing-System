@@ -25,7 +25,6 @@ export const Sidebar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [setActiveMenu, setScreenSize]);
 
-  // Highlight link based on current path
   useEffect(() => {
     const currentPath = location.pathname;
     const matchedLink = links

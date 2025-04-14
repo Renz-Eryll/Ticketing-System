@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 import { BiSolidEdit } from "react-icons/bi";
 import { MdDeleteOutline, MdOutlineSearch } from "react-icons/md";
 import { GoPlus } from "react-icons/go";
@@ -35,7 +35,7 @@ export const Agent = () => {
 
   const onSubmit = (data) => {
     console.log("Submitted Agent:", data);
-    // TODO: send data to backend
+
     reset();
     setIsAddModalOpen(false);
   };
