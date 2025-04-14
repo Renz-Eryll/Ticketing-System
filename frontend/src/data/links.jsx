@@ -34,18 +34,6 @@ export const sidebarlinks = [
         path: "/admin/notification",
       },
     ],
-    linkk: [
-      {
-        name: "Settings",
-        icon: <MdSettings />,
-        path: "/settings",
-      },
-      {
-        name: "Profile",
-        icon: <FiUser />,
-        path: "/admin/profile",
-      },
-    ],
   },
 ];
 
