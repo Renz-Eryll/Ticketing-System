@@ -1,5 +1,5 @@
 import React from "react";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 export const Dashboard = () => {
   const { activeMenu } = useStateContext();
@@ -11,7 +11,7 @@ export const Dashboard = () => {
     ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
   `}
     >
-      <div className="text-3xl font-bold text-[#1D4ED8]">Dashboard</div>
+      <div className="text-3xl font-bold text-[#1D4ED8]">Dashboard </div>
       <div className="max-w mt-7 p-7 border border-gray-100 shadow-sm rounded-xl bg-white">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Unresolved Tickets */}

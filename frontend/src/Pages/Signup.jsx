@@ -1,8 +1,12 @@
 import { useState } from "react";
 import SignupImage from "../assets/hero-3.png";
 import QtechLogo from "../assets/qtechlogo.png";
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 
+=======
+import { Link, Navigate, useNavigate } from "react-router-dom";
+>>>>>>> af9eb51abce89840105c96dfcebf3af6b46ed504
 
 export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,10 +18,14 @@ export const Signup = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+<<<<<<< HEAD
   const navigate = useNavigate(); 
 
 
+=======
+>>>>>>> af9eb51abce89840105c96dfcebf3af6b46ed504
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -51,11 +59,18 @@ export const Signup = () => {
         setError(data?.message || "Registration failed.");
         return;
       }
+<<<<<<< HEAD
       setTimeout(() => {
         setSuccess("Signup successful!");
         navigate('/')
       }, 1500);
 
+=======
+
+      setSuccess("Signup successful! Redirecting...");
+      navigate('/');
+
+>>>>>>> af9eb51abce89840105c96dfcebf3af6b46ed504
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");
@@ -103,6 +118,7 @@ export const Signup = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            autoFocus={true}
           />
           <input
             type="email"
@@ -166,7 +182,7 @@ export const Signup = () => {
             className="w-full bg-blue-600 text-white rounded-md py-2 font-semibold hover:bg-blue-700 transition"
             disabled={loading}
           >
-            Sign up
+            
             {loading ? "SignUp ..." : "Sign Up"}
           </button>
         </form>
