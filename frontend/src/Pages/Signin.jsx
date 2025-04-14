@@ -35,10 +35,23 @@ export const Signin = () => {
       console.log("Login successful:", data);
 
       const { user } = data;
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
+  
+      const { role } = user;
+      switch (role) {
+        case "customer":
+          navigate("/customer/dashboard");
+          break;
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+        case "agent":
+          navigate("/agent/dashboard");
+          break;
+      }
 
       // Navigate to the dashboard after successful login
-      navigate("/dashboard");
+      // navigate("/dashboard");
     } catch (err) {
       console.error("Login failed:", err);
       setError("Invalid email or password.");
@@ -116,7 +129,7 @@ export const Signin = () => {
             className="w-full bg-blue-600 text-white rounded-md py-2 font-semibold hover:bg-blue-700 transition"
             disabled={loading}
           >
-           {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
       </div>

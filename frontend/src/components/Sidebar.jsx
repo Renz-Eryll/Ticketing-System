@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MdMenuOpen } from "react-icons/md";
-import { sidebarlinks, logout, settingLink } from "../data/links";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { getLinks } from "../data/links";
+
+// get current user
+import useUser from "../hooks/use-user";
 
 export const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize, setScreenSize } =
@@ -12,6 +15,15 @@ export const Sidebar = () => {
   const location = useLocation();
   const [active, setActive] = useState("");
   const navigate = useNavigate();
+  const user = useUser();
+  const [links, setLinks] = useState({});
+
+  // set SideBar Links
+  useEffect(() => {
+    if (user) {
+      setLinks(getLinks(user.role));
+    }
+  }, [user]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,13 +39,17 @@ export const Sidebar = () => {
 
   useEffect(() => {
     const currentPath = location.pathname;
-    const matchedLink = sidebarlinks
-      .flatMap((section) => section.links)
-      .find((link) => link.path === currentPath);
-    if (matchedLink) {
-      setActive(matchedLink.name);
+
+    if (links) {
+      const allLinks = [...(links.links || []), ...(links.subLinks || [])];
+
+      allLinks.forEach((link) => {
+        if (link.path === currentPath) {
+          setActive(link.name);
+        }
+      });
     }
-  }, [location]);
+  }, [location, links]);
 
   const HandleLogout = async () => {
     const result = await Swal.fire({
@@ -103,100 +119,87 @@ export const Sidebar = () => {
           <div className="mt-6 border-t border-gray-500" />
         </div>
         <div className="mt-10 px-3">
-          {sidebarlinks.map((section, index) => (
-            <div key={index} className="text-sm p-3 space-y-3">
-              {activeMenu && section.title && (
+          {links && (
+            <div className="text-sm p-3 space-y-3">
+              {activeMenu && links.title && (
                 <h3
                   className={`text-gray-400 uppercase text-xs tracking-wider px-4 transition-opacity duration-500 ${
                     activeMenu ? "opacity-100" : "opacity-0"
                   }`}
                 >
-                  {section.title}
+                  {links.title}
                 </h3>
               )}
-              {section.links.map((link) => (
-                <Link
-                  to={link.path}
-                  key={link.name}
-                  onClick={() => {
-                    setActive(link.name);
-                    if (screenSize < 1024) setActiveMenu(false);
-                  }}
-                  className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300
-            ${
-              active === link.name
-                ? "bg-[#1D4ED8] text-white"
-                : "text-white hover:bg-[#1a1445]"
-            }
-          `}
-                >
-                  <span className="text-xl">{link.icon}</span>
-                  {activeMenu && <span>{link.name}</span>}
-                </Link>
-              ))}
-            </div>
-          ))}
-        </div>
 
-        <div className="mt-15 px-3">
-          {settingLink.map((section, index) => (
-            <div key={index} className="text-sm p-3 space-y-3">
-              {activeMenu && section.title && (
-                <h3
-                  className={`text-gray-400 uppercase text-xs tracking-wider px-4 transition-opacity duration-500 ${
-                    activeMenu ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  {section.title}
-                </h3>
-              )}
-              {section.linkk.map((link) => (
-                <Link
-                  to={link.path}
-                  key={link.name}
-                  onClick={() => {
-                    setActive(link.name);
-                    if (screenSize < 1024) setActiveMenu(false);
-                  }}
-                  className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300
-            ${
-              active === link.name
-                ? "bg-[#1D4ED8] text-white"
-                : "text-white hover:bg-[#1a1445]"
-            }
-          `}
-                >
-                  <span className="text-xl">{link.icon}</span>
-                  {activeMenu && <span>{link.name}</span>}
-                </Link>
-              ))}
-            </div>
-          ))}
-          <div className="p-3">
-            <div className="mt-5 border-t border-gray-500" />
-          </div>
-          <div className="">
-            {logout.map((section, index) => (
-              <div key={index} className="text-sm p-3 space-y-3">
-                {section.logout.map((link) => (
+              {/* Main Links */}
+              {links.links &&
+                links.links.map((link) => (
                   <Link
-                    to={"#"}
+                    to={link.path}
                     key={link.name}
                     onClick={() => {
                       setActive(link.name);
                       if (screenSize < 1024) setActiveMenu(false);
-                      HandleLogout();
                     }}
-                    className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300`}
+                    className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300 ${
+                      active === link.name
+                        ? "bg-[#1D4ED8] text-white"
+                        : "text-white hover:bg-[#1a1445]"
+                    }`}
                   >
-                    <span className="text-xl ">{link.icon}</span>
+                    <span className="text-xl">{link.icon}</span>
                     {activeMenu && <span>{link.name}</span>}
                   </Link>
                 ))}
-              </div>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
+
+        {/* SubLinks */}
+        {links?.subLinks && (
+          <div className="mt-15 px-3">
+            <div className="text-sm p-3 space-y-3">
+              {links.subLinks.map((link) => {
+                if (link.name === "Logout") {
+                  return (
+                    <Link
+                      to={"#"}
+                      key={link.name}
+                      onClick={() => {
+                        setActive(link.name);
+                        if (screenSize < 1024) setActiveMenu(false);
+                        HandleLogout();
+                      }}
+                      className="flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300 text-white hover:bg-[#1a1445]"
+                    >
+                      <span className="text-xl">{link.icon}</span>
+                      {activeMenu && <span>{link.name}</span>}
+                    </Link>
+                  );
+                }
+
+                return (
+                  <Link
+                    to={link.path}
+                    key={link.name}
+                    onClick={() => {
+                      setActive(link.name);
+                      if (screenSize < 1024) setActiveMenu(false);
+                    }}
+                    className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300 ${
+                      active === link.name
+                        ? "bg-[#1D4ED8] text-white"
+                        : "text-white hover:bg-[#1a1445]"
+                    }`}
+                  >
+                    <span className="text-xl">{link.icon}</span>
+                    {activeMenu && <span>{link.name}</span>}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

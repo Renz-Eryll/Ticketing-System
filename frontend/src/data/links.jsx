@@ -9,60 +9,81 @@ import {
 import { FiUser } from "react-icons/fi";
 import { TbTicket } from "react-icons/tb";
 
-export const sidebarlinks = [
-  {
-    title: "Menu",
-    links: [
-      {
-        name: "Dashboard",
-        icon: <MdOutlineDashboard />,
-        path: "/admin/dashboard",
-      },
-      {
-        name: "Tickets",
-        icon: <TbTicket />,
-        path: "/admin/tickets",
-      },
-      {
-        name: "Agents",
-        icon: <MdOutlineSupportAgent />,
-        path: "/agent",
-      },
-      {
-        name: "Notification",
-        icon: <MdNotificationsNone />,
-        path: "/admin/notification",
-      },
-    ],
-  },
-];
-
-export const settingLink = [
-  {
-    title: "Settings",
-    linkk: [
-      {
-        name: "Settings",
-        icon: <MdSettings />,
-        path: "/settings",
-      },
-      {
-        name: "Profile",
-        icon: <FiUser />,
-        path: "/admin/profile",
-      },
-    ],
-  },
-];
-
-export const logout = [
-  {
-    logout: [
-      {
-        name: "Logout",
-        icon: <MdOutlineLogout />,
-        path: "/logout",
-      },
-    ],
-  },
-];
+export const getLinks = (userRole) => {
+  if (!userRole) return null;
+  switch (userRole) {
+    case "admin":
+      return {
+        title: "Menu",
+        links: [
+          {
+            name: "Dashboard",
+            icon: <MdOutlineDashboard />,
+            path: "/admin/dashboard",
+          },
+          {
+            name: "Tickets",
+            icon: <TbTicket />,
+            path: "/admin/tickets",
+          },
+          {
+            name: "Agents",
+            icon: <MdOutlineSupportAgent />,
+            path: "/agent",
+          },
+          {
+            name: "Notification",
+            icon: <MdNotificationsNone />,
+            path: "/admin/notification",
+          },
+        ],
+        subLinks: [
+          {
+            name: "Settings",
+            icon: <MdSettings />,
+            path: "/settings",
+          },
+          {
+            name: "Profile",
+            icon: <FiUser />,
+            path: "/admin/profile",
+          },
+          {
+            name: "Logout",
+            icon: <MdOutlineLogout />,
+            path: null,
+          },
+        ],
+      };
+    case "customer":
+      return {
+        title: "Menu",
+        links: [
+          {
+            name: "Dashboard",
+            icon: <MdOutlineDashboard />,
+            path: "/customer/dashboard",
+          },
+          {
+            name: "Tickets",
+            icon: <TbTicket />,
+            path: "/customer/create-ticket",
+          },
+          {
+            name: "Notification",
+            icon: <MdNotificationsNone />,
+            path: "/customer/notification",
+          },
+        ],
+        subLinks: [
+          {
+            name: "Logout",
+            icon: <MdOutlineLogout />,
+            path: null,
+          },
+        ],
+      };
+    case "agent":
+      return {};
+  }
+};
