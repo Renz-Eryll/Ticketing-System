@@ -18,6 +18,8 @@ import Signup from "./pages/Signup";
 import AgentDashboard from "./pages/agent/AgentDashboard";
 import CustomerDashboard from "./pages/customers/CustomerDasboard";
 import Createticket from "./pages/customers/Createticket";
+import { Settings } from "./pages/admin/Settings";
+import TicketDetails from "./pages/admin/TicketDetails";
 
 const Layout = ({ children }) => {
   return (
@@ -68,6 +70,7 @@ function AppRoutes() {
           </Layout>
         }
       />
+
       <Route
         path="/admin/tickets"
         element={
@@ -90,7 +93,7 @@ function AppRoutes() {
         path="/admin/tickets/ticketDetails/:id"
         element={
           <Layout>
-            <TicketsDetails />
+            <TicketDetails />
           </Layout>
         }
       />
@@ -122,7 +125,7 @@ function AppRoutes() {
           </Layout>
         }
       />
-      <Routes
+      <Route
         path="/customer/create-ticket"
         element={
           <Layout>

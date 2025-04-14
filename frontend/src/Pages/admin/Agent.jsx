@@ -162,7 +162,8 @@ export const Agent = () => {
       {/* Add Agent Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-15">
+          <div className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"></div>
+          <div className="relative bg-white rounded-lg shadow-lg w-full max-w-3xl p-15">
             <h2 className="text-lg font-semibold mb-4">Add New Agent</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
@@ -243,8 +244,9 @@ export const Agent = () => {
 
       {/* View Agent Table Modal*/}
       {isViewModalOpen && selectedUser && (
-        <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-15">
+        <div className="fixed inset-0 flex justify-center items-center z-50">
+          <div className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"></div>
+          <div className="relative bg-white rounded-lg shadow-lg w-full max-w-3xl p-15">
             <h2 className="text-lg font-semibold mb-4">Agent Information</h2>
             <div className="space-y-5 text-sm">
               <div className="border p-2 rounded-md px-4">
@@ -286,8 +288,9 @@ export const Agent = () => {
 
       {/* Edit Agent Modal */}
       {isEditModalOpen && selectedUser && (
-        <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-15">
+        <div className="fixed inset-0 flex justify-center items-center z-50">
+          <div className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"></div>
+          <div className="relative bg-white rounded-lg shadow-lg w-full max-w-3xl p-15">
             <h2 className="text-lg font-semibold mb-4">Edit Agent</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
