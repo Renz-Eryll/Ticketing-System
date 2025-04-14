@@ -21,6 +21,13 @@ import Createticket from "./pages/customers/Createticket";
 import TicketDetails from "./pages/admin/TicketDetails";
 
 const Layout = ({ children }) => {
+  // comment this
+  if (import.meta.env.DEV && !localStorage.getItem("user")) {
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ role: "admin", name: "Dev Admin" })
+    );
+  }
   return (
     <div className="flex">
       <Sidebar />

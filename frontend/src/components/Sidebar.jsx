@@ -156,8 +156,11 @@ export const Sidebar = () => {
         </div>
 
         {/* SubLinks */}
+        <div className="p-6">
+          <div className="mt-15 border-t border-gray-500" />
+        </div>
         {links?.subLinks && (
-          <div className="mt-15 px-3">
+          <div className="px-3">
             <div className="text-sm p-3 space-y-3">
               {links.subLinks.map((link) => {
                 if (link.name === "Logout") {
