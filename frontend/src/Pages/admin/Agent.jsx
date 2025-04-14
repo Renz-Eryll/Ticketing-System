@@ -100,7 +100,7 @@ export const Agent = () => {
       <div className="flex flex-col sm:flex-row justify-end gap-5 mt-6">
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
         >
           <GoPlus className="w-5 h-5" />
           <span className="text-sm">Add Agent</span>
@@ -225,13 +225,13 @@ export const Agent = () => {
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 text-sm border rounded"
+                  className="px-4 py-2 text-sm border rounded-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-sm hover:bg-blue-700"
                 >
                   Save
                 </button>
@@ -263,19 +263,19 @@ export const Agent = () => {
             <div className="flex justify-end gap-3 mt-6">
               <button
                 onClick={closeViewModal}
-                className="px-4 py-2 text-sm border rounded"
+                className="px-4 py-2 text-sm border rounded-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={handleEdit}
-                className="px-4 py-2 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                className="px-4 py-2 text-sm bg-yellow-500 text-white rounded-sm hover:bg-yellow-600"
               >
                 Edit
               </button>
               <button
                 onClick={() => alert("Delete logic here")}
-                className="px-4 py-2 text-sm bg-red-500 text-white rounded hover:bg-red-600"
+                className="px-4 py-2 text-sm bg-red-500 text-white rounded-sm hover:bg-red-600"
               >
                 Delete
               </button>
@@ -350,13 +350,13 @@ export const Agent = () => {
                 <button
                   type="button"
                   onClick={closeEditModal}
-                  className="px-4 py-2 text-sm border rounded"
+                  className="px-4 py-2 text-sm border rounded-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-sm hover:bg-blue-700"
                 >
                   Save Changes
                 </button>
