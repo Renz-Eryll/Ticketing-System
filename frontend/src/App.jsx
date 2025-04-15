@@ -145,7 +145,7 @@ function AppRoutes() {
         }
       />
       
-      <Route
+      {/* <Route
     path="/agent/create-ticket"
     element={
       <Layout>
@@ -161,7 +161,7 @@ function AppRoutes() {
       <TicketDetails/>
     </Layout>
   }
-/>
+/> */}
 
       {/* Customer Routes */}
       <Route
