@@ -12,7 +12,7 @@ export const Tickets = () => {
 `}
     >
       <div className="text-3xl font-bold text-[#1D4ED8]">Tickets</div>
-      dito mo sana nilagay
+      dito mo sana  nilagay
     </div>
   );
 };
