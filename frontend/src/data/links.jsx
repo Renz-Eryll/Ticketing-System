@@ -38,11 +38,7 @@ export const getLinks = (userRole) => {
           },
         ],
         subLinks: [
-          {
-            name: "Settings",
-            icon: <MdSettings />,
-            path: "/settings",
-          },
+          
           {
             name: "Profile",
             icon: <FiUser />,
