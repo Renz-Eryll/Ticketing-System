@@ -11,12 +11,16 @@ import { Navbar } from "./components/Navbar";
 import { Dashboard } from "./pages/admin/Dashboard";
 import { Agent } from "./pages/admin/Agent";
 import { Tickets } from "./pages/admin/Tickets";
-import { Notification } from "./pages/admin/Notification";
+
+// To be fix
+// import { Notification } from "./pages/admin/Notification";
 import { Profile } from "./pages/admin/Profile";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import AgentDashboard from "./pages/agent/AgentDashboard";
+import AgentNotification from "./Pages/agent/AgentNotification";
 import CustomerDashboard from "./pages/customers/CustomerDasboard";
+import CustomerNotification from "./Pages/customers/CustomerNotification"
 import Createticket from "./pages/customers/Createticket";
 import TicketDetails from "./pages/admin/TicketDetails";
 
@@ -61,14 +65,16 @@ function AppRoutes() {
           </Layout>
         }
       />
-      <Route
+
+      
+      {/* <Route
         path="/admin/notification"
         element={
           <Layout>
             <Notification />
           </Layout>
         }
-      />
+      /> */}
 
       <Route
         path="/admin/tickets"
@@ -106,6 +112,15 @@ function AppRoutes() {
         }
       />
 
+      <Route
+        path="/agent/notification"
+        element={
+          <Layout>
+            <AgentNotification/>
+          </Layout>
+        }
+      />
+
       {/* Customer Routes */}
       <Route
         path="/customer/dashboard"
@@ -115,6 +130,16 @@ function AppRoutes() {
           </Layout>
         }
       />
+
+      <Route
+        path="/customer/notification"
+        element={
+          <Layout>
+            <CustomerNotification/>
+          </Layout>
+        }
+      />
+
       <Route
         path="/customer/create-ticket"
         element={
