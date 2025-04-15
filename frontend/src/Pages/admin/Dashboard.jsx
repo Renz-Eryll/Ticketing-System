@@ -38,36 +38,60 @@ export const Dashboard = () => {
           <table className="min-w-full border shadow-sm rounded-lg overflow-hidden text-xs sm:text-xs md:text-sm">
             <thead className="bg-gray-50 text-gray-800">
               <tr>
-                <th className="px-4 py-3.5 border border-gray-300">Date</th>
-                <th className="px-4 py-2 border border-gray-300">Ticket ID</th>
+                <th className="px-4 py-3.5 border border-gray-300">
+                  Ticket ID
+                </th>
                 <th className="px-4 py-2 border border-gray-300">Category</th>
+                <th className="px-4 py-2 border border-gray-300">Priority</th>
                 <th className="px-4 py-2 border border-gray-300">Agent</th>
+                <th className="px-4 py-2 border border-gray-300">
+                  Date Created
+                </th>
+                <th className="px-4 py-2 border border-gray-300">Status</th>
               </tr>
             </thead>
             <tbody className="text-center">
               <tr>
                 <td className="px-4 py-2 border border-gray-300">
-                  March 1, 2025
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  ASD123456789
+                  90182390812
                 </td>
                 <td className="px-4 py-2 border border-gray-300">
                   POS for Retail and F&B
                 </td>
+                <td className="px-4 py-2 border border-gray-300">High</td>
                 <td className="px-4 py-2 border border-gray-300">John Doe</td>
+                <td className="px-4 py-2 border border-gray-300">
+                  April 14, 2025
+                </td>
+                <td className="px-4 py-2 border border-gray-300">Unresolved</td>
               </tr>
               <tr>
                 <td className="px-4 py-2 border border-gray-300">
-                  March 1, 2025
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  ASD123456789
+                  90182390812
                 </td>
                 <td className="px-4 py-2 border border-gray-300">
                   POS for Retail and F&B
                 </td>
+                <td className="px-4 py-2 border border-gray-300">High</td>
                 <td className="px-4 py-2 border border-gray-300">John Doe</td>
+                <td className="px-4 py-2 border border-gray-300">
+                  April 14, 2025
+                </td>
+                <td className="px-4 py-2 border border-gray-300">Unresolved</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 border border-gray-300">
+                  90182390812
+                </td>
+                <td className="px-4 py-2 border border-gray-300">
+                  POS for Retail and F&B
+                </td>
+                <td className="px-4 py-2 border border-gray-300">High</td>
+                <td className="px-4 py-2 border border-gray-300">John Doe</td>
+                <td className="px-4 py-2 border border-gray-300">
+                  April 14, 2025
+                </td>
+                <td className="px-4 py-2 border border-gray-300">Unresolved</td>
               </tr>
             </tbody>
           </table>
