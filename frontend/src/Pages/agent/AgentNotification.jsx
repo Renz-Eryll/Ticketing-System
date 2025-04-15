@@ -1,7 +1,7 @@
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 
-const Notification = () => {
+const AgentNotification = () => {
   const { activeMenu } = useStateContext();
 
   const notifications = [
@@ -69,4 +69,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default AgentNotification;
