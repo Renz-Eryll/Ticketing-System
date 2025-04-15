@@ -11,7 +11,9 @@ import { Navbar } from "./components/Navbar";
 import { Dashboard } from "./pages/admin/Dashboard";
 import { Agent } from "./pages/admin/Agent";
 import { Tickets } from "./pages/admin/Tickets";
-import { Notification } from "./pages/admin/Notification";
+
+// To be fix
+// import { Notification } from "./pages/admin/Notification";
 import { Profile } from "./pages/admin/Profile";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
@@ -63,14 +65,16 @@ function AppRoutes() {
           </Layout>
         }
       />
-      <Route
+
+      
+      {/* <Route
         path="/admin/notification"
         element={
           <Layout>
             <Notification />
           </Layout>
         }
-      />
+      /> */}
 
       <Route
         path="/admin/tickets"
