@@ -70,7 +70,9 @@ ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
             <div className="text-9xl">
               <FiUser />
             </div>
-            <div className="mt-3 text-md text-center">[Full Name]</div>
+            <div className="mt-3 text-md text-center font-bold">
+              [Full Name]
+            </div>
             <div className="mt-3 text-sm text-gray-600 text-center">
               +63 987 6543 210
             </div>
