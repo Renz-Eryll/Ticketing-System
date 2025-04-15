@@ -11,8 +11,7 @@ import { Navbar } from "./components/Navbar";
 
 /*ADMIN */
 import { Dashboard } from "./pages/admin/Dashboard";
-import { Agent } from "./pages/admin/Agent";
-import { Tickets } from "./pages/admin/Tickets";
+import Agent from "./pages/admin/Agent";
 import Notification from "./Pages/admin/Notification";
 import NotificationDetails from "./Pages/admin/NotificationDetails";
 import TicketDetails from "./pages/admin/TicketDetails";
@@ -22,9 +21,13 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 
 /*AGENT */
-import AgentDashboard from "./pages/agent/AgentDashboard";
+import AgentDashboard from "./Pages/agent/AgentdashDoard";
 import AgentNotification from "./pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
+import { Tickets } from "./pages/agent/Tickets";
+
+
+
 
 /*CUSTOMER */
 import CustomerDashboard from "./pages/customers/CustomerDasboard";
@@ -132,7 +135,7 @@ function AppRoutes() {
           </Layout>
         }
       />
-      
+
       <Route
         path="/agent/tickets/notificationDetails/:id"
         element={
@@ -141,6 +144,24 @@ function AppRoutes() {
           </Layout>
         }
       />
+      
+      <Route
+    path="/agent/create-ticket"
+    element={
+      <Layout>
+        <Createticket /> 
+      </Layout>
+        }
+        />
+        
+        <Route
+    path="/agent/TicketDetails/:id"
+  element={
+    <Layout>
+      <TicketDetails/>
+    </Layout>
+  }
+/>
 
       {/* Customer Routes */}
       <Route
