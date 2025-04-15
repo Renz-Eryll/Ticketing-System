@@ -56,7 +56,7 @@ export const Tickets = () => {
       <div className="text-3xl font-bold text-[#1D4ED8]">
         POS for Retail and F&B
       </div>
-      <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-xl bg-white">
+      <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-xl bg-white min-h-[500px]">
         <div className="mt-6">
           <table className="min-w-full border shadow-sm rounded-lg overflow-hidden text-xs sm:text-xs md:text-sm">
             <thead className="bg-gray-50 text-gray-800">

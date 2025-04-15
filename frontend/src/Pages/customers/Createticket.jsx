@@ -33,7 +33,7 @@ const Createticket = () => {
 
   return (
     <div
-      className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${activeMenu ? "lg:pl-75" : "lg:pl-25"}`}
+    className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${activeMenu ? "lg:pl-72" : "lg:pl-24"}`}
     >
       <main className="flex-1 p-10">
         <h1 className="text-3xl font-bold text-blue-600 mb-6">Create Ticket</h1>
@@ -55,9 +55,11 @@ const Createticket = () => {
                 <label className="block mb-1 text-sm font-medium text-gray-600">Categories</label>
                 <select className="w-full border border-gray-300 p-2 rounded-md focus:outline-none">
                   <option>Choose Type</option>
-                  <option>Technical</option>
-                  <option>Billing</option>
-                  <option>Account</option>
+                  <option>QTech Inventory Support System</option>
+                  <option>QTech Utility Billing System</option>
+                  <option>Philippine HR, Payroll and Time Keeping System</option>
+                  <option>POS for Retail and F&B</option>
+                  <option>QSA (Quick and Single Accounting)</option>
                 </select>
               </div>
             </div>
