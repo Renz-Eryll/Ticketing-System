@@ -234,7 +234,7 @@ export const Agent = () => {
                   type="submit"
                   className="px-4 py-2 text-sm bg-blue-600 text-white rounded-sm hover:bg-blue-700"
                 >
-                  Save
+                  Add Agent
                 </button>
               </div>
             </form>
