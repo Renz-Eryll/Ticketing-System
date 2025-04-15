@@ -40,7 +40,7 @@ const Notification = () => {
   ];
 
   const handleRowClick = (notif) => {
-    navigate(`/customer/tickets/notificationDetails/${notif.ticketId}`, {
+    navigate(`/admin/notificationDetails/${notif.ticketId}`, {
       state: notif,
     });
   };

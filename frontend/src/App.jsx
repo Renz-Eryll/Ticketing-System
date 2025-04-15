@@ -13,7 +13,7 @@ import { Navbar } from "./components/Navbar";
 import { Dashboard } from "./pages/admin/Dashboard";
 import { Agent } from "./pages/admin/Agent";
 import { Tickets } from "./pages/admin/Tickets";
-import Notification from "./pages/admin/Notification";
+import Notification from "./Pages/admin/Notification";
 import NotificationDetails from "./Pages/admin/NotificationDetails";
 import TicketDetails from "./pages/admin/TicketDetails";
 import { Profile } from "./pages/admin/Profile";
@@ -82,7 +82,7 @@ function AppRoutes() {
         }
       />
     <Route
-        path="/admin/NotificationDetails"
+        path="/admin/NotificationDetails/:id"
         element={
           <Layout>
             <NotificationDetails />
