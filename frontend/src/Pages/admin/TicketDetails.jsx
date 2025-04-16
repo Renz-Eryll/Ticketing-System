@@ -3,7 +3,6 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
-<<<<<<< HEAD
 const TicketDetails = () => {
   const { activeMenu } = useStateContext();
   const navigate = useNavigate();
@@ -22,13 +21,6 @@ const TicketDetails = () => {
     agent: "James Doe",
   };
 
-=======
-export const TicketDetails = () => {
-  const { activeMenu } = useStateContext();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const ticketData = location.state;
->>>>>>> 76aedab1e3a13fa043642890f224bfb09ab0ff4b
   if (!ticketData) {
     return (
       <div
@@ -134,8 +126,4 @@ export const TicketDetails = () => {
     </div>
   );
 };
-<<<<<<< HEAD
-
 export default TicketDetails;
-=======
->>>>>>> 76aedab1e3a13fa043642890f224bfb09ab0ff4b

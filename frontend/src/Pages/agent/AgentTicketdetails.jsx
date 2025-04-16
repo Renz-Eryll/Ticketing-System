@@ -3,7 +3,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
-const TicketDetails = () => {
+const AgentTicketdetails = () => {
   const { activeMenu } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();

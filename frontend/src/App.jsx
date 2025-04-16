@@ -14,7 +14,7 @@ import { Dashboard } from "./pages/admin/Dashboard";
 import Agent from "./pages/admin/Agent";
 import Notification from "./Pages/admin/Notification";
 import NotificationDetails from "./Pages/admin/NotificationDetails";
-import { TicketDetails } from "./pages/admin/TicketDetails";
+import TicketDetails from "./pages/admin/TicketDetails";
 import { Tickets } from "./pages/admin/Tickets";
 import { Profile } from "./pages/admin/Profile";
 import { TicketCategories } from "./pages/admin/TicketCategories";
@@ -31,6 +31,7 @@ import CustomerDashboard from "./pages/customers/CustomerDasboard";
 import CustomerNotification from "./pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
 import Createticket from "./pages/customers/Createticket";
+import AgentTicketdetails from "./Pages/agent/AgentTicketdetails";
 
 const Layout = ({ children }) => {
   return (
@@ -142,6 +143,15 @@ function AppRoutes() {
       />
 
       <Route
+        path="/agent/Tickets"
+        element={
+          <Layout>
+            <Tickets />
+          </Layout>
+        }
+      />
+
+      <Route
         path="/agent/tickets/notificationDetails/:id"
         element={
           <Layout>
@@ -150,23 +160,23 @@ function AppRoutes() {
         }
       />
 
-      {/* <Route
-    path="/agent/create-ticket"
-    element={
-      <Layout>
-        <Createticket /> 
-      </Layout>
+      <Route
+        path="agent/AgentTicketdetails"
+        element={
+          <Layout>
+            <AgentTicketdetails />
+          </Layout>
         }
-        />
-        
-        <Route
-    path="/agent/TicketDetails/:id"
-  element={
-    <Layout>
-      <TicketDetails/>
-    </Layout>
-  }
-/> */}
+      />
+
+      <Route
+        path="/agent/TicketDetails/:id"
+        element={
+          <Layout>
+            <TicketDetails />
+          </Layout>
+        }
+      />
 
       {/* Customer Routes */}
       <Route
