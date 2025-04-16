@@ -14,8 +14,9 @@ import { Dashboard } from "./pages/admin/Dashboard";
 import Agent from "./pages/admin/Agent";
 import Notification from "./Pages/admin/Notification";
 import NotificationDetails from "./Pages/admin/NotificationDetails";
-import TicketDetails from "./pages/admin/TicketDetails";
+import TicketDetails from "./Pages/admin/TicketDetails";
 import { Profile } from "./pages/admin/Profile";
+
 
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
@@ -24,8 +25,7 @@ import Signup from "./pages/Signup";
 import AgentDashboard from "./Pages/agent/AgentdashDoard";
 import AgentNotification from "./pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
-import { Tickets } from "./pages/agent/Tickets";
-
+import { Tickets } from "./Pages/agent/Tickets";
 
 
 
@@ -102,7 +102,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/admin/tickets/ticketDetails/:id"
+        path="/admin/TicketDetails"
         element={
           <Layout>
             <TicketDetails />

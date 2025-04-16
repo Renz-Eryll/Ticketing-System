@@ -8,6 +8,10 @@ import {
 } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
 import { TbTicket } from "react-icons/tb";
+import { LuTicket } from "react-icons/lu";
+
+
+
 
 export const getLinks = (userRole) => {
   if (!userRole) return null;
@@ -22,9 +26,9 @@ export const getLinks = (userRole) => {
             path: "/admin/dashboard",
           },
           {
-            name: "Tickets",
-            icon: <TbTicket />,
-            path: "/admin/tickets",
+            name: "Tickets Details",
+            icon: <LuTicket />,
+            path: "/admin/TicketDetails",
           },
           {
             name: "Agents",
@@ -88,15 +92,21 @@ export const getLinks = (userRole) => {
               icon: <MdOutlineDashboard />,
               path: "/agent/dashboard",
             },
-            {
-              name: "Tickets",
-              icon: <TbTicket />,
-              path: "/agent/create-ticket",
-            },
+        
             {
               name: "Notification",
               icon: <MdNotificationsNone />,
               path: "/agent/notification",
+            },
+            {
+              name: "Tickets",
+              icon: <TbTicket />,
+              path: "/agent/Tickets",
+            },
+            {
+              name: "Tickets Details",
+              icon: <TbAgentTicketDetails />,
+              path: "/agent/AgentTicketdetails",
             },
           ],
           subLinks: [

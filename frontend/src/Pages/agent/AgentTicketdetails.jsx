@@ -7,7 +7,19 @@ const TicketDetails = () => {
   const { activeMenu } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
-  const ticketData = location.state;
+  //   location.state? explain it
+  //   const ticketData = location.state;
+
+  // raw data example
+  const ticketData = {
+    id: 123,
+    customer: "Jenny Rose Perez",
+    date: new Date().getDate(),
+    status: "Pending",
+    description: "Lorem ipsum dolor sit amet.",
+    agent: "James Doe",
+  };
+
   if (!ticketData) {
     return (
       <div
@@ -114,4 +126,4 @@ const TicketDetails = () => {
   );
 };
 
-export default TicketDetails;
+export default AgentTicketdetails;
