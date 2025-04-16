@@ -3,6 +3,54 @@ import { useStateContext } from "../../contexts/ContextProvider";
 
 export const Dashboard = () => {
   const { activeMenu } = useStateContext();
+  const data = [
+    {
+      id: 112381389173,
+      category: "POS for Retail and F&B",
+      priority: "High",
+      agent: "John Doe",
+      date: "March 1, 2025",
+      status: "Unresolved",
+      customer: "Customer Name",
+      description: "Payment terminal not processing transactions",
+    },
+    {
+      id: 2918392821,
+      date: "March 1, 2025",
+      category: "POS for Retail and F&B",
+      priority: "Primary",
+      agent: "John Doe",
+      status: "Resolved",
+      customer: "Pangalan ng nag - ticket",
+      description: "Payment terminal not processing transactions",
+    },
+  ];
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "High":
+        return "text-red-500 font-semibold";
+      case "Primary":
+        return "text-green-500 font-semibold";
+      case "Medium":
+        return "text-yellow-500 font-semibold";
+      case "Low":
+        return "text-gray-500 font-semibold";
+      default:
+        return "text-black";
+    }
+  };
+
+  const statusColor = (status) => {
+    switch (status) {
+      case "Unresolved":
+        return "text-red-500 font-semibold";
+      case "Resolved":
+        return "text-green-500 font-semibold";
+      default:
+        return "text-black";
+    }
+  };
   return (
     <div
       className={`
@@ -32,69 +80,37 @@ export const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-xl bg-white">
-        <div className="text-xl font-bold text-black">Recent Tickets</div>
-        <div className="mt-6">
-          <table className="min-w-full border shadow-sm rounded-lg overflow-hidden text-xs sm:text-xs md:text-sm">
-            <thead className="bg-gray-50 text-gray-800">
-              <tr>
-                <th className="px-4 py-3.5 border border-gray-300">
-                  Ticket ID
-                </th>
-                <th className="px-4 py-2 border border-gray-300">Category</th>
-                <th className="px-4 py-2 border border-gray-300">Priority</th>
-                <th className="px-4 py-2 border border-gray-300">Agent</th>
-                <th className="px-4 py-2 border border-gray-300">
-                  Date Created
-                </th>
-                <th className="px-4 py-2 border border-gray-300">Status</th>
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              <tr>
-                <td className="px-4 py-2 border border-gray-300">
-                  90182390812
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  POS for Retail and F&B
-                </td>
-                <td className="px-4 py-2 border border-gray-300">High</td>
-                <td className="px-4 py-2 border border-gray-300">John Doe</td>
-                <td className="px-4 py-2 border border-gray-300">
-                  April 14, 2025
-                </td>
-                <td className="px-4 py-2 border border-gray-300">Unresolved</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 border border-gray-300">
-                  90182390812
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  POS for Retail and F&B
-                </td>
-                <td className="px-4 py-2 border border-gray-300">High</td>
-                <td className="px-4 py-2 border border-gray-300">John Doe</td>
-                <td className="px-4 py-2 border border-gray-300">
-                  April 14, 2025
-                </td>
-                <td className="px-4 py-2 border border-gray-300">Unresolved</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 border border-gray-300">
-                  90182390812
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  POS for Retail and F&B
-                </td>
-                <td className="px-4 py-2 border border-gray-300">High</td>
-                <td className="px-4 py-2 border border-gray-300">John Doe</td>
-                <td className="px-4 py-2 border border-gray-300">
-                  April 14, 2025
-                </td>
-                <td className="px-4 py-2 border border-gray-300">Unresolved</td>
-              </tr>
-            </tbody>
-          </table>
+
+      <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-lg bg-white min-h-[500px] ">
+        <div className="space-y-2">
+          <div className="grid grid-cols-[repeat(6,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
+            <div>Ticket ID</div>
+            <div>Category</div>
+            <div>Priority</div>
+            <div>Agent</div>
+            <div>Date Created</div>
+            <div>Status</div>
+          </div>
+
+          {data.map((item) => (
+            <div
+              key={item.id}
+              className="grid grid-cols-[repeat(6,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
+            >
+              <div className="truncate">{item.id}</div>
+              <div className="truncate">{item.category}</div>
+              <div className={`truncate ${getPriorityColor(item.priority)}`}>
+                {item.priority}
+              </div>
+              <div className="truncate">{item.agent}</div>
+              <div className="truncate">{item.date}</div>
+              <div className="truncate">
+                <span className={`truncate ${statusColor(item.status)}`}>
+                  {item.status}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
