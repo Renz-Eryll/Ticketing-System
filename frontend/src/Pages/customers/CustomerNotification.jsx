@@ -2,7 +2,7 @@ import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 
-const Notification = () => {
+const CustomerNotification = () => {
   const { activeMenu } = useStateContext();
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ const Notification = () => {
   ];
 
   const handleRowClick = (notif) => {
-    navigate(`/admin/notificationDetails/${notif.ticketId}`, {
+    navigate(`/customer/tickets/notificationDetails/${notif.ticketId}`, {
       state: notif,
     });
   };
@@ -48,7 +48,7 @@ const Notification = () => {
   return (
     <div
       className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
-        activeMenu ? "lg:pl-72" : "lg:pl-24"
+        activeMenu ? "lg:pl-75" : "lg:pl-24"
       }`}
     >
       <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Notification</div>
@@ -90,4 +90,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default CustomerNotification;

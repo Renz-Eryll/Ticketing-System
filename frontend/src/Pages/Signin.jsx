@@ -64,7 +64,7 @@ export const Signin = () => {
       setUser(user);
       localStorage.setItem('token', token);
       localStorage.setItem("user", JSON.stringify(user));
-  
+
       const { role } = user;
       switch (role) {
         case "customer":
@@ -105,7 +105,10 @@ export const Signin = () => {
       <div className="w-1/2 bg-white p-12 rounded-r-xl flex flex-col justify-center">
         <div className="flex justify-end mb-4">
           {/* Change the About Us link to redirect to Dashboard */}
-          <Link to="/dashboard" className="text-sm font-medium text-black">
+          <Link
+            to="/admin/dashboard"
+            className="text-sm font-medium text-black"
+          >
             About Us
           </Link>
         </div>

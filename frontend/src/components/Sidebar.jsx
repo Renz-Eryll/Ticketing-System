@@ -39,10 +39,10 @@ export const Sidebar = () => {
 
   useEffect(() => {
     const currentPath = location.pathname;
-  
+
     if (links) {
       const allLinks = [...(links.links || []), ...(links.subLinks || [])];
-  
+
       allLinks.forEach((link) => {
         if (link.path === currentPath) {
           setActive(link.name);
@@ -50,7 +50,6 @@ export const Sidebar = () => {
       });
     }
   }, [location, links]);
-  
 
   const HandleLogout = async () => {
     const result = await Swal.fire({
