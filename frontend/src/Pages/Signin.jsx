@@ -10,13 +10,13 @@ export const Signin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { token, user, setToken, setUser } = useStateContext();
+  const { user,login} = useStateContext();
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    if (token && user) {
-      const { role } = user;
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const { role } = JSON.parse(storedUser);
       switch (role) {
         case "customer":
           navigate("/customer/dashboard");
@@ -28,10 +28,10 @@ export const Signin = () => {
           navigate("/agent/dashboard");
           break;
         default:
-          break;
+          navigate("/");
       }
     }
-  }, [token, user, navigate]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,12 +59,10 @@ export const Signin = () => {
       const data = await response.json();
       console.log("Login successful:", data);
 
-      const { token, user } = data;
-      setToken(token);
-      setUser(user);
-      localStorage.setItem('token', token);
-      localStorage.setItem("user", JSON.stringify(user));
+      const {  user } = data;
 
+      login(user);
+      
       const { role } = user;
       switch (role) {
         case "customer":

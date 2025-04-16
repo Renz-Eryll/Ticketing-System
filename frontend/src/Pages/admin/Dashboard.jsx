@@ -3,13 +3,16 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { Navigate } from "react-router-dom";
 
 export const Dashboard = () => {
-  const { activeMenu,user,token } = useStateContext();
+  const { activeMenu,user,login } = useStateContext();
 
-  if(!token){
-    return <Navigate to = '/'/>
+  
+  // Redirect if not logged in
+  if(!login && !user){
+    return <Navigate to ='/'/>
   }
 
   return (
+    
     <div
       className={`
     mx-5 md:mx-5 lg:mx-5

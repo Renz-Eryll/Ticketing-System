@@ -4,10 +4,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
 export const TicketDetails = () => {
-  const { activeMenu } = useStateContext();
+  const { activeMenu,user,login} = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
   const ticketData = location.state;
+  
+  // Redirect if not logged in
+  if(!login && !user){
+    return <Navigate to ='/'/>
+  }
   if (!ticketData) {
     return (
       <div

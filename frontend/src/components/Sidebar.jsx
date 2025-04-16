@@ -10,13 +10,17 @@ import { getLinks } from "../data/links";
 import useUser from "../hooks/use-user";
 
 export const Sidebar = () => {
-  const { activeMenu, setActiveMenu, screenSize, setScreenSize } =
+  const { activeMenu, setActiveMenu, screenSize, setScreenSize,logout,login } =
     useStateContext();
   const location = useLocation();
   const [active, setActive] = useState("");
   const navigate = useNavigate();
   const user = useUser();
   const [links, setLinks] = useState({});
+
+  if(!login){
+    return <Navigate to ='/'/>
+  }
 
   // set SideBar Links
   useEffect(() => {
@@ -63,14 +67,12 @@ export const Sidebar = () => {
 
     if (result.isConfirmed) {
       // clear user data from localstorage
-      localStorage.removeItem("user");
-
       await Swal.fire({
         title: "Success!",
         text: "You have been logged out.",
         icon: "success",
       });
-
+      logout();
       navigate("/");
     }
   };

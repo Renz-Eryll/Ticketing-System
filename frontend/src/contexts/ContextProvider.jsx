@@ -5,8 +5,6 @@ import React, { createContext, useContext, useState, useEffect } from "react"; /
 const StateContext = createContext({
   user: null,
   token: null,
-  setUser: () => {},
-  setToken: () => {},
   activeMenu: true,
   setActiveMenu: () => {},
   screenSize: undefined,
@@ -16,18 +14,21 @@ const StateContext = createContext({
 export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [screenSize, setScreenSize] = useState(undefined);
-  const [user, setUser] = useState({});
-  const [token, setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
-  // 2. Sync token to localStorage
-  useEffect(() => {
-    if (token) {
-      localStorage.setItem('ACCESS_TOKEN', token);
-    } else {
-      localStorage.removeItem('ACCESS_TOKEN');
-    }
-  }, [token]);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
 
-  // 3. Return block was broken — fixed here 👇
+  });
+  
+  const login = (userData) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+  };
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+  };
+  
   return (
     <StateContext.Provider
       value={{
@@ -36,9 +37,8 @@ export const ContextProvider = ({ children }) => {
         screenSize,
         setScreenSize,
         user,
-        setUser,
-        token,
-        setToken,
+        login,
+        logout
       }}
     >
       {children}

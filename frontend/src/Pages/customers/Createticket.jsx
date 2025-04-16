@@ -1,11 +1,17 @@
 import React, { useRef, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { Navigate } from "react-router-dom";
 
 const Createticket = () => {
-  const { activeMenu } = useStateContext();
+  const { activeMenu, user,login} = useStateContext();
   const fileRef = useRef();
   const imageRef = useRef();
   const [preview, setPreview] = useState(null);  
+
+  // Redirect if not logged in
+  if(!login && !user){
+    return <Navigate to ='/'/>
+  }
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
