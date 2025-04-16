@@ -15,12 +15,13 @@ import { Tickets } from "./pages/admin/Tickets";
 // To be fix
 // import { Notification } from "./pages/admin/Notification";
 import { Profile } from "./pages/admin/Profile";
+import { TicketCategories } from "./pages/admin/TicketCategories";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import AgentDashboard from "./pages/agent/AgentDashboard";
 import AgentNotification from "./Pages/agent/AgentNotification";
 import CustomerDashboard from "./pages/customers/CustomerDasboard";
-import CustomerNotification from "./Pages/customers/CustomerNotification"
+import CustomerNotification from "./Pages/customers/CustomerNotification";
 import Createticket from "./pages/customers/Createticket";
 import TicketDetails from "./pages/admin/TicketDetails";
 
@@ -66,7 +67,6 @@ function AppRoutes() {
         }
       />
 
-      
       {/* <Route
         path="/admin/notification"
         element={
@@ -75,6 +75,15 @@ function AppRoutes() {
           </Layout>
         }
       /> */}
+
+      <Route
+        path="/admin/ticketCategories"
+        element={
+          <Layout>
+            <TicketCategories />
+          </Layout>
+        }
+      />
 
       <Route
         path="/admin/tickets"
@@ -116,7 +125,7 @@ function AppRoutes() {
         path="/agent/notification"
         element={
           <Layout>
-            <AgentNotification/>
+            <AgentNotification />
           </Layout>
         }
       />
@@ -135,7 +144,7 @@ function AppRoutes() {
         path="/customer/notification"
         element={
           <Layout>
-            <CustomerNotification/>
+            <CustomerNotification />
           </Layout>
         }
       />

@@ -1,12 +1,13 @@
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
+import { IoMdArrowBack } from "react-icons/io";
 
 export const Tickets = () => {
   const { activeMenu } = useStateContext();
   const navigate = useNavigate();
 
-  // kunyareng data
+  // dummy data
   const data = [
     {
       id: 112381389173,
@@ -53,8 +54,16 @@ export const Tickets = () => {
       ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
     `}
     >
-      <div className="text-3xl font-bold text-[#1D4ED8]">
-        POS for Retail and F&B
+      <div className="flex gap-4">
+        <div>
+          <IoMdArrowBack
+            className="text-4xl cursor-pointer"
+            onClick={() => navigate("/admin/ticketCategories")}
+          />
+        </div>
+        <div className="text-3xl font-bold text-[#1D4ED8]">
+          POS for Retail and F&B
+        </div>
       </div>
       <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-xl bg-white">
         <div className="mt-6">
