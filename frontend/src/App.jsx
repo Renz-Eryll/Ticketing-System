@@ -12,8 +12,8 @@ import { Navbar } from "./components/Navbar";
 /*ADMIN */
 import { Dashboard } from "./pages/admin/Dashboard";
 import Agent from "./pages/admin/Agent";
-import Notification from "./Pages/admin/Notification";
-import NotificationDetails from "./Pages/admin/NotificationDetails";
+import Notification from "./pages/admin/Notification";
+import NotificationDetails from "./pages/admin/NotificationDetails";
 import { TicketDetails } from "./pages/admin/TicketDetails";
 import { Tickets } from "./pages/admin/Tickets";
 import { Profile } from "./pages/admin/Profile";
@@ -73,23 +73,6 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/admin/notification"
-        element={
-          <Layout>
-            <Notification />
-          </Layout>
-        }
-      />
-      <Route
-        path="/admin/NotificationDetails/:id"
-        element={
-          <Layout>
-            <NotificationDetails />
-          </Layout>
-        }
-      />
-
-      <Route
         path="/admin/ticketCategories"
         element={
           <Layout>
@@ -107,13 +90,30 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/admin/TicketDetails"
+        path="/admin/tickets/ticketDetails/:id"
         element={
           <Layout>
             <TicketDetails />
           </Layout>
         }
       />
+      <Route
+        path="/admin/notification"
+        element={
+          <Layout>
+            <Notification />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin/NotificationDetails/:id"
+        element={
+          <Layout>
+            <NotificationDetails />
+          </Layout>
+        }
+      />
+
       <Route
         path="/admin/profile"
         element={
