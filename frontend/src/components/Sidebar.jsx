@@ -5,6 +5,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getLinks } from "../data/links";
+import QtechLogo from "../assets/qtechlogo.png";
 
 // get current user
 import useUser from "../hooks/use-user";
@@ -114,7 +115,7 @@ export const Sidebar = () => {
               !activeMenu ? "scale-0" : ""
             }`}
           >
-            Logo
+            <img src={QtechLogo} alt="Qtech Logo" className="h-10" />
           </h1>
           <div className="mt-6 border-t border-gray-500" />
         </div>
