@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import SignupImage from "../assets/signup.jpg";
 import QtechLogo from "../assets/qtechlogo.png";
 import { Link, useNavigate } from "react-router-dom";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,8 +10,28 @@ export const Signin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const { token, user, setToken, setUser } = useStateContext();
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (token && user) {
+      const { role } = user;
+      switch (role) {
+        case "customer":
+          navigate("/customer/dashboard");
+          break;
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+        case "agent":
+          navigate("/agent/dashboard");
+          break;
+        default:
+          break;
+      }
+    }
+  }, [token, user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,12 +55,14 @@ export const Signin = () => {
         if (!response.ok) {
           throw new Error("Login failed");
         }
-  
       // Optional: extract data if needed
       const data = await response.json();
       console.log("Login successful:", data);
 
-      const { user } = data;
+      const { token, user } = data;
+      setToken(token);
+      setUser(user);
+      localStorage.setItem('token', token);
       localStorage.setItem("user", JSON.stringify(user));
   
       const { role } = user;
@@ -54,16 +77,14 @@ export const Signin = () => {
           navigate("/agent/dashboard");
           break;
       }
-
-      // Navigate to the dashboard after successful login
-      // navigate("/dashboard");
+    
     } catch (err) {
       console.error("Login failed:", err);
       setError("Invalid email or password.");
-    }finally {
-      setLoading(true); 
     }
   }
+  
+  
   return (
     <div className="min-h-screen flex text-gray-900 font-sans">
       {/* Left Section */}

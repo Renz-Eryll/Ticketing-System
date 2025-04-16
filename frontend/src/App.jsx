@@ -34,7 +34,6 @@ const Layout = ({ children }) => {
 function AppRoutes() {
   const location = useLocation();
   const noLayoutRoutes = ["/", "/signup"];
-
   const isNoLayout = noLayoutRoutes.includes(location.pathname);
 
   return (

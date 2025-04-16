@@ -1,8 +1,14 @@
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
+import { Navigate } from "react-router-dom";
 
 export const Dashboard = () => {
-  const { activeMenu } = useStateContext();
+  const { activeMenu,user,token } = useStateContext();
+
+  if(!token){
+    return <Navigate to = '/'/>
+  }
+
   return (
     <div
       className={`
