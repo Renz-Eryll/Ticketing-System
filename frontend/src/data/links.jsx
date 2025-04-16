@@ -104,7 +104,7 @@ export const getLinks = (userRole) => {
             },
             {
               name: "Tickets Details",
-              icon: <TbAgentTicketDetails />,
+              icon: <LuTicket />,
               path: "/agent/AgentTicketdetails",
             },
           ],
