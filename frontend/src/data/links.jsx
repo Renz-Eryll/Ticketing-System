@@ -24,7 +24,7 @@ export const getLinks = (userRole) => {
           {
             name: "Tickets",
             icon: <TbTicket />,
-            path: "/admin/tickets",
+            path: "/admin/ticketCategories",
           },
           {
             name: "Agents",
@@ -38,7 +38,6 @@ export const getLinks = (userRole) => {
           },
         ],
         subLinks: [
-          
           {
             name: "Profile",
             icon: <FiUser />,
