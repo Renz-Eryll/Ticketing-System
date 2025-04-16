@@ -78,7 +78,34 @@ export const getLinks = (userRole) => {
           },
         ],
       };
-    case "agent":
-      return {};
-  }
-};
+      case "agent":
+        return {
+          title: "Menu",
+          links: [
+            {
+              name: "Dashboard",
+              icon: <MdOutlineDashboard />,
+              path: "/agent/dashboard",
+            },
+            {
+              name: "Tickets",
+              icon: <TbTicket />,
+              path: "/agent/create-ticket",
+            },
+            {
+              name: "Notification",
+              icon: <MdNotificationsNone />,
+              path: "/agent/notification",
+            },
+          ],
+          subLinks: [
+            {
+              name: "Logout",
+              icon: <MdOutlineLogout />,
+              path: null,
+            },
+          ],
+        };
+    }
+  };
+  

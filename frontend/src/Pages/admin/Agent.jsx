@@ -371,3 +371,4 @@ export const Agent = () => {
     </div>
   );
 };
+export default Agent;

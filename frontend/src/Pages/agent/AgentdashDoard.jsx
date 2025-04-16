@@ -12,7 +12,9 @@ export const AgentDashboard = () => {
   `}
     >
       <div className="text-3xl font-bold text-[#1D4ED8]">Agent Dashboard</div>
+      
     </div>
+  
   );
 };
 
