@@ -3,24 +3,11 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
-const TicketDetails = () => {
+export const TicketDetails = () => {
   const { activeMenu } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
-
-  //   location.state? explain it
-  //   const ticketData = location.state;
-
-  // raw data example
-  const ticketData = {
-    id: 123,
-    customer: "Jenny Rose Perez",
-    date: new Date().getDate(),
-    status: "Pending",
-    description: "Lorem ipsum dolor sit amet.",
-    agent: "James Doe",
-  };
-
+  const ticketData = location.state;
   if (!ticketData) {
     return (
       <div
@@ -126,4 +113,3 @@ const TicketDetails = () => {
     </div>
   );
 };
-export default TicketDetails;
