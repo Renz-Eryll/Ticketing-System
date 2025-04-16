@@ -14,8 +14,10 @@ import { Dashboard } from "./pages/admin/Dashboard";
 import Agent from "./pages/admin/Agent";
 import Notification from "./Pages/admin/Notification";
 import NotificationDetails from "./Pages/admin/NotificationDetails";
-import TicketDetails from "./pages/admin/TicketDetails";
+import { TicketDetails } from "./pages/admin/TicketDetails";
+import { Tickets } from "./pages/admin/Tickets";
 import { Profile } from "./pages/admin/Profile";
+import { TicketCategories } from "./pages/admin/TicketCategories";
 
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
@@ -24,8 +26,6 @@ import Signup from "./pages/Signup";
 import AgentDashboard from "./Pages/agent/AgentdashDoard";
 import AgentNotification from "./pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
-import { Tickets } from "./pages/agent/Tickets";
-
 /*CUSTOMER */
 import CustomerDashboard from "./pages/customers/CustomerDasboard";
 import CustomerNotification from "./pages/customers/CustomerNotification";
@@ -85,6 +85,15 @@ function AppRoutes() {
         element={
           <Layout>
             <NotificationDetails />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/admin/ticketCategories"
+        element={
+          <Layout>
+            <TicketCategories />
           </Layout>
         }
       />
