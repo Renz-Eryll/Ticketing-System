@@ -34,7 +34,7 @@ const NotificationDetails = () => {
             onClick={() => navigate("/admin/notification")}
           />
         </div>
-        <div className="text-3xl font-bold text-[#1D4ED8]">Ticket Details</div>
+        <div className="text-3xl font-bold text-[#1D4ED8]">Notification Details</div>
       </div>
 
       {/* Aligned container */}

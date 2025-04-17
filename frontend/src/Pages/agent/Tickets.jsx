@@ -78,7 +78,7 @@ export const AgentTickets = () => {
                 <tr
                   key={item.id}
                   onClick={() =>
-                    navigate(`/agent/AgentTicketDetails/:id${item.id}`, {
+                    navigate(`/agent/AgentTicketdetails/${item.id}`, {
                       state: item,
                     })
                   }
