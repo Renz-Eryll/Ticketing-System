@@ -109,6 +109,15 @@ function AppRoutes() {
         }
       />
       <Route
+        path="admin/tickets/ticketDetails/:id"
+        element={
+          <Layout>
+            <TicketDetails />
+          </Layout>
+        }
+      />
+      
+      <Route
         path="/admin/TicketDetails"
         element={
           <Layout>

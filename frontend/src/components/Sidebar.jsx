@@ -47,6 +47,7 @@ export const Sidebar = () => {
 
       allLinks.forEach((link) => {
         if (splitCurrentPath.length == 4) {
+          console.log('hello')
           const get2ndAndMid = `/${splitCurrentPath[1]}/${splitCurrentPath[2]}`;
           if (get2ndAndMid.trim() === link.path) {
             setActive(link.name);
