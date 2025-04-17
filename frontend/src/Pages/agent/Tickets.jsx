@@ -1,9 +1,8 @@
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
-import { TbTicket } from "react-icons/tb"; 
 
-export const Tickets = () => {
+export const AgentTickets = () => {
   const { activeMenu } = useStateContext();
   const navigate = useNavigate();
 
@@ -79,7 +78,7 @@ export const Tickets = () => {
                 <tr
                   key={item.id}
                   onClick={() =>
-                    navigate(`/admin/tickets/ticketDetails/${item.id}`, {
+                    navigate(`/agent/AgentTicketDetails/:id${item.id}`, {
                       state: item,
                     })
                   }
@@ -116,6 +115,5 @@ export const Tickets = () => {
     </div>
   );
 };
-  
-  export default Tickets;
-  
+
+export default AgentTickets;

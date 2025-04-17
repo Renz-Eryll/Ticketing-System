@@ -26,13 +26,13 @@ import Signup from "./pages/Signup";
 import AgentDashboard from "./Pages/agent/AgentdashDoard";
 import AgentNotification from "./pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
+import { AgentTickets } from "./pages/agent/Tickets";
 /*CUSTOMER */
 import CustomerDashboard from "./pages/customers/CustomerDasboard";
 import CustomerNotification from "./pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
 import Createticket from "./pages/customers/Createticket";
 import AgentTicketdetails from "./Pages/agent/AgentTicketdetails";
-
 const Layout = ({ children }) => {
   return (
     <div className="flex">
@@ -143,15 +143,6 @@ function AppRoutes() {
       />
 
       <Route
-        path="/agent/Tickets"
-        element={
-          <Layout>
-            <Tickets />
-          </Layout>
-        }
-      />
-
-      <Route
         path="/agent/tickets/notificationDetails/:id"
         element={
           <Layout>
@@ -161,19 +152,19 @@ function AppRoutes() {
       />
 
       <Route
-        path="agent/AgentTicketdetails"
+        path="/agent/AgentTickets"
         element={
           <Layout>
-            <AgentTicketdetails />
+            <AgentTickets />
           </Layout>
         }
       />
 
       <Route
-        path="/agent/TicketDetails/:id"
+        path="/agent/AgentTicketDetails/:id"
         element={
           <Layout>
-            <TicketDetails />
+            <AgentTicketdetails />
           </Layout>
         }
       />
