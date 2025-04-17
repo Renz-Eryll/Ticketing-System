@@ -32,7 +32,7 @@ export const TicketCategories = () => {
         <div className="mt-5 px-30">
           <div className="flex flex-col md:flex-row gap-10 w-full justify-between">
             <div className="w-full md:w-1/2 max-w-sm flex flex-col gap-5">
-              <div className="bg-[#08032B] text-white p-6 shadow w-full hover:bg-[#08032B]/90 cursor-pointer transition-all duration-300 flex flex-col items-center gap-4">
+              <div className="bg-[#08032B] rounded-lg text-white p-6 shadow w-full hover:bg-[#08032B]/90 cursor-pointer transition-all duration-300 flex flex-col items-center gap-4">
                 <img
                   src={categoryImage}
                   alt="image"
@@ -53,7 +53,7 @@ export const TicketCategories = () => {
                   </p>
                 </div>
               </div>
-              <div className="bg-[#08032B] text-white p-6 shadow w-full hover:bg-[#08032B]/90 cursor-pointer transition-all duration-300 flex flex-col items-center gap-4">
+              <div className="bg-[#08032B] rounded-lg text-white p-6 shadow w-full hover:bg-[#08032B]/90 cursor-pointer transition-all duration-300 flex flex-col items-center gap-4">
                 <img
                   src={categoryImage}
                   alt="image"
@@ -74,7 +74,7 @@ export const TicketCategories = () => {
                   </p>
                 </div>
               </div>
-              <div className="bg-[#08032B] mb-5 text-white p-6 shadow w-full hover:bg-[#08032B]/90 cursor-pointer transition-all duration-300 flex flex-col items-center gap-4">
+              <div className="bg-[#08032B] rounded-lg mb-5 text-white p-6 shadow w-full hover:bg-[#08032B]/90 cursor-pointer transition-all duration-300 flex flex-col items-center gap-4">
                 <img
                   src={categoryImage}
                   alt="image"
@@ -99,7 +99,7 @@ export const TicketCategories = () => {
 
             <div className="-full md:w-1/2 max-w-sm flex flex-col gap-5">
               <div
-                className="bg-[#08032B] text-white p-6 shadow w-full hover:bg-[#08032B]/90 cursor-pointer 
+                className="bg-[#08032B] rounded-lg text-white p-6 shadow w-full hover:bg-[#08032B]/90 cursor-pointer 
             transition-all duration-300 flex flex-col items-center gap-4"
                 onClick={() => navigate("/admin/tickets")}
               >
@@ -123,7 +123,7 @@ export const TicketCategories = () => {
                   </p>
                 </div>
               </div>
-              <div className="bg-[#08032B] text-white p-6 shadow w-full hover:bg-[#08032B]/90 cursor-pointer transition-all duration-300 flex flex-col items-center gap-4">
+              <div className="bg-[#08032B] rounded-lg text-white p-6 shadow w-full hover:bg-[#08032B]/90 cursor-pointer transition-all duration-300 flex flex-col items-center gap-4">
                 <img
                   src={categoryImage}
                   alt="image"
