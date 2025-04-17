@@ -46,7 +46,7 @@ const AgentTicketdetails = () => {
         <div>
           <IoMdArrowBack
             className="text-4xl cursor-pointer"
-            onClick={() => navigate("/agent/AgentTickets")}
+            onClick={() => navigate("/agent/Tickets")}
           />
         </div>
         <div className="text-3xl font-bold text-[#1D4ED8]">Tickets Details</div>

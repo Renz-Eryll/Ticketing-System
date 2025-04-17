@@ -34,7 +34,7 @@ const TicketDetails = () => {
         <div>
           <IoMdArrowBack
             className="text-4xl cursor-pointer"
-            onClick={() => navigate("/agent/tickets")}
+            onClick={() => navigate("/admin/tickets")}
           />
         </div>
         <div className="text-3xl font-bold text-[#1D4ED8]">Tickets Details</div>
@@ -113,7 +113,5 @@ const TicketDetails = () => {
     </div>
   );
 };
-
-
 
 export default TicketDetails;

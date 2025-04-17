@@ -123,7 +123,7 @@ const Sidebar = () => {
               !activeMenu ? "scale-0" : ""
             }`}
           >
-            <img src={qtechLogo} alt="Qtech Logo" className="w-36 h-auto" />
+            <img src={qtechLogo} alt="Qtech Logo" className="h-8" />
           </h1>
           <div className="mt-6 border-t border-gray-500" />
         </div>
