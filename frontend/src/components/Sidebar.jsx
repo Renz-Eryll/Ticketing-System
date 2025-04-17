@@ -10,7 +10,7 @@ import qtechLogo from "../assets/qtechlogo.png";
 // get current user
 import useUser from "../hooks/use-user";
 
-export const Sidebar = () => {
+const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize, setScreenSize } =
     useStateContext();
   const location = useLocation();
@@ -47,7 +47,6 @@ export const Sidebar = () => {
 
       allLinks.forEach((link) => {
         if (splitCurrentPath.length == 4) {
-          console.log('hello')
           const get2ndAndMid = `/${splitCurrentPath[1]}/${splitCurrentPath[2]}`;
           if (get2ndAndMid.trim() === link.path) {
             setActive(link.name);
@@ -214,3 +213,5 @@ export const Sidebar = () => {
     </>
   );
 };
+
+export default Sidebar;
