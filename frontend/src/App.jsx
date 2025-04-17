@@ -26,11 +26,14 @@ import Signup from "./pages/Signup";
 import AgentDashboard from "./Pages/agent/AgentdashDoard";
 import AgentNotification from "./pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
+import AgentTicket from "./Pages/agent/Tickets";
 /*CUSTOMER */
 import CustomerDashboard from "./pages/customers/CustomerDasboard";
 import CustomerNotification from "./pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
 import Createticket from "./pages/customers/Createticket";
+import GuetsLayout from "./layout/GuetsLayout";
+import DefaultLayout from "./layout/DefaultLayout";
 
 const Layout = ({ children }) => {
   return (
@@ -50,158 +53,44 @@ function AppRoutes() {
   const isNoLayout = noLayoutRoutes.includes(location.pathname);
 
   return (
+
+    
     <Routes>
-      {/* Auth Routes */}
-      <Route path="/" element={<Signin />} />
-      <Route path="/signup" element={<Signup />} />
 
-      {/* Admin Routes */}
-      <Route
-        path="/admin/dashboard"
-        element={
-          <Layout>
-            <Dashboard />
-          </Layout>
-        }
-      />
-      <Route
-        path="/agent"
-        element={
-          <Layout>
-            <Agent />
-          </Layout>
-        }
-      />
-      <Route
-        path="/admin/notification"
-        element={
-          <Layout>
-            <Notification />
-          </Layout>
-        }
-      />
-      <Route
-        path="/admin/NotificationDetails/:id"
-        element={
-          <Layout>
-            <NotificationDetails />
-          </Layout>
-        }
-      />
+      <Route path='/' element ={<GuetsLayout/>}>
 
-      <Route
-        path="/admin/ticketCategories"
-        element={
-          <Layout>
-            <TicketCategories />
-          </Layout>
-        }
-      />
+            <Route path="/" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
 
-      <Route
-        path="/admin/tickets"
-        element={
-          <Layout>
-            <Tickets />
-          </Layout>
-        }
-      />
-      <Route
-        path="/admin/tickets/ticketDetails/:id"
-        element={
-          <Layout>
-            <TicketDetails />
-          </Layout>
-        }
-      />
-      <Route
-        path="/admin/profile"
-        element={
-          <Layout>
-            <Profile />
-          </Layout>
-        }
-      />
+      </Route>
+
+
+      <Route path='/' element = {<DefaultLayout/>}>
+
+      <Route path="/admin"element={<Layout><Dashboard /></Layout>}/>
+      <Route path="/admin/agent" element={<Layout><Agent /></Layout>}/>
+      <Route path="/admin/notification"element={<Layout><Notification /></Layout>}/>
+      <Route path="/admin/NotificationDetails" element={<Layout><NotificationDetails /></Layout>}/>
+      <Route path="/admin/ticketCategories" element={ <Layout> <TicketCategories /> </Layout> } />
+      <Route path="/admin/tickets" element={ <Layout> <Tickets /> </Layout>}/>
+      <Route path="/admin/tickets/ticketDetails" element={ <Layout> <TicketDetails /> </Layout> } />
+      <Route path="/admin/profile" element={ <Layout> <Profile /> </Layout>  }/>
 
       {/* Agent Routes */}
-      <Route
-        path="/agent/dashboard"
-        element={
-          <Layout>
-            <AgentDashboard />
-          </Layout>
-        }
-      />
-      <Route
-        path="/agent/notification"
-        element={
-          <Layout>
-            <AgentNotification />
-          </Layout>
-        }
-      />
-
-      <Route
-        path="/agent/tickets/notificationDetails/:id"
-        element={
-          <Layout>
-            <AgentNotifTicketDetails />
-          </Layout>
-        }
-      />
-
-      {/* <Route
-    path="/agent/create-ticket"
-    element={
-      <Layout>
-        <Createticket /> 
-      </Layout>
-        }
-        />
-        
-        <Route
-    path="/agent/TicketDetails/:id"
-  element={
-    <Layout>
-      <TicketDetails/>
-    </Layout>
-  }
-/> */}
-
+      <Route path="/agent" element={ <Layout> <AgentDashboard /> </Layout>}/>
+      <Route path="/agent/notification" element={ <Layout>  <AgentNotification /> </Layout> }/>
+      <Route path="/agent/tickets/notificationDetails" element={ <Layout><AgentNotifTicketDetails /> </Layout>} />
+      <Route path="/agent/tikets" element={ <Layout> <AgentTicket /></Layout> } />
+      <Route path="/agent/TicketDetails"element={<Layout><TicketDetails/> </Layout>}/> 
+      
       {/* Customer Routes */}
-      <Route
-        path="/customer/dashboard"
-        element={
-          <Layout>
-            <CustomerDashboard />
-          </Layout>
-        }
-      />
-      <Route
-        path="/customer/notification"
-        element={
-          <Layout>
-            <CustomerNotification />
-          </Layout>
-        }
-      />
-      <Route
-        path="/customer/tickets/notificationDetails/:id"
-        element={
-          <Layout>
-            <CustomerNotifTicketDetails />
-          </Layout>
-        }
-      />
-      <Route
-        path="/customer/create-ticket"
-        element={
-          <Layout>
-            <Createticket />
-          </Layout>
-        }
-      />
-    </Routes>
+      <Route path="/customer" element={<Layout> <CustomerDashboard /></Layout> } />
+      <Route path="/customer/notification" element={ <Layout><CustomerNotification /> </Layout> }/>
+      <Route path="/customer/tickets/notificationDetails"element={<Layout> <CustomerNotifTicketDetails /> </Layout> }/>
+      <Route path="/customer/create-ticket" element={ <Layout><Createticket /> </Layout> } /> 
+      </Route>
+     </Routes>
+      
   );
 }
 

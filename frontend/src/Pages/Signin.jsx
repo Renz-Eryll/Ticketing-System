@@ -19,13 +19,13 @@ export const Signin = () => {
       const { role } = JSON.parse(storedUser);
       switch (role) {
         case "customer":
-          navigate("/customer/dashboard");
+          navigate("/customer");
           break;
         case "admin":
-          navigate("/admin/dashboard");
+          navigate("/admin");
           break;
         case "agent":
-          navigate("/agent/dashboard");
+          navigate("/agent");
           break;
         default:
           navigate("/");
@@ -66,13 +66,13 @@ export const Signin = () => {
       const { role } = user;
       switch (role) {
         case "customer":
-          navigate("/customer/dashboard");
+          navigate("/customer");
           break;
         case "admin":
-          navigate("/admin/dashboard");
+          navigate("/admin");
           break;
         case "agent":
-          navigate("/agent/dashboard");
+          navigate("/agent");
           break;
       }
     
