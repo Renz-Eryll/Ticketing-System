@@ -16,6 +16,7 @@ import Notification from "./Pages/admin/Notification";
 import NotificationDetails from "./Pages/admin/NotificationDetails";
 import TicketDetails from "./pages/admin/TicketDetails";
 import { Tickets } from "./pages/admin/Tickets";
+import { Tickets as AgentTickets } from "./pages/agent/Tickets";
 import { Profile } from "./pages/admin/Profile";
 import { TicketCategories } from "./pages/admin/TicketCategories";
 
@@ -146,7 +147,7 @@ function AppRoutes() {
         path="/agent/Tickets"
         element={
           <Layout>
-            <Tickets />
+            <AgentTickets />
           </Layout>
         }
       />
@@ -170,7 +171,7 @@ function AppRoutes() {
       />
 
       <Route
-        path="/agent/TicketDetails/:id"
+        path="agent/AgentTicketdetails/:id"
         element={
           <Layout>
             <TicketDetails />

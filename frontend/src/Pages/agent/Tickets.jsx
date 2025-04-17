@@ -79,7 +79,7 @@ export const Tickets = () => {
                 <tr
                   key={item.id}
                   onClick={() =>
-                    navigate(`/admin/tickets/ticketDetails/${item.id}`, {
+                    navigate(`/agent/AgentTicketdetails/${item.id}`, {
                       state: item,
                     })
                   }
