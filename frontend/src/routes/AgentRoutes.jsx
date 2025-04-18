@@ -1,10 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import TicketDetails from "../pages/admin/TicketDetails";
 import { Tickets as AgentTickets } from "../pages/agent/Tickets";
-import AgentDashboard from "../Pages/agent/AgentdashDoard";
+import AgentDashboard from "../Pages/agent/AgentDashboard";
 import AgentNotification from "../pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "../Pages/agent/AgentNotifTicketDetails";
-import AgentTicketdetails from "../Pages/agent/AgentTicketdetails";
+import AgentTicketdetails from "../pages/agent/AgentTicketdetails";
 import Layout from "../components/Layout";
 const AgentRoutes = () => {
   return (
@@ -45,7 +44,7 @@ const AgentRoutes = () => {
       />
 
       <Route
-        path="agent/AgentTicketdetails"
+        path="/agent/AgentTicketdetails"
         element={
           <Layout>
             <AgentTicketdetails />
@@ -57,7 +56,7 @@ const AgentRoutes = () => {
         path="agent/AgentTicketdetails/:id"
         element={
           <Layout>
-            <TicketDetails />
+            <AgentTicketdetails />
           </Layout>
         }
       />
