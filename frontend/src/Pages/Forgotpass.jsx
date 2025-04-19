@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom'; // make sure useNavigate is imported here
 
 const ForgotPassword = () => {
+  const navigate = useNavigate(); // ✅ must be inside the component function
+
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would usually send a request to your backend
     console.log('Password reset link sent to:', email);
     setSubmitted(true);
+    navigate("/otp"); // ✅ programmatic navigation after submit
   };
 
   return (
@@ -19,6 +20,7 @@ const ForgotPassword = () => {
         <h2 className="text-2xl font-semibold text-[#1A56DB] text-center mb-4">
           Forgot Password
         </h2>
+
         {!submitted ? (
           <>
             <p className="text-sm text-gray-600 text-center mb-6">
@@ -47,10 +49,11 @@ const ForgotPassword = () => {
             </form>
           </>
         ) : (
-          <p className="text-green-600 text-center">
-            An OTP has been sent to your email.
-          </p>
+          <Link to="/otp" className="text-green-600 text-center block hover:underline">
+            An OTP has been sent to your email. Click here to enter it.
+          </Link>
         )}
+
         <div className="mt-6 text-center">
           <Link to="/" className="text-sm text-[#1A56DB] hover:underline">
             Back to Sign In
@@ -62,4 +65,3 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
-
