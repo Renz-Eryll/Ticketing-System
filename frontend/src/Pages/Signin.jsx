@@ -26,11 +26,11 @@ export const Signin = () => {
           password,
         }),
       });
+
       if (!response.ok) {
         throw new Error("Login failed");
       }
 
-      // Optional: extract data if needed
       const data = await response.json();
       console.log("Login successful:", data);
 
@@ -48,10 +48,9 @@ export const Signin = () => {
         case "agent":
           navigate("/agent/dashboard");
           break;
+        default:
+          navigate("/dashboard");
       }
-
-      // Navigate to the dashboard after successful login
-      // navigate("/dashboard");
     } catch (err) {
       console.error("Login failed:", err);
       setError("Invalid email or password.");
@@ -77,7 +76,6 @@ export const Signin = () => {
       {/* Right Section */}
       <div className="w-1/2 bg-white p-12 rounded-r-xl flex flex-col justify-center">
         <div className="flex justify-end mb-4">
-          {/* Change the About Us link to redirect to Dashboard */}
           <Link
             to="/admin/dashboard"
             className="text-sm font-medium text-black"
@@ -98,6 +96,7 @@ export const Signin = () => {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Email */}
           <input
             type="email"
             placeholder="Email"
@@ -105,6 +104,7 @@ export const Signin = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             autoFocus={true}
+            required
           />
 
           {/* Password */}
@@ -115,6 +115,7 @@ export const Signin = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border rounded-md px-4 py-2 pr-16 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
             />
             <button
               type="button"
@@ -125,8 +126,20 @@ export const Signin = () => {
             </button>
           </div>
 
-          {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
+          {/* Forgot Password on the Left Side */}
+          <div className="flex justify-start">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
 
+          {/* Error Message */}
+          {error && <div className="text-red-500 text-sm">{error}</div>}
+
+          {/* Sign In Button */}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white rounded-md py-2 font-semibold hover:bg-blue-700 transition"
