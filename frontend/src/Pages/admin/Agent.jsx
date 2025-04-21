@@ -128,41 +128,26 @@ export const Agent = () => {
       </div>
 
       {/*Table */}
-      <div className="max-w mt-6 p-6 py-10 border border-gray-100 shadow-sm rounded-xl bg-white ">
-        <table className="min-w-full border shadow-sm rounded-lg overflow-hidden text-xs sm:text-xs md:text-sm">
-          <thead className="bg-gray-50 text-gray-800">
-            <tr>
-              <th className="px-4 py-3.5 border border-gray-300">Full Name</th>
-              <th className="px-4 py-2 border border-gray-300">Email</th>
-              <th className="px-4 py-2 border border-gray-300">
-                Contact Number
-              </th>
-              <th className="px-4 py-2 border border-gray-300">Password</th>
-            </tr>
-          </thead>
-          <tbody className="text-center">
-            {data.map((item, index) => (
-              <tr
-                key={index}
-                onClick={() => handleRowClick(item)}
-                className="cursor-pointer hover:bg-gray-100 transition"
-              >
-                <td className="px-4 py-2 border border-gray-300">
-                  {item.fullName}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {item.email}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {item.contactNumber}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {item.password}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="max-w mt-6 p-6 py-10 border border-gray-100 shadow-sm rounded-xl bg-white space-y-2">
+        <div className="grid grid-cols-[repeat(4,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
+          <div>Full Name</div>
+          <div>Email</div>
+          <div>Contact Number</div>
+          <div>Password</div>
+        </div>
+
+        {data.map((item, index) => (
+          <div
+            key={index}
+            onClick={() => handleRowClick(item)}
+            className="grid grid-cols-[repeat(4,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
+          >
+            <div className="truncate">{item.fullName}</div>
+            <div className="truncate">{item.email}</div>
+            <div className="truncate">{item.contactNumber}</div>
+            <div className="truncate">{item.password}</div>
+          </div>
+        ))}
       </div>
 
       {/* Add Agent Modal */}

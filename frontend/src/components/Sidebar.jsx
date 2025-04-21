@@ -5,12 +5,18 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getLinks } from "../data/links";
+import qtechLogo from "../assets/qtechlogo.png";
 
 // get current user
 import useUser from "../hooks/use-user";
 
+<<<<<<< HEAD
 export const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize, setScreenSize,logout,login } =
+=======
+const Sidebar = () => {
+  const { activeMenu, setActiveMenu, screenSize, setScreenSize } =
+>>>>>>> 4c0865c15cba33fb82bbfdcbab6fda6270e9cc31
     useStateContext();
   const location = useLocation();
   const [active, setActive] = useState("");
@@ -42,12 +48,20 @@ export const Sidebar = () => {
   }, [setActiveMenu, setScreenSize]);
 
   useEffect(() => {
-    const currentPath = location.pathname;
+    const currentPath = location.pathname.trim();
+    const splitCurrentPath = currentPath.split("/");
 
     if (links) {
       const allLinks = [...(links.links || []), ...(links.subLinks || [])];
 
       allLinks.forEach((link) => {
+        if (splitCurrentPath.length == 4) {
+          const get2ndAndMid = `/${splitCurrentPath[1]}/${splitCurrentPath[2]}`;
+          if (get2ndAndMid.trim() === link.path) {
+            setActive(link.name);
+          }
+        }
+
         if (link.path === currentPath) {
           setActive(link.name);
         }
@@ -116,7 +130,7 @@ export const Sidebar = () => {
               !activeMenu ? "scale-0" : ""
             }`}
           >
-            Logo
+            <img src={qtechLogo} alt="Qtech Logo" className="h-8" />
           </h1>
           <div className="mt-6 border-t border-gray-500" />
         </div>
@@ -206,3 +220,5 @@ export const Sidebar = () => {
     </>
   );
 };
+
+export default Sidebar;

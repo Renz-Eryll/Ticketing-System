@@ -3,6 +3,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
+<<<<<<< HEAD:frontend/src/Pages/agent/TicketDetails.jsx
 const TicketDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -13,6 +14,25 @@ const TicketDetails = () => {
     if(!login && !user){
       return <Navigate to ='/'/>
     }
+=======
+const AgentTicketdetails = () => {
+  const { activeMenu } = useStateContext();
+  const navigate = useNavigate();
+  const location = useLocation();
+  //   location.state? explain it
+  //   const ticketData = location.state;
+
+  // raw data example
+  const ticketData = {
+    id: 123,
+    customer: "Jenny Rose Perez",
+    date: new Date().getDate(),
+    status: "Pending",
+    description: "Lorem ipsum dolor sit amet.",
+    agent: "James Doe",
+  };
+
+>>>>>>> 4c0865c15cba33fb82bbfdcbab6fda6270e9cc31:frontend/src/Pages/agent/AgentTicketdetails.jsx
   if (!ticketData) {
     return (
       <div
@@ -39,7 +59,7 @@ const TicketDetails = () => {
         <div>
           <IoMdArrowBack
             className="text-4xl cursor-pointer"
-            onClick={() => navigate("/agent/tickets")}
+            onClick={() => navigate("/agent/Tickets")}
           />
         </div>
         <div className="text-3xl font-bold text-[#1D4ED8]">Tickets Details</div>
@@ -119,4 +139,4 @@ const TicketDetails = () => {
   );
 };
 
-export default TicketDetails;
+export default AgentTicketdetails;

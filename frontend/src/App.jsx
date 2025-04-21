@@ -1,14 +1,7 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
-import "./App.css";
-import { Sidebar } from "./components/Sidebar";
-import { Navbar } from "./components/Navbar";
+import AppRoutes from "./routes/AppRoutes";
 
+<<<<<<< HEAD
 /*ADMIN */
 import { Dashboard } from "./pages/admin/Dashboard";
 import Agent from "./pages/admin/Agent";
@@ -101,5 +94,8 @@ function App() {
     </Router>
   );
 }
+=======
+const App = () => <AppRoutes />;
+>>>>>>> 4c0865c15cba33fb82bbfdcbab6fda6270e9cc31
 
 export default App;
