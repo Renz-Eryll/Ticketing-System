@@ -10,13 +10,9 @@ import qtechLogo from "../assets/qtechlogo.png";
 // get current user
 import useUser from "../hooks/use-user";
 
-<<<<<<< HEAD
 export const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize, setScreenSize,logout,login } =
-=======
-const Sidebar = () => {
-  const { activeMenu, setActiveMenu, screenSize, setScreenSize } =
->>>>>>> 4c0865c15cba33fb82bbfdcbab6fda6270e9cc31
+
     useStateContext();
   const location = useLocation();
   const [active, setActive] = useState("");

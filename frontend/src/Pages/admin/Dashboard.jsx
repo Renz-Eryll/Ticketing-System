@@ -3,7 +3,6 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { Navigate } from "react-router-dom";
 
 export const Dashboard = () => {
-<<<<<<< HEAD
   const { activeMenu,user,login } = useStateContext();
 
   
@@ -12,8 +11,7 @@ export const Dashboard = () => {
     return <Navigate to ='/'/>
   }
 
-=======
-  const { activeMenu } = useStateContext();
+
   const data = [
     {
       id: 112381389173,
@@ -62,7 +60,6 @@ export const Dashboard = () => {
         return "text-black";
     }
   };
->>>>>>> 4c0865c15cba33fb82bbfdcbab6fda6270e9cc31
   return (
     
     <div

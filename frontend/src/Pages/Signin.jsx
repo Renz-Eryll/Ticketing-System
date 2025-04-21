@@ -35,7 +35,6 @@ export const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD
 
     if (!email || !password) {
       setError("Please fill in all fields.");
@@ -57,25 +56,6 @@ export const Signin = () => {
           throw new Error("Login failed");
         }
       // Optional: extract data if needed
-=======
-    try {
-      const response = await fetch("http://localhost:8000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
->>>>>>> 4c0865c15cba33fb82bbfdcbab6fda6270e9cc31
       const data = await response.json();
       console.log("Login successful:", data);
 
@@ -97,10 +77,6 @@ export const Signin = () => {
         default:
           navigate("/dashboard");
       }
-<<<<<<< HEAD
-    
-=======
->>>>>>> 4c0865c15cba33fb82bbfdcbab6fda6270e9cc31
     } catch (err) {
       console.error("Login failed:", err);
       setError("Invalid email or password.");

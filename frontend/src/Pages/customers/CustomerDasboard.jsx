@@ -4,15 +4,11 @@ import { FaEnvelope, FaCreditCard, FaUndo, FaSearch, FaTruck, FaDollarSign, FaEd
 import image from '../../assets/hero-3.png'
 
 const CustomerDashboard = () => {
-<<<<<<< HEAD
   const { activeMenu,user,login,logout } = useStateContext();
   if(!login && !user){
     return <Navigate to ='/'/>
   }
-=======
-  const { activeMenu } = useStateContext();
 
->>>>>>> 4c0865c15cba33fb82bbfdcbab6fda6270e9cc31
   return (
     <div
       className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${

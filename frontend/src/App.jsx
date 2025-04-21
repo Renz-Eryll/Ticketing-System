@@ -1,8 +1,8 @@
 import React from "react";
 import AppRoutes from "./routes/AppRoutes";
 
-<<<<<<< HEAD
-/*ADMIN */
+/*
+
 import { Dashboard } from "./pages/admin/Dashboard";
 import Agent from "./pages/admin/Agent";
 import Notification from "./Pages/admin/Notification";
@@ -15,12 +15,12 @@ import { TicketCategories } from "./pages/admin/TicketCategories";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 
-/*AGENT */
+
 import AgentDashboard from "./Pages/agent/AgentdashDoard";
 import AgentNotification from "./pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
 import AgentTicket from "./Pages/agent/Tickets";
-/*CUSTOMER */
+
 import CustomerDashboard from "./pages/customers/CustomerDasboard";
 import CustomerNotification from "./pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
@@ -69,14 +69,14 @@ function AppRoutes() {
       <Route path="/admin/tickets/ticketDetails" element={ <Layout> <TicketDetails /> </Layout> } />
       <Route path="/admin/profile" element={ <Layout> <Profile /> </Layout>  }/>
 
-      {/* Agent Routes */}
+    
       <Route path="/agent" element={ <Layout> <AgentDashboard /> </Layout>}/>
       <Route path="/agent/notification" element={ <Layout>  <AgentNotification /> </Layout> }/>
       <Route path="/agent/tickets/notificationDetails" element={ <Layout><AgentNotifTicketDetails /> </Layout>} />
       <Route path="/agent/tikets" element={ <Layout> <AgentTicket /></Layout> } />
       <Route path="/agent/TicketDetails"element={<Layout><TicketDetails/> </Layout>}/> 
       
-      {/* Customer Routes */}
+   
       <Route path="/customer" element={<Layout> <CustomerDashboard /></Layout> } />
       <Route path="/customer/notification" element={ <Layout><CustomerNotification /> </Layout> }/>
       <Route path="/customer/tickets/notificationDetails"element={<Layout> <CustomerNotifTicketDetails /> </Layout> }/>
@@ -94,8 +94,6 @@ function App() {
     </Router>
   );
 }
-=======
+*/
 const App = () => <AppRoutes />;
->>>>>>> 4c0865c15cba33fb82bbfdcbab6fda6270e9cc31
-
 export default App;

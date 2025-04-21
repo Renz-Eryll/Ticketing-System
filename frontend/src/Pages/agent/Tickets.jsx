@@ -1,27 +1,18 @@
-<<<<<<< HEAD
-import React from 'react'
 
-export default function Tickets() {
-    const { activeMenu,user,login } = useStateContext();
-      
-      // Redirect if not logged in
-      if(!login && !user){
-        return <Navigate to ='/'/>
-      }
-  return (
-    <div>Tickets</div>
-  )
-}
-
-=======
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
 export const Tickets = () => {
-  const { activeMenu } = useStateContext();
+  const { activeMenu,user,login } = useStateContext();
   const navigate = useNavigate();
+
+
+   // Redirect if not logged in
+   if(!login && !user){
+    return <Navigate to ='/'/>
+  }
 
   // kunyareng data
   const data = [
@@ -134,4 +125,3 @@ export const Tickets = () => {
 };
 
 export default Tickets;
->>>>>>> 4c0865c15cba33fb82bbfdcbab6fda6270e9cc31
