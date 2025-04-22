@@ -10,28 +10,35 @@ export const Signin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { user,login} = useStateContext();
+  const { user,login,token} = useStateContext();
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const { role } = JSON.parse(storedUser);
-      switch (role) {
-        case "customer":
-          navigate("/customer");
-          break;
-        case "admin":
-          navigate("/admin");
-          break;
-        case "agent":
-          navigate("/agent");
-          break;
-        default:
-          navigate("/");
+    if (storedUser && storedUser !== "undefined") {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        const { role } = parsedUser;
+        switch (role) {
+          case "customer":
+            navigate("/customer");
+            break;
+          case "admin":
+            navigate("/admin");
+            break;
+          case "agent":
+            navigate("/agent");
+            break;
+          default:
+            navigate("/");
+        }
+      } catch (error) {
+        console.error("Failed to parse user data:", error);
+        localStorage.removeItem("user"); // Clean up if parsing fails
       }
     }
-  }, []);
+  }, [navigate]);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,9 +66,9 @@ export const Signin = () => {
       const data = await response.json();
       console.log("Login successful:", data);
 
-      const {  user } = data;
+      const {  user,token } = data;
 
-      login(user);
+      login(user,token);
       
       const { role } = user;
       switch (role) {

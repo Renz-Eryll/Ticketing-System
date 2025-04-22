@@ -1,7 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react"; // 🔧 Added useEffect
-// import useUser from "../hooks/use-user"; // 🧹 Optional: not used here, you can remove
+import React, { createContext, useContext, useState } from "react";
 
-// 1. Context default value
 const StateContext = createContext({
   user: null,
   token: null,
@@ -14,21 +12,48 @@ const StateContext = createContext({
 export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [screenSize, setScreenSize] = useState(undefined);
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : null;
 
+  const [user, setUser] = useState(() => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (!storedUser || storedUser === "undefined" || storedUser === "null") {
+        return null;
+      }
+      return JSON.parse(storedUser);
+    } catch (error) {
+      console.error("Failed to parse stored user:", error);
+      localStorage.removeItem("user"); // Clean up bad data
+      return null;
+    }
   });
-  
-  const login = (userData) => {
+
+  const [token, setToken] = useState(() => {
+    try {
+      const storedToken = localStorage.getItem("token");
+      if (storedToken === "undefined" || storedToken === "null" || !storedToken) {
+        return null;
+      }
+      return storedToken;
+    } catch (error) {
+      console.error("Failed to parse stored token:", error);
+      return null;
+    }
+  });
+
+  const login = (userData, userToken) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    setToken(userToken);
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", userToken);
   };
+
   const logout = () => {
     setUser(null);
+    setToken(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
-  
+
   return (
     <StateContext.Provider
       value={{
@@ -37,8 +62,9 @@ export const ContextProvider = ({ children }) => {
         screenSize,
         setScreenSize,
         user,
+        token,
         login,
-        logout
+        logout,
       }}
     >
       {children}

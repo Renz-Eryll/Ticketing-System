@@ -1,8 +1,5 @@
 import React from "react";
-import AppRoutes from "./routes/AppRoutes";
-
-/*
-
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { Dashboard } from "./pages/admin/Dashboard";
 import Agent from "./pages/admin/Agent";
 import Notification from "./Pages/admin/Notification";
@@ -12,8 +9,8 @@ import { Tickets } from "./pages/admin/Tickets";
 import { Profile } from "./pages/admin/Profile";
 import { TicketCategories } from "./pages/admin/TicketCategories";
 
-import Signin from "./pages/Signin";
-import Signup from "./pages/Signup";
+import Signin from "./Pages/Signin";
+import Signup from "./Pages/Signup";
 
 
 import AgentDashboard from "./Pages/agent/AgentdashDoard";
@@ -21,12 +18,14 @@ import AgentNotification from "./pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
 import AgentTicket from "./Pages/agent/Tickets";
 
-import CustomerDashboard from "./pages/customers/CustomerDasboard";
-import CustomerNotification from "./pages/customers/CustomerNotification";
+import CustomerDashboard from "./Pages/customers/CustomerDasboard";
+import CustomerNotification from "./Pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
-import Createticket from "./pages/customers/Createticket";
+import Createticket from "./Pages/customers/Createticket";
 import GuetsLayout from "./layout/GuetsLayout";
-import DefaultLayout from "./layout/DefaultLayout";
+import DefaultLayout from "./layout/DefaultLayou";
+import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar";
 
 const Layout = ({ children }) => {
   return (
@@ -78,8 +77,9 @@ function AppRoutes() {
       
    
       <Route path="/customer" element={<Layout> <CustomerDashboard /></Layout> } />
+      <Route path="/customer/dashboard" element={<Layout> <CustomerDashboard /></Layout> } />
       <Route path="/customer/notification" element={ <Layout><CustomerNotification /> </Layout> }/>
-      <Route path="/customer/tickets/notificationDetails"element={<Layout> <CustomerNotifTicketDetails /> </Layout> }/>
+      <Route path="/customer/tickets/notificationDetails/:id"element={<Layout> <CustomerNotifTicketDetails /> </Layout> }/>
       <Route path="/customer/create-ticket" element={ <Layout><Createticket /> </Layout> } /> 
       </Route>
      </Routes>
@@ -90,10 +90,9 @@ function AppRoutes() {
 function App() {
   return (
     <Router>
-      <AppRoutes />
+      <AppRoutes/>
     </Router>
   );
 }
-*/
-const App = () => <AppRoutes />;
+
 export default App;

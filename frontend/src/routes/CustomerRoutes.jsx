@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import CustomerDashboard from "../Pages/customers/CustomerDasboard";
 import CustomerNotification from "../pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "../Pages/customers/CustomerNotifTicketDetails";
-import Createticket from "../pages/customers/Createticket";
+import Createticket from "../Pages/customers/Createticket";
 import Layout from "../components/Layout";
 const CustomerRoutes = () => {
   return (
