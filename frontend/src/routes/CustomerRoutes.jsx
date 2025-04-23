@@ -4,6 +4,7 @@ import CustomerDashboard from "../pages/customers/CustomerDasboard";
 import CustomerNotification from "../pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "../Pages/customers/CustomerNotifTicketDetails";
 import Createticket from "../pages/customers/Createticket";
+import { TermsAndConditions } from "../pages/TermsAndConditions";
 import Layout from "../components/Layout";
 const CustomerRoutes = () => {
   return (
@@ -40,6 +41,8 @@ const CustomerRoutes = () => {
           </Layout>
         }
       />
+
+      <Route path="/termsAndConditions" element={<TermsAndConditions />} />
     </Routes>
   );
 };

@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Tickets as AgentTickets } from "../pages/agent/Tickets";
-import AgentDashboard from "../Pages/agent/AgentDashboard";
+import AgentDashboard from "../pages/agent/AgentDashboard";
 import AgentNotification from "../pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "../Pages/agent/AgentNotifTicketDetails";
 import AgentTicketdetails from "../pages/agent/AgentTicketdetails";

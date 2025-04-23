@@ -4,7 +4,6 @@ import Forgotpass from "../Pages/Forgotpass";
 import Otp from "../Pages/Otp";
 import { Routes, Route } from "react-router-dom";
 
-
 const AuthRoutes = () => {
   return (
     <Routes>

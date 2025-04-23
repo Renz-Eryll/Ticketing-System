@@ -14,6 +14,16 @@ export const Signup = () => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [TermsOpenModal, setTermsOpenModal] = useState(false);
+
+  const openModal = (e) => {
+    e.preventDefault();
+    setTermsOpenModal(true);
+  };
+
+  const closeModal = () => {
+    setTermsOpenModal(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,13 +60,12 @@ export const Signup = () => {
       }
 
       setSuccess("Signup successful! Redirecting...");
-      navigate('/');
-
+      navigate("/");
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");
-    }finally {
-      setLoading(true); 
+    } finally {
+      setLoading(true);
     }
   };
 
@@ -150,7 +159,11 @@ export const Signup = () => {
             <input type="checkbox" className="mr-2" />
             <label>
               I have read & accept the{" "}
-              <a href="#" className="text-blue-600 font-medium hover:underline">
+              <a
+                href="#"
+                onClick={openModal}
+                className="text-blue-600 font-medium hover:underline"
+              >
                 Terms and Conditions
               </a>
             </label>
@@ -158,12 +171,133 @@ export const Signup = () => {
           {error && <div className="text-red-500 text-sm">{error}</div>}
           {success && <div className="text-green-500 text-sm">{success}</div>}
 
+          {TermsOpenModal && (
+            <div className="fixed inset-0 flex justify-center items-center z-50">
+              <div className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"></div>
+              <div className="relative bg-white rounded-lg shadow-lg w-full max-w-3xl p-10">
+                <h2 className="text-2xl font-bold mb-4 text-[#1D4ED8]">
+                  Terms and Conditions
+                </h2>
+                <h2 className="text-lg font-bold mb-3 text-black">
+                  Your Agreement
+                </h2>
+                <h2 className="text-sm text-gray-800 mb-3">
+                  Welcome to the Qtech Business Solution, Inc. Ticketing System.
+                  By accessing or using our platform, you agree to comply with
+                  and be bound by the following Terms and Conditions. Please
+                  read them carefully.
+                </h2>
+                <div className="text-gray-600 text-sm space-y-3 overflow-y-auto max-h-70">
+                  <div>
+                    <h3 className="font-semibold">1. Use of Service</h3>
+                    <p>
+                      • This platform is intended for submitting inquiries,
+                      concerns, or support requests related to the services of
+                      Qtech Business Solution, Inc.
+                    </p>
+                    <p>
+                      • Any misuse of the system for spam, abusive language, or
+                      unrelated issues is strictly prohibited.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">2. Account Registration</h3>
+                    <p>
+                      • You must provide accurate and complete information when
+                      creating an account.
+                    </p>
+                    <p>
+                      • You are responsible for maintaining the confidentiality
+                      of your login credentials.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold"> 3. Data Collection</h3>
+                    <p>
+                      • We collect basic personal information such as your name
+                      and email address solely for the purpose of providing
+                      support.
+                    </p>
+                    <p>
+                      • You are responsible for maintaining the confidentiality
+                      of your login credentials.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className=" font-semibold ">4. Response Time</h3>
+                    <p>
+                      • We aim to respond to all submitted tickets within a
+                      reasonable timeframe, but response times may vary
+                      depending on volume and issue complexity.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className=" font-semibold "> 5. System Changes</h3>
+                    <p>
+                      • Qtech Business Solution, Inc. reserves the right to
+                      update, modify, or discontinue any part of the system at
+                      any time without prior notice.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className=" font-semibold ">
+                      6. Limitation of Liability
+                    </h3>
+                    <p>
+                      • Qtech Business Solution, Inc. is not liable for any loss
+                      or damage arising from the use or inability to use the
+                      support system, unless caused by gross negligence on our
+                      part.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className=" font-semibold ">
+                      7. Intellectual Property
+                    </h3>
+                    <p>
+                      • All content and materials within this platform,
+                      including system design and branding, are the intellectual
+                      property of Qtech Business Solution, Inc.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className=" font-semibold ">8. Confidentiality</h3>
+                    <p>
+                      • All information shared through the support ticketing
+                      system shall be treated as confidential. Both Qtech
+                      Business Solution, Inc. and the user are expected to
+                      handle sensitive information responsibly.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className=" font-semibold ">9. Third-Party Services</h3>
+                    <p>
+                      • The ticketing system may integrate with third-party
+                      tools or services. Qtech Business Solution, Inc. is not
+                      responsible for any data handled by these external
+                      platforms, and users are encouraged to review their
+                      respective privacy policies.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex justify-end mt-6">
+                  <button
+                    onClick={closeModal}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           <button
             type="submit"
             className="w-full bg-blue-600 text-white rounded-md py-2 font-semibold hover:bg-blue-700 transition"
             disabled={loading}
           >
-            
             {loading ? "SignUp ..." : "Sign Up"}
           </button>
         </form>

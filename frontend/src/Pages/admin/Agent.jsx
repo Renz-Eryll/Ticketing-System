@@ -281,6 +281,7 @@ export const Agent = () => {
               <div>
                 <input
                   type="text"
+                  placeholder="Full Name"
                   defaultValue={selectedUser.fullName}
                   {...register("fullName")}
                   className="w-full border p-2 rounded-md px-4 text-sm"
@@ -295,6 +296,7 @@ export const Agent = () => {
               <div>
                 <input
                   type="email"
+                  placeholder="Email"
                   defaultValue={selectedUser.email}
                   {...register("email")}
                   className="w-full border p-2 rounded-md px-4 text-sm"
@@ -309,6 +311,7 @@ export const Agent = () => {
               <div>
                 <input
                   type="text"
+                  placeholder="Contact Number"
                   defaultValue={selectedUser.contactNumber}
                   {...register("contactNumber")}
                   className="w-full border p-2 rounded-md px-4 text-sm"
@@ -323,6 +326,7 @@ export const Agent = () => {
               <div>
                 <input
                   type="password"
+                  placeholder="Password"
                   defaultValue={selectedUser.password}
                   {...register("password")}
                   className="w-full border p-2 rounded-md px-4 text-sm"
