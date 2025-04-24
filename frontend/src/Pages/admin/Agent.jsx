@@ -121,35 +121,64 @@ export const Agent = () => {
         </form>
       </div>
 
-      {/*Table */}
       <div className="max-w mt-6 p-6 py-10 border border-gray-100 shadow-sm rounded-xl bg-white space-y-2">
-        <div className="grid grid-cols-[repeat(4,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
+        {/* Headers - visible on desktop */}
+        <div className="hidden md:grid grid-cols-[repeat(4,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
           <div>Full Name</div>
           <div>Email</div>
           <div>Contact Number</div>
           <div>Password</div>
         </div>
 
+        {/* Data */}
         {data.map((item, index) => (
           <div
             key={index}
             onClick={() => handleRowClick(item)}
-            className="grid grid-cols-[repeat(4,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
+            className="bg-[#EEF0FF] rounded-md text-sm text-gray-700 py-3 px-4 cursor-pointer hover:bg-[#dfe3ff] transition
+                 grid md:grid-cols-[repeat(4,_1fr)] items-center gap-2"
           >
-            <div className="truncate">{item.fullName}</div>
-            <div className="truncate">{item.email}</div>
-            <div className="truncate">{item.contactNumber}</div>
-            <div className="truncate">{item.password}</div>
+            <div className="hidden md:block truncate text-center">
+              {item.fullName}
+            </div>
+            <div className="hidden md:block truncate text-center">
+              {item.email}
+            </div>
+            <div className="hidden md:block truncate text-center">
+              {item.contactNumber}
+            </div>
+            <div className="hidden md:block truncate text-center">
+              {item.password}
+            </div>
+
+            <div className="md:hidden space-y-1">
+              <div>
+                <span className="font-semibold">Full Name:</span>{" "}
+                {item.fullName}
+              </div>
+              <div>
+                <span className="font-semibold">Email:</span> {item.email}
+              </div>
+              <div>
+                <span className="font-semibold">Contact:</span>{" "}
+                {item.contactNumber}
+              </div>
+              <div>
+                <span className="font-semibold">Password:</span> {item.password}
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
       {/* Add Agent Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 flex justify-center items-center z-50">
+        <div className="fixed inset-0 flex justify-center items-center z-50 px-4">
           <div className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"></div>
-          <div className="relative bg-white rounded-lg shadow-lg w-full max-w-3xl p-15">
+
+          <div className="relative bg-white rounded-lg shadow-lg w-full max-w-3xl p-8 md:p-12 space-y-6 overflow-y-auto max-h-[90vh]">
             <h2 className="text-lg font-semibold mb-4">Add New Agent</h2>
+
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <input
@@ -207,19 +236,19 @@ export const Agent = () => {
                 )}
               </div>
 
-              <div className="flex justify-end gap-3 mt-2">
+              <div className="flex flex-col md:flex-row justify-end gap-3 mt-4">
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Add Agent
+                </button>
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 text-sm border rounded-sm"
+                  className="px-4 py-2 text-sm border rounded-md"
                 >
                   Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-sm hover:bg-blue-700"
-                >
-                  Add Agent
                 </button>
               </div>
             </form>
@@ -229,11 +258,13 @@ export const Agent = () => {
 
       {/* View Agent Table Modal*/}
       {isViewModalOpen && selectedUser && (
-        <div className="fixed inset-0 flex justify-center items-center z-50">
+        <div className="fixed inset-0 flex justify-center items-center z-50 px-4">
           <div className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"></div>
-          <div className="relative bg-white rounded-lg shadow-lg w-full max-w-3xl p-15">
-            <h2 className="text-lg font-semibold mb-4">Agent Information</h2>
-            <div className="space-y-5 text-sm">
+
+          <div className="relative bg-white rounded-lg shadow-lg w-full max-w-3xl p-8 md:p-12 space-y-6 overflow-y-auto max-h-[90vh]">
+            <h2 className="text-lg font-semibold">Agent Information</h2>
+
+            <div className="space-y-4 text-sm">
               <div className="border p-2 rounded-md px-4">
                 {selectedUser.fullName}
               </div>
@@ -247,24 +278,25 @@ export const Agent = () => {
                 {selectedUser.password}
               </div>
             </div>
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={closeViewModal}
-                className="px-4 py-2 text-sm border rounded-sm"
-              >
-                Cancel
-              </button>
+
+            <div className="flex flex-col md:flex-row justify-end gap-3 mt-6">
               <button
                 onClick={handleEdit}
-                className="px-4 py-2 text-sm bg-yellow-500 text-white rounded-sm hover:bg-yellow-600"
+                className="px-4 py-2 text-sm bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
               >
                 Edit
               </button>
               <button
                 onClick={() => alert("Delete logic here")}
-                className="px-4 py-2 text-sm bg-red-500 text-white rounded-sm hover:bg-red-600"
+                className="px-4 py-2 text-sm bg-red-500 text-white rounded-md hover:bg-red-600"
               >
                 Delete
+              </button>
+              <button
+                onClick={closeViewModal}
+                className="px-4 py-2 text-sm border rounded-md"
+              >
+                Cancel
               </button>
             </div>
           </div>
@@ -273,10 +305,12 @@ export const Agent = () => {
 
       {/* Edit Agent Modal */}
       {isEditModalOpen && selectedUser && (
-        <div className="fixed inset-0 flex justify-center items-center z-50">
+        <div className="fixed inset-0 flex justify-center items-center z-50 px-4">
           <div className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"></div>
-          <div className="relative bg-white rounded-lg shadow-lg w-full max-w-3xl p-15">
-            <h2 className="text-lg font-semibold mb-4">Edit Agent</h2>
+
+          <div className="relative bg-white rounded-lg shadow-lg w-full max-w-3xl p-8 md:p-12 space-y-6 overflow-y-auto max-h-[90vh]">
+            <h2 className="text-lg font-semibold">Edit Agent</h2>
+
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <input
@@ -338,19 +372,19 @@ export const Agent = () => {
                 )}
               </div>
 
-              <div className="flex justify-end gap-3 mt-2">
+              <div className="flex flex-col md:flex-row justify-end gap-3 mt-2">
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Save Changes
+                </button>
                 <button
                   type="button"
                   onClick={closeEditModal}
-                  className="px-4 py-2 text-sm border rounded-sm"
+                  className="px-4 py-2 text-sm border rounded-md"
                 >
                   Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-sm hover:bg-blue-700"
-                >
-                  Save Changes
                 </button>
               </div>
             </form>

@@ -7,19 +7,7 @@ const AgentTicketdetails = () => {
   const { activeMenu } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
-  //   location.state? explain it
-  //   const ticketData = location.state;
-
-  // raw data example
-  const ticketData = {
-    id: 123,
-    customer: "Jenny Rose Perez",
-    date: new Date().getDate(),
-    status: "Pending",
-    description: "Lorem ipsum dolor sit amet.",
-    agent: "James Doe",
-  };
-
+  const ticketData = location.state;
   if (!ticketData) {
     return (
       <div

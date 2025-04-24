@@ -19,7 +19,7 @@ export const Signin = () => {
   const navigate = useNavigate();
 
   const carousel = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -85,7 +85,7 @@ export const Signin = () => {
             as an ICT company for those who have no ICT department.
           </p>
           <div className="flex justify-center">
-            <div className="max-w-[410px] md:max-w-[410px] sm:max-w-[300px] rounded-lg w-full mt-10">
+            <div className="max-w-[409px] md:max-w-[408px] sm:max-w-[300px] rounded-lg w-full mt-10">
               <Slider {...carousel}>
                 <div>
                   <img src={Hero1} alt="Hero 1" className="w-full h-auto" />

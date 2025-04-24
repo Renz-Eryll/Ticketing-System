@@ -22,7 +22,7 @@ export const Signup = () => {
   const navigate = useNavigate();
   const [TermsOpenModal, setTermsOpenModal] = useState(false);
   const carousel = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -96,7 +96,7 @@ export const Signup = () => {
             as an ICT company for those who have no ICT department.
           </p>
           <div className="flex justify-center">
-            <div className="max-w-[410px] md:max-w-[410px] sm:max-w-[300px] rounded-lg w-full mt-10">
+            <div className="max-w-[409px] md:max-w-[408px] sm:max-w-[300px] rounded-lg w-full mt-10">
               <Slider {...carousel}>
                 <div>
                   <img src={Hero1} alt="Hero 1" className="w-full h-auto" />
@@ -176,7 +176,7 @@ export const Signup = () => {
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-5 top-2.5 text-lg text-gray-500"
               >
-                {showPassword ? <FiEyeOff /> : <FiEye />}
+                {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
 
