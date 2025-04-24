@@ -77,7 +77,7 @@ export const Signin = () => {
       <div className="w-1/2 bg-white p-12 rounded-r-xl flex flex-col justify-center">
         <div className="flex justify-end mb-4">
           <Link
-            to="/admin/dashboard"
+            to="/About"
             className="text-sm font-medium text-black"
           >
             About Us
