@@ -74,31 +74,27 @@ export const Signin = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-[#0D0630] p-5 md:p-12">
-      <div className="flex w-full max-w-7xl bg-white shadow rounded-lg overflow-hidden max-h-[650px] h-auto md:h-[550px]">
-        <div className="hidden lg:block w-1/2 bg-[#0D0630] pt-15 px-21 border border-white rounded-lg">
-          <img src={QtechLogo} alt="Qtech Logo" className="w-24 mb-4" />
-          <h1 className="text-3xl mt-10 text-white font-bold">
-            We simply position ourselves
-          </h1>
-          <p className="text-sm mt-4 text-gray-300">
-            as an ICT company for those who have no ICT department.
-          </p>
-          <div className="flex justify-center">
-            <div className="max-w-[409px] md:max-w-[408px] sm:max-w-[300px] rounded-lg w-full mt-10">
-              <Slider {...carousel}>
-                <div>
-                  <img src={Hero1} alt="Hero 1" className="w-full h-auto" />
-                </div>
-                <div>
-                  <img src={Hero2} alt="Hero 2" className="w-full h-auto" />
-                </div>
-                <div>
-                  <img src={Hero3} alt="Hero 3" className="w-full h-auto" />
-                </div>
-              </Slider>
-            </div>
-          </div>
+    <div className="min-h-screen flex text-gray-900 font-sans">
+      {/* Left Section */}
+      <div className="w-1/2 bg-[#0D0630] text-white flex flex-col justify-center items-start p-12 space-y-6">
+        <img src={QtechLogo} alt="Qtech Logo" className="h-12 mb-4" />
+        <h1 className="text-3xl font-bold">We simply position ourselves</h1>
+        <p className="text-sm text-gray-300">
+          as an ICT company for those who have no ICT department.
+        </p>
+        <img
+          src={SignupImage}
+          alt="Cloud Visual"
+          className="rounded-lg max-w-md mt-4"
+        />
+      </div>
+
+      {/* Right Section */}
+      <div className="w-1/2 bg-white p-12 rounded-r-xl flex flex-col justify-center">
+        <div className="flex justify-end mb-4">
+          <Link to="/About" className="text-sm font-medium text-black">
+            About Us
+          </Link>
         </div>
 
         <div className="w-full lg:w-1/2 p-8 md:p-25 flex flex-col justify-center">
