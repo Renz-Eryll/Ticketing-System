@@ -1,7 +1,10 @@
 import { useState } from "react";
 import SignupImage from "../assets/hero-3.png";
 import QtechLogo from "../assets/qtechlogo.png";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+
+
 
 export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -35,6 +38,7 @@ export const Signup = () => {
           password,
           password_confirmation: confirmPassword,
         }),
+        credentials: 'include' 
       });
 
       let data = null;
@@ -48,9 +52,11 @@ export const Signup = () => {
         setError(data?.message || "Registration failed.");
         return;
       }
+      setTimeout(() => {
+        setSuccess("Signup successful!");
+        navigate('/')
+      }, 1500);
 
-      setSuccess("Signup successful! Redirecting...");
-      navigate('/');
 
     } catch (err) {
       console.error("Signup failed:", err);

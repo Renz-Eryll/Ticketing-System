@@ -7,18 +7,22 @@ import Swal from "sweetalert2";
 import { getLinks } from "../data/links";
 import qtechLogo from "../assets/qtechlogo.png";
 
-
 // get current user
 import useUser from "../hooks/use-user";
 
 export const Sidebar = () => {
-  const { activeMenu, setActiveMenu, screenSize, setScreenSize } =
+  const { activeMenu, setActiveMenu, screenSize, setScreenSize,logout,login } =
+
     useStateContext();
   const location = useLocation();
   const [active, setActive] = useState("");
   const navigate = useNavigate();
   const user = useUser();
   const [links, setLinks] = useState({});
+
+  if(!login){
+    return <Navigate to ='/'/>
+  }
 
   // set SideBar Links
   useEffect(() => {
@@ -40,12 +44,20 @@ export const Sidebar = () => {
   }, [setActiveMenu, setScreenSize]);
 
   useEffect(() => {
-    const currentPath = location.pathname;
+    const currentPath = location.pathname.trim();
+    const splitCurrentPath = currentPath.split("/");
 
     if (links) {
       const allLinks = [...(links.links || []), ...(links.subLinks || [])];
 
       allLinks.forEach((link) => {
+        if (splitCurrentPath.length == 4) {
+          const get2ndAndMid = `/${splitCurrentPath[1]}/${splitCurrentPath[2]}`;
+          if (get2ndAndMid.trim() === link.path) {
+            setActive(link.name);
+          }
+        }
+
         if (link.path === currentPath) {
           setActive(link.name);
         }
@@ -65,14 +77,12 @@ export const Sidebar = () => {
 
     if (result.isConfirmed) {
       // clear user data from localstorage
-      localStorage.removeItem("user");
-
       await Swal.fire({
         title: "Success!",
         text: "You have been logged out.",
         icon: "success",
       });
-
+      logout();
       navigate("/");
     }
   };
@@ -116,7 +126,7 @@ export const Sidebar = () => {
               !activeMenu ? "scale-0" : ""
             }`}
           >
-           <img src={qtechLogo} alt="Qtech Logo" className="w-36 h-auto" />
+            <img src={qtechLogo} alt="Qtech Logo" className="h-8" />
           </h1>
           <div className="mt-6 border-t border-gray-500" />
         </div>
@@ -206,3 +216,5 @@ export const Sidebar = () => {
     </>
   );
 };
+
+export default Sidebar;

@@ -2,7 +2,7 @@ import React from "react";
 import { MdOutlineSearch } from "react-icons/md";
 import { useStateContext } from "../contexts/ContextProvider";
 
-export const Navbar = () => {
+const Navbar = () => {
   const { activeMenu } = useStateContext();
 
   return (
@@ -32,3 +32,4 @@ export const Navbar = () => {
     </div>
   );
 };
+export default Navbar;

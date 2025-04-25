@@ -1,13 +1,17 @@
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
 const NotificationDetails = () => {
-  const { activeMenu } = useStateContext();
+  const { activeMenu,user,login } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
   const ticketData = location.state;
+
+ if (!login && !user) {
+     return <Navigate to="/" />;
+   }
 
   if (!ticketData) {
     return (
@@ -34,7 +38,7 @@ const NotificationDetails = () => {
             onClick={() => navigate("/admin/notification")}
           />
         </div>
-        <div className="text-3xl font-bold text-[#1D4ED8]">Ticket Details</div>
+        <div className="text-3xl font-bold text-[#1D4ED8]">Notification Details</div>
       </div>
 
       {/* Aligned container */}

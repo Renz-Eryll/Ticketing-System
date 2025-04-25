@@ -2,7 +2,12 @@ import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 export const AgentDashboard = () => {
-  const { activeMenu } = useStateContext();
+  const { activeMenu,user,login } = useStateContext();
+  
+  // Redirect if not logged in
+  if(!login && !user){
+    return <Navigate to ='/'/>
+  }
   return (
     <div
       className={`

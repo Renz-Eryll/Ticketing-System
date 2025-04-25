@@ -1,11 +1,18 @@
+
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
-import { TbTicket } from "react-icons/tb"; 
+import { IoMdArrowBack } from "react-icons/io";
 
 export const Tickets = () => {
-  const { activeMenu } = useStateContext();
+  const { activeMenu,user,login } = useStateContext();
   const navigate = useNavigate();
+
+
+   // Redirect if not logged in
+   if(!login && !user){
+    return <Navigate to ='/'/>
+  }
 
   // kunyareng data
   const data = [
@@ -46,6 +53,17 @@ export const Tickets = () => {
     }
   };
 
+  const statusColor = (status) => {
+    switch (status) {
+      case "Unresolved":
+        return "text-red-500 font-semibold";
+      case "Resolved":
+        return "text-green-500 font-semibold";
+      default:
+        return "text-black";
+    }
+  };
+
   return (
     <div
       className={`
@@ -54,68 +72,56 @@ export const Tickets = () => {
       ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
     `}
     >
-      <div className="text-3xl font-bold text-[#1D4ED8]">
-        POS for Retail and F&B
+      <div className="flex gap-4">
+        <div>
+          <IoMdArrowBack
+            className="text-4xl cursor-pointer"
+            onClick={() => navigate("/agent/dashboard")}
+          />
+        </div>
+        <div className="text-3xl font-bold text-[#1D4ED8]">
+          POS for Retail and F&B
+        </div>
       </div>
       <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-xl bg-white min-h-[500px]">
-        <div className="mt-6">
-          <table className="min-w-full border shadow-sm rounded-lg overflow-hidden text-xs sm:text-xs md:text-sm">
-            <thead className="bg-gray-50 text-gray-800">
-              <tr>
-                <th className="px-4 py-3.5 border border-gray-300">
-                  Ticket ID
-                </th>
-                <th className="px-4 py-2 border border-gray-300">Category</th>
-                <th className="px-4 py-2 border border-gray-300">Priority</th>
-                <th className="px-4 py-2 border border-gray-300">Agent</th>
-                <th className="px-4 py-2 border border-gray-300">
-                  Date Created
-                </th>
-                <th className="px-4 py-2 border border-gray-300">Status</th>
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              {data.map((item) => (
-                <tr
-                  key={item.id}
-                  onClick={() =>
-                    navigate(`/admin/tickets/ticketDetails/${item.id}`, {
-                      state: item,
-                    })
-                  }
-                  className="cursor-pointer hover:bg-gray-100 transition"
-                >
-                  <td className="px-4 py-2 border border-gray-300">
-                    {item.id}
-                  </td>
-                  <td className="px-4 py-2 border border-gray-300">
-                    {item.category}
-                  </td>
-                  <td
-                    className={`px-4 py-2 border border-gray-300 ${getPriorityColor(
-                      item.priority
-                    )}`}
-                  >
-                    {item.priority}
-                  </td>
-                  <td className="px-4 py-2 border border-gray-300">
-                    {item.agent}
-                  </td>
-                  <td className="px-4 py-2 border border-gray-300">
-                    {item.date}
-                  </td>
-                  <td className="px-4 py-2 border border-gray-300">
-                    {item.status}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="space-y-2">
+          <div className="grid grid-cols-[repeat(6,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
+            <div>Ticket ID</div>
+            <div>Category</div>
+            <div>Priority</div>
+            <div>Agent</div>
+            <div>Date Created</div>
+            <div>Status</div>
+          </div>
+
+          {data.map((item) => (
+            <div
+              key={item.id}
+              onClick={() =>
+                navigate(`/agent/AgentTicketdetails/${item.id}`, {
+                  state: item,
+                })
+              }
+              className="grid grid-cols-[repeat(6,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
+            >
+              <div className="truncate">{item.id}</div>
+              <div className="truncate">{item.category}</div>
+              <div className={`truncate ${getPriorityColor(item.priority)}`}>
+                {item.priority}
+              </div>
+              <div className="truncate">{item.agent}</div>
+              <div className="truncate">{item.date}</div>
+              <div className="truncate">
+                <span className={`truncate ${statusColor(item.status)}`}>
+                  {item.status}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 };
-  
-  export default Tickets;
-  
+
+export default Tickets;
