@@ -1,17 +1,15 @@
-
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
-export const Tickets = () => {
-  const { activeMenu,user,login } = useStateContext();
+export const AgentTickets = () => {
+  const { activeMenu, user, login } = useStateContext();
   const navigate = useNavigate();
 
-
-   // Redirect if not logged in
-   if(!login && !user){
-    return <Navigate to ='/'/>
+  // Redirect if not logged in
+  if (!login && !user) {
+    return <navigate to="/" />;
   }
 
   // kunyareng data
@@ -31,7 +29,7 @@ export const Tickets = () => {
       date: "March 1, 2025",
       category: "POS for Retail and F&B",
       priority: "Primary",
-      agent: "John Doe",
+      agent: "Agent2",
       status: "Resolved",
       customer: "Customer 2",
       description: "Payment terminal not processing transactions",
@@ -99,7 +97,7 @@ export const Tickets = () => {
             <div
               key={item.id}
               onClick={() =>
-                navigate(`/agent/AgentTicketdetails/${item.id}`, {
+                navigate(`/agent/tickets/${item.id}`, {
                   state: item,
                 })
               }
@@ -166,4 +164,4 @@ export const Tickets = () => {
   );
 };
 
-export default Tickets;
+export default AgentTickets;

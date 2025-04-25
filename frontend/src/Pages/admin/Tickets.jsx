@@ -4,13 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
 export const Tickets = () => {
-  const { activeMenu,user,login} = useStateContext();
+  const { activeMenu, user, login } = useStateContext();
   const navigate = useNavigate();
 
-  
   // Redirect if not logged in
-  if(!login && !user){
-    return <Navigate to ='/'/>
+  if (!login && !user) {
+    return <navigate to="/" />;
   }
 
   // dummy data
@@ -97,7 +96,7 @@ export const Tickets = () => {
             <div
               key={item.id}
               onClick={() =>
-                navigate(`/admin/tickets/ticketDetails/${item.id}`, {
+                navigate(`/admin/tickets/${item.id}`, {
                   state: item,
                 })
               }

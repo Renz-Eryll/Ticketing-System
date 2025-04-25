@@ -1,16 +1,15 @@
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
-  const { activeMenu,user,login } = useStateContext();
+  const { activeMenu, user, login } = useStateContext();
+  const navigate = useNavigate();
 
-  
   // Redirect if not logged in
-  if(!login && !user){
-    return <Navigate to ='/'/>
+  if (!login && !user) {
+    return <Navigate to="/" />;
   }
-
 
   const data = [
     {
@@ -61,7 +60,6 @@ export const Dashboard = () => {
     }
   };
   return (
-    
     <div
       className={`
     mx-5 md:mx-5 lg:mx-5
@@ -106,7 +104,7 @@ export const Dashboard = () => {
             <div
               key={item.id}
               onClick={() =>
-                navigate(`/admin/tickets/ticketDetails/${item.id}`, {
+                navigate(`/admin/tickets/${item.id}`, {
                   state: item,
                 })
               }

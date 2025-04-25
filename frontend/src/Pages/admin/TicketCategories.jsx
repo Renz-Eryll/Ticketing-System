@@ -12,13 +12,12 @@ import { BsCashCoin } from "react-icons/bs";
 import categoryImage from "../../assets/categoryImage.png";
 
 export const TicketCategories = () => {
-  const { activeMenu,user,login} = useStateContext();
+  const { activeMenu, user, login } = useStateContext();
   const navigate = useNavigate();
 
- 
   // Redirect if not logged in
-  if(!login && !user){
-    return <Navigate to ='/'/>
+  if (!login && !user) {
+    return <navigate to="/" />;
   }
 
   return (
