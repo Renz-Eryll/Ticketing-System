@@ -1,20 +1,20 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { Dashboard } from "./pages/admin/Dashboard";
-import Agent from "./pages/admin/Agent";
+import { Dashboard } from "./Pages/admin/Dashboard";
+import Agent from "./Pages/admin/Agent";
 import Notification from "./Pages/admin/Notification";
 import NotificationDetails from "./Pages/admin/NotificationDetails";
-import { TicketDetails } from "./pages/admin/TicketDetails";
-import { Tickets } from "./pages/admin/Tickets";
-import { Profile } from "./pages/admin/Profile";
-import { TicketCategories } from "./pages/admin/TicketCategories";
+import { TicketDetails } from "./Pages/admin/TicketDetails";
+import { Tickets } from "./Pages/admin/Tickets";
+import { Profile } from "./Pages/admin/Profile";
+import { TicketCategories } from "./Pages/admin/TicketCategories";
 
 import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
 
 
 import AgentDashboard from "./Pages/agent/AgentdashDoard";
-import AgentNotification from "./pages/agent/AgentNotification";
+import AgentNotification from "./Pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
 import AgentTicket from "./Pages/agent/Tickets";
 
@@ -22,7 +22,7 @@ import CustomerDashboard from "./Pages/customers/CustomerDasboard";
 import CustomerNotification from "./Pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
 import Createticket from "./Pages/customers/Createticket";
-import GuetsLayout from "./layout/GuetsLayout";
+import GuetsLayout from "./layout/GuestLayout";
 import DefaultLayout from "./layout/DefaultLayou";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
@@ -58,7 +58,6 @@ function AppRoutes() {
 
 
       <Route path='/' element = {<DefaultLayout/>}>
-
       <Route path="/admin"element={<Layout><Dashboard /></Layout>}/>
       <Route path="/admin/agent" element={<Layout><Agent /></Layout>}/>
       <Route path="/admin/notification"element={<Layout><Notification /></Layout>}/>

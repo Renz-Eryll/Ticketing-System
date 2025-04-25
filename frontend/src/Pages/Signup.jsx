@@ -38,6 +38,7 @@ export const Signup = () => {
           password,
           password_confirmation: confirmPassword,
         }),
+        credentials: 'include' 
       });
 
       let data = null;

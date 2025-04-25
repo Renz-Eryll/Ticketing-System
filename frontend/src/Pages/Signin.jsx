@@ -66,11 +66,11 @@ export const Signin = () => {
       const data = await response.json();
       console.log("Login successful:", data);
 
-      const {  user,token } = data;
+      const { user: loggedInUser, token } = data;
 
-      login(user,token);
-      
-      const { role } = user;
+      login(loggedInUser, token);
+  
+      const { role } = loggedInUser;
       switch (role) {
         case "customer":
           navigate("/customer");

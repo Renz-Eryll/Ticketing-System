@@ -34,4 +34,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Ticket::class);
     }
+    public function agents()
+    {
+        return $this->hasMany(agent::class);
+    }
+   
 }
