@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-
+import { Navigate } from "react-router-dom";
 import { MdOutlineSearch } from "react-icons/md";
 import { GoPlus } from "react-icons/go";
 
@@ -12,39 +12,32 @@ import { useStateContext } from "../../contexts/ContextProvider";
 const schema = yup.object().shape({
   fullName: yup.string().required("Full Name is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
-  contactNumber: yup
-    .string()
-    .required("Contact Number is required")
-    .matches(/^\d{10,11}$/, "Must be 10 or 11 digits"),
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters"),
+    .min(8, "Password must be at least 8 characters"),
+  category: yup
+    .string()
+    .oneOf(["QTech Inventory Support System",
+       "QTech Utility Billing System",
+        "Philippine HR, Payroll and Time Keeping System",
+        "POS for Retail and F&B","QSA (Quick and Single Accounting)"], "Select a valid role")
+    .required("Type is required"),
 });
 
-//kunyareng agent data
-const data = [
-  {
-    fullName: "Ako si Agent",
-    email: "agent1@gmail.com",
-    contactNumber: "09876543210",
-    password: "Alk@*KJ(dasd",
-  },
-
-  {
-    fullName: "Ako si Agent2",
-    email: "agent2@gmail.com",
-    contactNumber: "09123456789",
-    password: "p@ssw0rd",
-  },
-];
-
 export const Agent = () => {
-  const { activeMenu } = useStateContext();
+  const { activeMenu,user,login } = useStateContext();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [data, setData] = useState([]); 
+
+ 
+  // Redirect if not logged in
+  if(!login && !user){
+    return <Navigate to ='/'/>
+  }
 
   const handleRowClick = (user) => {
     setSelectedUser(user);
@@ -78,11 +71,49 @@ export const Agent = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Submitted Agent:", data);
-    reset();
-    setIsAddModalOpen(false);
+  const onSubmit = async (data) => {
+    try {
+      const registerResponse = await fetch("http://localhost:8000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.fullName,
+          email: data.email,
+          password: data.password,
+          role:'agent'
+        }),
+        credentials: 'include' 
+      });
+  
+      if (!registerResponse.ok) {
+        throw new Error("Failed to register user");
+      }
+  
+      const agentResponse = await fetch("http://localhost:8000/api/agents", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: 'include' 
+      });
+  
+      if (!agentResponse.ok) {
+        throw new Error("Failed to save agent details");
+      }
+  
+      const result = await agentResponse.json();
+      console.log("Agent saved:", result);
+  
+      reset();
+      setIsAddModalOpen(false);
+    } catch (error) {
+      console.error("Error saving agent:", error);
+    }
   };
+  
 
   return (
     <div
@@ -207,20 +238,24 @@ export const Agent = () => {
                   </p>
                 )}
               </div>
-
               <div>
-                <input
-                  type="text"
-                  placeholder="Contact Number"
-                  {...register("contactNumber")}
+                <select
+                  {...register("category")}
                   className="w-full border p-2 rounded-md px-4 text-sm"
-                />
-                {errors.contactNumber && (
-                  <p className="mt-1.5 text-red-500 text-xs">
-                    {errors.contactNumber.message}
-                  </p>
+                  defaultValue=""
+                >
+                  <option value="">Choose Type</option>
+                  <option  value={"QTech Inventory Support System"}>QTech Inventory Support System</option>
+                  <option value={"QTech Utility Billing System"}>QTech Utility Billing System</option>
+                  <option value={"Philippine HR, Payroll and Time Keeping System"}>Philippine HR, Payroll and Time Keeping System</option>
+                  <option value={"POS for Retail and F&B"}>POS for Retail and F&B</option>
+                  <option value={"QSA (Quick and Single Accounting)"}>QSA (Quick and Single Accounting)</option>
+                </select>
+                {errors.category && (
+                  <p className="mt-1.5 text-red-500 text-xs">{errors.category.message}</p>
                 )}
               </div>
+
 
               <div>
                 <input

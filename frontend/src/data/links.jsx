@@ -23,7 +23,7 @@ export const getLinks = (userRole) => {
           {
             name: "Dashboard",
             icon: <MdOutlineDashboard />,
-            path: "/admin/dashboard",
+            path: "/admin",
           },
           {
             name: "Tickets",
@@ -33,7 +33,7 @@ export const getLinks = (userRole) => {
           {
             name: "Agents",
             icon: <MdOutlineSupportAgent />,
-            path: "/agent",
+            path: "/admin/agent",
           },
           {
             name: "Notification",

@@ -4,23 +4,24 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
 const AgentTicketdetails = () => {
-  const { activeMenu } = useStateContext();
+  const { activeMenu, user, login } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
-  const ticketData = location.state;
-  if (!ticketData) {
-    return (
-      <div
-        className={`
-        mx-5 md:mx-5 lg:mx-5
-        transition-all duration-300 
-        ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
-      `}
-      >
-        <div className="text-red-500">Error: Ticket data not available.</div>
-      </div>
-    );
+
+  // Redirect if not logged in
+  if (!login && !user) {
+    return <navigate to="/" />;
   }
+
+  // raw data example
+  const ticketData = {
+    id: 123,
+    customer: "Jenny Rose Perez",
+    date: new Date().getDate(),
+    status: "Pending",
+    description: "Lorem ipsum dolor sit amet.",
+    agent: "James Doe",
+  };
 
   return (
     <div
