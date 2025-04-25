@@ -5,7 +5,6 @@ import Otp from "../Pages/Otp";
 import About from "../Pages/About";
 import { Routes, Route } from "react-router-dom";
 
-
 const AuthRoutes = () => {
   return (
     <Routes>
