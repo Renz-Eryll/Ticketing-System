@@ -10,18 +10,20 @@ import Agent from "./Pages/admin/Agent";
 import Notification from "./Pages/admin/Notification";
 import NotificationDetails from "./Pages/admin/NotificationDetails";
 import { TicketDetails } from "./Pages/admin/TicketDetails";
-import { Tickets } from "./pages/admin/Tickets";
+import { Tickets } from "./Pages/admin/Tickets";
 import { Profile } from "./Pages/admin/Profile";
 import { TicketCategories } from "./Pages/admin/TicketCategories";
 
-import Signin from "./pages/Signin";
-import Signup from "./pages/Signup";
+import Signin from "./Pages/Signin";
+import Signup from "./Pages/Signup";
+import About from "./Pages/About";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
-import AgentDashboard from "./pages/agent/AgentDashboard";
-import AgentTicketdetails from "./pages/agent/AgentTicketdetails";
-import AgentNotification from "./pages/agent/AgentNotification";
+import AgentDashboard from "./Pages/agent/AgentDashboard";
+import AgentTicketdetails from "./Pages/agent/AgentTicketdetails";
+import AgentNotification from "./Pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
-import { AgentTickets } from "./pages/agent/Tickets";
+import { AgentTickets } from "./Pages/agent/Tickets";
 import CustomerDashboard from "./Pages/customers/CustomerDasboard";
 import CustomerNotification from "./Pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
@@ -213,6 +215,9 @@ function AppRoutes() {
           }
         />
       </Route>
+
+      <Route path="/about" element={<About />} />
+      <Route path="/termsAndConditions" element={<TermsAndConditions />} />
     </Routes>
   );
 }

@@ -114,7 +114,7 @@ export const Signup = () => {
 
         <div className="w-full lg:w-1/2 p-8 md:p-25 flex flex-col justify-center">
           <div className="flex justify-end mb-6 md:mb-10">
-            <Link to="#" className="text-sm font-medium text-black">
+            <Link to="/about" className="text-sm font-medium text-black">
               About Us
             </Link>
           </div>
