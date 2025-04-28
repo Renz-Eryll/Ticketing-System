@@ -18,9 +18,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 //  Register and Login
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-Route::middleware(['auth:sanctum'])->post('/agents', [AgentController::class, 'store']);
-
-
+Route::middleware(['auth:sanctum'])->post('/addAgent', [RegisteredUserController::class, 'store']);
+Route::get('/agents', [RegisteredUserController::class, 'getAllAgents']);
 
 // Create ticket (requires Sanctum token)
 Route::middleware(['auth:sanctum'])->post('/tickets', [TicketController::class, 'store']);
