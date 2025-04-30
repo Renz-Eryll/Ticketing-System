@@ -22,6 +22,7 @@ Route::middleware(['auth:sanctum'])->post('/addAgent', [RegisteredUserController
 Route::get('/agents', [RegisteredUserController::class, 'getAllAgents']);
 
 // Create ticket (requires Sanctum token)
+Route::get('/pos', [TicketController::class, 'pos']);
 Route::middleware(['auth:sanctum'])->post('/tickets', [TicketController::class, 'store']);
 Route::middleware(['auth:sanctum'])->get('/notif', [TicketController::class, 'index'])->name('tickets.index');
 Route::middleware(['auth:sanctum'])->get('/ticket/{id}', [TicketController::class, 'show']);
