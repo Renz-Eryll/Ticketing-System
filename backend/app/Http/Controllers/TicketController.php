@@ -20,6 +20,16 @@ class TicketController extends Controller
     
     return response()->json($tickets);
     }
+
+    public function allTickets()
+    {
+        $tickets = Tickets::latest()->get();
+
+        Log::info('All Tickets:', ['tickets' => $tickets]);
+
+        return response()->json($tickets);
+    }
+   
     public function pos()
     {
         $tickets = Tickets::where('category', 'POS for Retail and F&B')->latest()->get();
@@ -29,6 +39,43 @@ class TicketController extends Controller
     
     return response()->json($tickets);
     }
+    public function iss()
+    {
+        $tickets = Tickets::where('category', 'QTech Inventory Support System')->latest()->get();
+    
+    // Debugging: Log the tickets
+    Log::info('Tickets:', ['tickets' => $tickets]);
+    
+    return response()->json($tickets);
+    }
+    public function qsa()
+    {
+        $tickets = Tickets::where('category', 'QSA (Quick and Single Accounting)')->latest()->get();
+    
+    // Debugging: Log the tickets
+    Log::info('Tickets:', ['tickets' => $tickets]);
+    
+    return response()->json($tickets);
+    }
+    public function ubs()
+    {
+        $tickets = Tickets::where('category', 'QTech Utility Billing System')->latest()->get();
+    
+    // Debugging: Log the tickets
+    Log::info('Tickets:', ['tickets' => $tickets]);
+    
+    return response()->json($tickets);
+    }
+    public function payroll()
+    {
+        $tickets = Tickets::where('category', 'Philippine HR, Payroll and Time Keeping System')->latest()->get();
+    
+    // Debugging: Log the tickets
+    Log::info('Tickets:', ['tickets' => $tickets]);
+    
+    return response()->json($tickets);
+    }
+
 
     public function show($id)
     {
