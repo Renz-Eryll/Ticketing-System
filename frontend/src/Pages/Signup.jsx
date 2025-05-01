@@ -19,6 +19,7 @@ export const Signup = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState("customer");
   const navigate = useNavigate();
   const [TermsOpenModal, setTermsOpenModal] = useState(false);
   const carousel = {
@@ -58,6 +59,7 @@ export const Signup = () => {
           name,
           email,
           password,
+          role: role,
           password_confirmation: confirmPassword,
         }),
       });
