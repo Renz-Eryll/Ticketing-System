@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QtechLogo from "../assets/qtechlogo.png";
 import Hero1 from "../assets/hero-1.jpg";
 import Hero2 from "../assets/hero-2.jpg";
@@ -8,15 +8,36 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const {user,login,} = useStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (login && user) {
+      const { role } = user;
+      switch (role) {
+        case "customer":
+          navigate("/customer/dashboard");
+          break;
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+        case "agent":
+          navigate("/agent/dashboard");
+          break;
+        default:
+          navigate("/");
+      }
+    }
+  }, [login, user, navigate]); 
 
   const carousel = {
     dots: false,
@@ -27,9 +48,10 @@ export const Signin = () => {
     autoplay: true,
     arrows: false,
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when submitting
+
     try {
       const response = await fetch("http://localhost:8000/api/login", {
         method: "POST",
@@ -44,14 +66,15 @@ export const Signin = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Login failed");
+        throw new Error("Invalid credentials or server error.");
       }
 
       const data = await response.json();
       console.log("Login successful:", data);
 
-      const { user } = data;
-      localStorage.setItem("user", JSON.stringify(user));
+      const { user, token } = data; // Make sure you are receiving the token
+      localStorage.setItem("user", JSON.stringify(user)); // Save user details
+      localStorage.setItem("token", token); // Store the token in localStorage for later use
 
       const { role } = user;
       switch (role) {
@@ -65,11 +88,13 @@ export const Signin = () => {
           navigate("/agent/dashboard");
           break;
         default:
-          navigate("/dashboard");
+          navigate("/");
       }
     } catch (err) {
       console.error("Login failed:", err);
-      setError("Invalid email or password.");
+      setError("Invalid email or password."); 
+    } finally {
+      setLoading(false);
     }
   };
 

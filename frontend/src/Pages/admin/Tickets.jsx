@@ -1,40 +1,73 @@
-import React from "react";
+
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export const Tickets = () => {
-  const { activeMenu, user, login } = useStateContext();
+  const { activeMenu, user, login,token } = useStateContext();
+   const [ticketData, setTicketData] = useState(null);
+   const location = useLocation();
+   const { category } = location.state || {};
+   const { id } = useParams();
   const navigate = useNavigate();
 
   // Redirect if not logged in
-  if (!login && !user) {
-    return <navigate to="/" />;
+  if (!token && !user?.id) {
+    return <Navigate to="/" />; // Redirect if no token
   }
 
-  // dummy data
-  const data = [
-    {
-      id: 112381389173,
-      category: "POS for Retail and F&B",
-      priority: "High",
-      agent: "John Doe",
-      date: "March 1, 2025",
-      status: "Unresolved",
-      customer: "Customer Name",
-      description: "Payment terminal not processing transactions",
-    },
-    {
-      id: 2918392821,
-      date: "March 1, 2025",
-      category: "POS for Retail and F&B",
-      priority: "Primary",
-      agent: "John Doe",
-      status: "Resolved",
-      customer: "Pangalan ng nag - ticket",
-      description: "Payment terminal not processing transactions",
-    },
-  ];
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        let url = "";
+  
+        // Determine the URL based on the category
+        switch (category) {
+          case "POS Retail":
+            url = "http://localhost:8000/api/pos";
+            break;
+            case "Inventory Support":
+              url = "http://localhost:8000/api/iss";
+              break;
+              case "Utility Billing":
+              url = "http://localhost:8000/api/ubs";
+              break;
+              case "Accounting System":
+              url = "http://localhost:8000/api/qsa";
+              break;
+              case "HR Payroll System":
+              url = "http://localhost:8000/api/payroll";
+              break;
+          default:
+            return; // Exit if category is not supported
+        }
+  
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to fetch tickets");
+        }
+  
+        const data = await response.json();
+        console.log(data);
+        setTicketData(data);
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    };
+  
+    if (category && token) {
+      fetchTickets();
+    }
+  }, [category, token]);
+
+ 
 
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -62,6 +95,7 @@ export const Tickets = () => {
     }
   };
 
+
   return (
     <div
       className={`
@@ -78,7 +112,7 @@ export const Tickets = () => {
           />
         </div>
         <div className="text-3xl font-bold text-[#1D4ED8]">
-          POS for Retail and F&B
+        {category}
         </div>
       </div>
       <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-lg bg-white min-h-[500px]">
@@ -92,11 +126,11 @@ export const Tickets = () => {
         </div>
 
         <div className="space-y-2">
-          {data.map((item) => (
+          {ticketData?.map((item) => (
             <div
               key={item.id}
               onClick={() =>
-                navigate(`/admin/tickets/${item.id}`, {
+                navigate(`/admin/details/${item.id}`, {
                   state: item,
                 })
               }
@@ -117,10 +151,10 @@ export const Tickets = () => {
                 {item.priority}
               </div>
               <div className="hidden md:block truncate text-center">
-                {item.agent}
+                {item.agent_name}
               </div>
               <div className="hidden md:block truncate text-center">
-                {item.date}
+                {item.updated_at}
               </div>
               <div className="hidden md:block truncate text-center">
                 <span className={`truncate ${statusColor(item.status)}`}>
@@ -143,11 +177,11 @@ export const Tickets = () => {
                   </span>
                 </div>
                 <div>
-                  <span className="font-semibold">Agent:</span> {item.agent}
+                  <span className="font-semibold">Agent:</span> {item.agent_name}
                 </div>
                 <div>
-                  <span className="font-semibold">Date:</span> {item.date}
-                </div>
+                  <span className="font-semibold">Date:</span> {item.updated_at}
+          </div>
                 <div>
                   <span className="font-semibold">Status:</span>{" "}
                   <span className={statusColor(item.status)}>
