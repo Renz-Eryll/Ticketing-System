@@ -12,7 +12,7 @@ const Createticket = () => {
   const [ticketBody, setTicketBody] = useState(""); 
 
   // Redirect if not logged in
-  if(!user?.id){
+  if(!login){
     return <Navigate to ='/'/>
   }
 
@@ -46,7 +46,7 @@ const Createticket = () => {
         body: formData,
         credentials: 'include',
       });
-  
+      console.log("User Token:", token);
       if (!response.ok) {
         throw new Error("Failed to create ticket.");
       }
