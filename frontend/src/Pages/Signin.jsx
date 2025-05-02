@@ -12,7 +12,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 
 export const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const {user,login,} = useStateContext();
+  const { user, login } = useStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -37,7 +37,7 @@ export const Signin = () => {
           navigate("/");
       }
     }
-  }, [login, user, navigate]); 
+  }, [login, user, navigate]);
 
   const carousel = {
     dots: false,
@@ -92,7 +92,7 @@ export const Signin = () => {
       }
     } catch (err) {
       console.error("Login failed:", err);
-      setError("Invalid email or password."); 
+      setError("Invalid email or password.");
     } finally {
       setLoading(false);
     }
@@ -128,7 +128,7 @@ export const Signin = () => {
 
         <div className="w-full lg:w-1/2 p-8 md:p-25 flex flex-col justify-center">
           <div className="flex justify-end mb-6 md:mb-10">
-            <Link to="/about" className="text-sm font-medium text-black">
+            <Link to="About" className="text-sm font-medium text-black">
               About Us
             </Link>
           </div>

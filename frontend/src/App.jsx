@@ -16,7 +16,9 @@ import { TicketCategories } from "./Pages/admin/TicketCategories";
 
 import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
-
+import ForgotPassword from "./Pages/Forgotpass";
+import Otp from "./Pages/Otp";
+import About from "./Pages/About";
 import AgentDashboard from "./Pages/agent/AgentDashboard";
 import AgentTicketdetails from "./Pages/agent/AgentTicketdetails";
 import AgentNotification from "./Pages/agent/AgentNotification";
@@ -56,7 +58,9 @@ function AppRoutes() {
         <Route index element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
       </Route>
-
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/Otp" element={<Otp/>} />
+      <Route path="/about" element={<About/>} />
       <Route path="/customer" element={<DefaultLayout />}>
         <Route
           path="dashboard"
