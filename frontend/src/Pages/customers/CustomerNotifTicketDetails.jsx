@@ -6,7 +6,7 @@ import { IoMdArrowBack } from "react-icons/io";
 const CustomerNotifTicketDetails = () => {
   const { activeMenu, user, token } = useStateContext();
   const navigate = useNavigate();
-  const { id } = useParams(); // Get ticket ID from the URL
+  const { id } = useParams();
   const [ticketData, setTicketData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
