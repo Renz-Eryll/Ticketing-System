@@ -9,7 +9,7 @@ import { Dashboard } from "./Pages/admin/Dashboard";
 import Agent from "./Pages/admin/Agent";
 import Notification from "./Pages/admin/Notification";
 import NotificationDetails from "./Pages/admin/NotificationDetails";
-import { TicketDetails } from "./Pages/admin/TicketDetails";
+import TicketDetails from "./Pages/admin/TicketDetails";  // Import as default
 import { Tickets } from "./Pages/admin/Tickets";
 import { Profile } from "./Pages/admin/Profile";
 import { TicketCategories } from "./Pages/admin/TicketCategories";
