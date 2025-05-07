@@ -38,16 +38,8 @@ const TicketDetails = () => {
         if (!res1.ok) throw new Error(t.message || "Failed to fetch ticket");
         setTicketData(t);
         setAssignedAgent(t.agent_id || "");
-
-        // fetch agents
-        const res2 = await fetch("http://localhost:8000/api/agents", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const { agents: list } = await res2.json();
-        if (Array.isArray(list)) setAgents(list);
-        else console.error("Agents response bad:", list);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching ticket:", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -55,6 +47,39 @@ const TicketDetails = () => {
     };
     fetchData();
   }, [id, token]);
+
+  useEffect(() => {
+    const fetchAgents = async () => {
+      if (!ticketData?.category) return;
+
+      try {
+        // Ensure the category is URL-encoded
+        const encodedCategory = encodeURIComponent(ticketData.category);
+        console.log("Encoded Category:", encodedCategory);
+        const res2 = await fetch(`http://localhost:8000/api/agentsByCategory/${encodedCategory}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        if (!res2.ok) {
+          throw new Error(`Failed to fetch agents for category: ${ticketData.category}`);
+        }
+
+        const { agents: list } = await res2.json();
+        if (Array.isArray(list)) {
+          setAgents(list);
+        } else {
+          console.error("Agents response format is incorrect:", list);
+        }
+      } catch (err) {
+        console.error("Error fetching agents:", err);
+        setError(err.message || "Failed to load agents.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAgents();
+  }, [ticketData?.category, token]);
 
   const handleAssign = async () => {
     if (!assignedAgent) {
@@ -75,7 +100,7 @@ const TicketDetails = () => {
       setTicketData(td => ({ ...td, agent_name: updated.agent_name }));
       alert("Agent assigned successfully!");
     } catch (err) {
-      console.error(err);
+      console.error("Error assigning agent:", err);
       alert("Assignment failed");
     }
   };
@@ -155,6 +180,8 @@ const TicketDetails = () => {
               </button>
             </div>
           </div>
+
+          
 
           {/* Attachments */}
           <div className="col-span-12 md:col-span-7 px-8 mt-5 text-sm">

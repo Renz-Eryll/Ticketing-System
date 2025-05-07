@@ -56,6 +56,19 @@ class RegisteredUserController extends Controller
         ]);
     }
 
+
+    public function getAgentsByCategory($category): JsonResponse
+    {
+        $agents = User::where('role', 'agent')
+                      ->where('category', $category)
+                      ->get();
+    
+        return response()->json([
+            'message' => 'Agents found',
+            'agents' => $agents
+        ]);
+    }
+
     /**
      * Update an agent by ID.
      */

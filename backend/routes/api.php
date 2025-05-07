@@ -20,6 +20,8 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::middleware(['auth:sanctum'])->post('/addAgent', [RegisteredUserController::class, 'store']);
 Route::get('/agents', [RegisteredUserController::class, 'getAllAgents']);
+Route::get('/agentsByCategory/{category}', [RegisteredUserController::class, 'getAgentsByCategory']);
+
 
 // Create ticket (requires Sanctum token)
 Route::get('/pos', [TicketController::class, 'pos']);

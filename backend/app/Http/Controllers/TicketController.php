@@ -45,6 +45,7 @@ class TicketController extends Controller
             'status'        => $ticket->status,
             'ticket_body'   => $ticket->ticket_body,
             'image_path'    => $ticket->image_path,
+            'category'      => $ticket->category,
             'created_at'    => $ticket->created_at->toDateTimeString(),
             'customer_name' => $ticket->customer->name ?? 'N/A',
             'agent_name'    => $ticket->agent->name ?? 'Unassigned',
