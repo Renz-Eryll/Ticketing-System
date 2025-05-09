@@ -25,27 +25,18 @@ import AgentNotification from "./Pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
 import { AgentTickets } from "./Pages/agent/Tickets";
 import CustomerDashboard from "./Pages/customers/CustomerDasboard";
+import CustomerTicket from "./Pages/customers/CustomerTicket";
 import CustomerNotification from "./Pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
 import Createticket from "./Pages/customers/Createticket";
-import GuetsLayout from "./layout/GuestLayout";
-import DefaultLayout from "./layout/DefaultLayou";
+import GuestLayout from "./layout/GuestLayout";
+import DefaultLayout from "./layout/DefaultLayout";
 import AdminLayout from "./layout/AdminLayout";
 import AgentLayout from "./layout/AgentLayout";
-import Sidebar from "./components/Sidebar";
-import Navbar from "./components/Navbar";
+import Layout from "./layout/Layout";
+import UserLayout from "./layout/UserLayout";
 
-const Layout = ({ children }) => {
-  return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-1 min-h-screen bg-gray-100">
-        <Navbar />
-        <div className="mt-20 md:mt-28 p-4">{children}</div>
-      </div>
-    </div>
-  );
-};
+import { Toaster } from "react-hot-toast";
 
 function AppRoutes() {
   const location = useLocation();
@@ -54,44 +45,52 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={<GuetsLayout />}>
+      <Route path="/" element={<GuestLayout />}>
         <Route index element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
       </Route>
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/Otp" element={<Otp/>} />
-      <Route path="/about" element={<About/>} />
+      <Route path="/Otp" element={<Otp />} />
+      <Route path="/about" element={<About />} />
       <Route path="/customer" element={<DefaultLayout />}>
         <Route
           path="dashboard"
           element={
-            <Layout>
+            <UserLayout>
               <CustomerDashboard />
-            </Layout>
+            </UserLayout>
+          }
+        />
+        <Route
+          path="tickets"
+          element={
+            <UserLayout>
+              <CustomerTicket />
+            </UserLayout>
           }
         />
         <Route
           path="notification"
           element={
-            <Layout>
+            <UserLayout>
               <CustomerNotification />
-            </Layout>
+            </UserLayout>
           }
         />
         <Route
           path="tickets/notificationDetails/:id"
           element={
-            <Layout>
+            <UserLayout>
               <CustomerNotifTicketDetails />
-            </Layout>
+            </UserLayout>
           }
         />
         <Route
           path="create-ticket"
           element={
-            <Layout>
+            <UserLayout>
               <Createticket />
-            </Layout>
+            </UserLayout>
           }
         />
       </Route>
@@ -105,10 +104,12 @@ function AppRoutes() {
             </Layout>
           }
         />
+
         <Route
           path="agent"
           element={
             <Layout>
+              <Toaster position="top-right" reverseOrder={false} />
               <Agent />
             </Layout>
           }

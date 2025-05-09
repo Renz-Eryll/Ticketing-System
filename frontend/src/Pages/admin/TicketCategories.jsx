@@ -26,7 +26,9 @@ export const TicketCategories = () => {
 
   return (
     <div
-      className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${activeMenu ? "lg:pl-75" : "lg:pl-25"}`}
+      className={`mx-5 md:mx-5 lg:mx-5 mt-10 md:mt-3 transition-all duration-300 ${
+        activeMenu ? "lg:pl-75" : "lg:pl-25"
+      }`}
     >
       <div className="flex gap-2">
         <div className="text-3xl font-bold text-[#1D4ED8]">Categories</div>

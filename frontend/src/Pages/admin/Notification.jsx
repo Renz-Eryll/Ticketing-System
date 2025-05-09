@@ -5,7 +5,8 @@ import { useNavigate, Navigate } from "react-router-dom";
 const Notification = () => {
   const { activeMenu, user, token } = useStateContext();
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState([]); // ← Added this line
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!token || !user?.id) return;
@@ -27,13 +28,14 @@ const Notification = () => {
         setNotifications(data);
       } catch (error) {
         console.error("Error fetching tickets:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchTickets();
   }, [token, user]);
 
-  // Redirect to login if not authenticated
   if (!token || !user?.id) {
     return <Navigate to="/" />;
   }
@@ -59,29 +61,40 @@ const Notification = () => {
           <div>Issue</div>
           <div>Status</div>
         </div>
-
-        {notifications.map((notif, index) => (
-          <div
-            key={index}
-            onClick={() => handleRowClick(notif)}
-            className="grid grid-cols-[repeat(4,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
-          >
-            <div className="truncate">{notif.id}</div>
-            <div className="truncate">{notif.category}</div>
-            <div className="truncate">{notif.ticket_body}</div>
-            <div className="font-medium">
-              <span
-                className={`${
-                  notif.status === "Resolved"
-                    ? "text-green-600"
-                    : "text-red-500"
-                }`}
-              >
-                {notif.status}
-              </span>
+        {loading ? (
+          <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-2">
+            <div className="spinner-overlay">
+              <div className="loading-line"></div>
             </div>
           </div>
-        ))}
+        ) : notifications.length > 0 ? (
+          notifications.map((notif, index) => (
+            <div
+              key={index}
+              onClick={() => handleRowClick(notif)}
+              className="grid grid-cols-[repeat(4,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
+            >
+              <div className="truncate">{notif.id}</div>
+              <div className="truncate">{notif.category}</div>
+              <div className="truncate">{notif.ticket_body}</div>
+              <div className="font-medium">
+                <span
+                  className={`${
+                    notif.status === "Resolved"
+                      ? "text-green-600"
+                      : "text-red-500"
+                  }`}
+                >
+                  {notif.status}
+                </span>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="p-6 text-center text-gray-500">
+            No notifications found
+          </div>
+        )}
       </div>
     </div>
   );

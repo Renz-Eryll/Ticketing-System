@@ -17,8 +17,18 @@ export const Signin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
+  const [pageLoading, pageSetLoading] = useState(false);
+
+  const handleNavigation = (event) => {
+    event.preventDefault();
+    pageSetLoading(true);
+
+    setTimeout(() => {
+      navigate("/Signup");
+      pageSetLoading(false);
+    }, 700);
+  };
 
   useEffect(() => {
     if (login && user) {
@@ -128,7 +138,7 @@ export const Signin = () => {
 
         <div className="w-full lg:w-1/2 p-8 md:p-25 flex flex-col justify-center">
           <div className="flex justify-end mb-6 md:mb-10">
-            <Link to="About" className="text-sm font-medium text-black">
+            <Link to="/about" className="text-sm font-medium text-black">
               About Us
             </Link>
           </div>
@@ -136,8 +146,14 @@ export const Signin = () => {
           <h2 className="text-3xl font-bold text-blue-600 mb-6">Sign In</h2>
           <p className="text-sm mb-6">
             Don't have an account?{" "}
+            {pageLoading && (
+              <div className="spinner-overlay">
+                <div className="loading-line"></div>
+              </div>
+            )}
             <Link
               to="/Signup"
+              onClick={handleNavigation}
               className="text-blue-600 font-bold hover:underline"
             >
               Sign up
@@ -168,7 +184,11 @@ export const Signin = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-5 top-2.5 text-lg text-gray-500"
               >
-                {showPassword ? <FiEyeOff /> : <FiEye />}
+                {showPassword ? (
+                  <FiEyeOff className="cursor-pointer" />
+                ) : (
+                  <FiEye className="cursor-pointer" />
+                )}
               </button>
             </div>
 
@@ -182,13 +202,42 @@ export const Signin = () => {
                 Forgot Password?
               </Link>
             </div>
-
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white rounded-lg py-2 font-semibold hover:bg-blue-700 transition"
+              className="w-full bg-blue-600 text-white rounded-lg py-2 font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2"
               disabled={loading}
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? (
+                <>
+                  Signing in...
+                  <span>
+                    {" "}
+                    <div className=" text-center text-gray-500 flex items-center justify-center gap-2">
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8H4z"
+                        />
+                      </svg>
+                    </div>
+                  </span>
+                </>
+              ) : (
+                "Sign In"
+              )}
             </button>
           </form>
         </div>
