@@ -9,7 +9,7 @@ import { Dashboard } from "./Pages/admin/Dashboard";
 import Agent from "./Pages/admin/Agent";
 import Notification from "./Pages/admin/Notification";
 import NotificationDetails from "./Pages/admin/NotificationDetails";
-import { TicketDetails } from "./Pages/admin/TicketDetails";
+import TicketDetails from "./Pages/admin/TicketDetails";  // Import as default
 import { Tickets } from "./Pages/admin/Tickets";
 import { Profile } from "./Pages/admin/Profile";
 import { TicketCategories } from "./Pages/admin/TicketCategories";
@@ -19,6 +19,7 @@ import Signup from "./Pages/Signup";
 import ForgotPassword from "./Pages/Forgotpass";
 import Otp from "./Pages/Otp";
 import About from "./Pages/About";
+import Communication from './Pages/agent/AgentCommunication';
 import AgentDashboard from "./Pages/agent/AgentDashboard";
 import AgentTicketdetails from "./Pages/agent/AgentTicketdetails";
 import AgentNotification from "./Pages/agent/AgentNotification";
@@ -50,8 +51,10 @@ function AppRoutes() {
         <Route path="/signup" element={<Signup />} />
       </Route>
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/Otp" element={<Otp />} />
-      <Route path="/about" element={<About />} />
+      <Route path="/Otp" element={<Otp/>} />
+      <Route path="/about" element={<About/>} />
+      <Route path="/Communication" element={<Communication />} />
+      <Route path="/agent/Communication" element={<Communication />} />
       <Route path="/customer" element={<DefaultLayout />}>
         <Route
           path="dashboard"

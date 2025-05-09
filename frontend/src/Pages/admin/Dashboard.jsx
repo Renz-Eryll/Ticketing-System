@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FiTag } from "react-icons/fi";
@@ -6,36 +6,39 @@ import { FaTicketAlt } from "react-icons/fa";
 import { MdConfirmationNumber } from "react-icons/md";
 
 export const Dashboard = () => {
-  const { activeMenu, user, login } = useStateContext();
+  const { activeMenu, user, login, token } = useStateContext(); // assuming token is stored in context
   const navigate = useNavigate();
+
+  const [tickets, setTickets] = useState([]);
 
   // Redirect if not logged in
   if (!login && !user) {
     return <Navigate to="/" />;
   }
 
-  const data = [
-    {
-      id: 112381389173,
-      category: "POS for Retail and F&B",
-      priority: "High",
-      agent: "John Doe",
-      date: "March 1, 2025",
-      status: "Unresolved",
-      customer: "Customer Name",
-      description: "Payment terminal not processing transactions",
-    },
-    {
-      id: 2918392821,
-      date: "March 1, 2025",
-      category: "POS for Retail and F&B",
-      priority: "Primary",
-      agent: "John Doe",
-      status: "Resolved",
-      customer: "Pangalan ng nag - ticket",
-      description: "Payment terminal not processing transactions",
-    },
-  ];
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/allTickets", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch tickets");
+        }
+
+        const data = await response.json();
+        console.log(data); // Optional: For debugging
+        setTickets(data);
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    };
+
+    fetchTickets();
+  }, [token]);
 
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -62,6 +65,7 @@ export const Dashboard = () => {
         return "text-black";
     }
   };
+
   return (
     <div
       className={`
@@ -70,8 +74,10 @@ transition-all duration-300
 ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
 `}
     >
-      <div className="text-3xl font-bold text-[#1D4ED8]">Dashboard</div>
-      <div className="max-w mt-10">
+      <div className="text-3xl font-bold text-[#1D4ED8]">Dashboard </div>
+
+      {/* Summary Cards */}
+      <div className="max-w mt-7 p-7 border border-gray-100 shadow-sm rounded-xl bg-white">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Unresolved Tickets */}
           <div
@@ -117,6 +123,7 @@ ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
         </div>
       </div>
 
+      {/* Ticket List */}
       <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-lg bg-white min-h-[330px]">
         <div className="mb-5 font-semibold">Recent Tickets</div>
         <div className="hidden md:grid grid-cols-[repeat(6,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
@@ -129,7 +136,7 @@ ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
         </div>
 
         <div className="space-y-2">
-          {data.map((item) => (
+          {tickets.map((item) => (
             <div
               key={item.id}
               onClick={() =>
@@ -137,8 +144,7 @@ ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
                   state: item,
                 })
               }
-              className="bg-[#EEF0FF] rounded-md text-sm text-gray-700 py-3 px-4 cursor-pointer hover:bg-[#dfe3ff] transition
-                   grid md:grid-cols-[repeat(6,_1fr)] items-center gap-2"
+              className="bg-[#EEF0FF] rounded-md text-sm text-gray-700 py-3 px-4 cursor-pointer hover:bg-[#dfe3ff] transition grid md:grid-cols-[repeat(6,_1fr)] items-center gap-2"
             >
               <div className="hidden md:block truncate text-center">
                 {item.id}
@@ -154,10 +160,10 @@ ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
                 {item.priority}
               </div>
               <div className="hidden md:block truncate text-center">
-                {item.agent}
+                {item.agent_name}
               </div>
               <div className="hidden md:block truncate text-center">
-                {item.date}
+                {item.created_at}
               </div>
               <div className="hidden md:block truncate text-center">
                 <span className={`truncate ${statusColor(item.status)}`}>
@@ -165,6 +171,7 @@ ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
                 </span>
               </div>
 
+              {/* Mobile View */}
               <div className="md:hidden space-y-1">
                 <div>
                   <span className="font-semibold">Ticket ID:</span> {item.id}
@@ -180,10 +187,10 @@ ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
                   </span>
                 </div>
                 <div>
-                  <span className="font-semibold">Agent:</span> {item.agent}
+                  <span className="font-semibold">Agent:</span> {item.agent_name}
                 </div>
                 <div>
-                  <span className="font-semibold">Date:</span> {item.date}
+                  <span className="font-semibold">Date:</span> {item.created_at }
                 </div>
                 <div>
                   <span className="font-semibold">Status:</span>{" "}
