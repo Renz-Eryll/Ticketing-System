@@ -9,11 +9,11 @@ import { IoMdArrowBack } from "react-icons/io";
 import { useEffect, useState } from "react";
 
 export const Tickets = () => {
+  const [loading, setLoading] = useState(true);
+  const [filteredData, setFilteredData] = useState([]);
   const { activeMenu, user, login, token } = useStateContext();
   const [ticketData, setTicketData] = useState(null);
   const [agents, setAgents] = useState([]);
-   const [loading, setLoading] = useState(true);
-  const [filteredData, setFilteredData] = useState([]);
   const [assigning, setAssigning] = useState(false);
   const location = useLocation();
   const { category } = location.state || {};
@@ -29,7 +29,6 @@ export const Tickets = () => {
 
   // Redirect if not logged in
   if (!token && !user?.id) {
-    return <Navigate to="/" />;
     return <Navigate to="/" />;
   }
 
@@ -95,8 +94,6 @@ export const Tickets = () => {
       }
     };
 
-    if (category && token) {
-
     if ((category || currentCategory) && token) {
       fetchTickets();
       fetchAgents();
@@ -107,14 +104,17 @@ export const Tickets = () => {
     if (!agentId) return;
     setAssigning(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/assignAgent/${ticketId}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ agent_id: agentId }),
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/assignAgent/${ticketId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ agent_id: agentId }),
+        }
+      );
 
       const updated = await response.json();
       if (!response.ok) throw new Error(updated.message);
@@ -135,7 +135,10 @@ export const Tickets = () => {
   };
 
   // Filter agents based on the ticket's category
-  const filteredAgents = agents.filter((agent) => agent.category?.trim().toLowerCase() === category?.trim().toLowerCase());
+  const filteredAgents = agents.filter(
+    (agent) =>
+      agent.category?.trim().toLowerCase() === category?.trim().toLowerCase()
+  );
 
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -166,14 +169,16 @@ export const Tickets = () => {
   };
 
   return (
-    <div className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${activeMenu ? "lg:pl-75" : "lg:pl-25"}`}>
+    <div
+      className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
+        activeMenu ? "lg:pl-75" : "lg:pl-25"
+      }`}
+    >
       <div className="flex gap-4">
-        <div>
-          <IoMdArrowBack
-            className="text-4xl cursor-pointer"
-            onClick={() => navigate("/admin/ticketCategories")}
-          />
-        </div>
+        <IoMdArrowBack
+          className="text-4xl cursor-pointer"
+          onClick={() => navigate("/admin/ticketCategories")}
+        />
         <div className="text-3xl font-bold text-[#1D4ED8]">{category}</div>
       </div>
 
@@ -230,32 +235,37 @@ export const Tickets = () => {
                   </span>
                 </div>
 
-              <div className="md:hidden space-y-1">
-                <div><span className="font-semibold">Ticket ID:</span> {item.id}</div>
-                <div><span className="font-semibold">Category:</span> {item.category}</div>
-                <div><span className="font-semibold">Priority:</span> <span className={getPriorityColor(item.priority)}>{item.priority}</span></div>
-                <div>
-                  <span className="font-semibold">Agent:</span>{" "}
-                  {item.agent_name ? (
-                    item.agent_name
-                  ) : (
-                    <select
-                      className="text-sm p-1 border rounded"
-                      value={item.agent_id || ""}
-                      onChange={(e) => handleAssignAgent(item.id, e.target.value)}
-                      disabled={assigning}
-                    >
-                      <option value="">Assign</option>
-                      {filteredAgents.map((agent) => (
-                        <option key={agent.id} value={agent.id}>
-                          {agent.name}
-                        </option>
-                      ))}
-                    </select>
-                  )}
+                {/* Mobile View */}
+                <div className="md:hidden space-y-1">
+                  <div>
+                    <span className="font-semibold">Ticket ID:</span>{" "}
+                    {ticket.id}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Category:</span>{" "}
+                    {ticket.category}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Priority:</span>{" "}
+                    <span className={getPriorityColor(ticket.priority)}>
+                      {ticket.priority}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="font-semibold">Agent:</span>{" "}
+                    {ticket.agent_name}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Date:</span>{" "}
+                    {ticket.updated_at}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Status:</span>{" "}
+                    <span className={statusColor(ticket.status)}>
+                      {ticket.status}
+                    </span>
+                  </div>
                 </div>
-                <div><span className="font-semibold">Date:</span> {item.updated_at}</div>
-                <div><span className="font-semibold">Status:</span> <span className={statusColor(item.status)}>{item.status}</span></div>
               </div>
             ))
           ) : (
