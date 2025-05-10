@@ -22,6 +22,17 @@ export const Signup = () => {
   const [role, setRole] = useState("customer");
   const navigate = useNavigate();
   const [TermsOpenModal, setTermsOpenModal] = useState(false);
+  const [pageLoading, pageSetLoading] = useState(false);
+  const handleNavigation = (event) => {
+    event.preventDefault();
+    pageSetLoading(true);
+
+    setTimeout(() => {
+      navigate("/");
+      pageSetLoading(false);
+    }, 700);
+  };
+
   const carousel = {
     dots: false,
     infinite: true,
@@ -124,7 +135,16 @@ export const Signup = () => {
           <h2 className="text-2xl font-bold text-blue-600 mb-2">Sign Up</h2>
           <p className="text-sm mb-4">
             Already have an account?{" "}
-            <Link to="/" className="text-blue-600 font-bold hover:underline">
+            {pageLoading && (
+              <div className="spinner-overlay">
+                <div className="loading-line"></div>
+              </div>
+            )}
+            <Link
+              to="/"
+              onClick={handleNavigation}
+              className="text-blue-600 font-bold hover:underline"
+            >
               Sign in
             </Link>
           </p>
@@ -160,7 +180,11 @@ export const Signup = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-5 top-2.5 text-lg text-gray-500"
               >
-                {showPassword ? <FiEyeOff /> : <FiEye />}
+                {showPassword ? (
+                  <FiEyeOff className="cursor-pointer" />
+                ) : (
+                  <FiEye className="cursor-pointer" />
+                )}
               </button>
             </div>
 
@@ -178,7 +202,11 @@ export const Signup = () => {
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-5 top-2.5 text-lg text-gray-500"
               >
-                {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                {showConfirmPassword ? (
+                  <FiEyeOff className="cursor-pointer" />
+                ) : (
+                  <FiEye className="cursor-pointer" />
+                )}
               </button>
             </div>
 

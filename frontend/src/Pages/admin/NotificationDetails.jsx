@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
+import {
+  Navigate,
+  useNavigate,
+  useParams,
+  useLocation,
+} from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
 const NotificationDetails = () => {
