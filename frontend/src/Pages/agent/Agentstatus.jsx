@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sidebar } from "../../components/Sidebar";
-
+import Layout from "../../layout/Layout";
 function EditModal({ isOpen, onClose, ticket, onSave }) {
   const [priority, setPriority] = useState(ticket.priority);
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate, Navigate } from "react-router-dom";
+import Layout from "../../layout/Layout";
 
 const Notification = () => {
   const { activeMenu, user, token } = useStateContext();
@@ -47,56 +48,60 @@ const Notification = () => {
   };
 
   return (
-    <div
-      className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
-        activeMenu ? "lg:pl-72" : "lg:pl-24"
-      }`}
-    >
-      <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Notification</div>
-
-      <div className="bg-white rounded-lg shadow-sm p-6 min-h-[500px] space-y-2">
-        <div className="grid grid-cols-[repeat(4,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
-          <div>Ticket ID</div>
-          <div>Category</div>
-          <div>Issue</div>
-          <div>Status</div>
+    <Layout>
+      <div
+        className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
+          activeMenu ? "lg:pl-72" : "lg:pl-24"
+        }`}
+      >
+        <div className="text-3xl font-bold text-[#1D4ED8] mb-6">
+          Notification
         </div>
-        {loading ? (
-          <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-2">
-            <div className="spinner-overlay">
-              <div className="loading-line"></div>
-            </div>
+
+        <div className="bg-white rounded-lg shadow-sm p-6 min-h-[500px] space-y-2">
+          <div className="grid grid-cols-[repeat(4,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
+            <div>Ticket ID</div>
+            <div>Category</div>
+            <div>Issue</div>
+            <div>Status</div>
           </div>
-        ) : notifications.length > 0 ? (
-          notifications.map((notif, index) => (
-            <div
-              key={index}
-              onClick={() => handleRowClick(notif)}
-              className="grid grid-cols-[repeat(4,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
-            >
-              <div className="truncate">{notif.id}</div>
-              <div className="truncate">{notif.category}</div>
-              <div className="truncate">{notif.ticket_body}</div>
-              <div className="font-medium">
-                <span
-                  className={`${
-                    notif.status === "Resolved"
-                      ? "text-green-600"
-                      : "text-red-500"
-                  }`}
-                >
-                  {notif.status}
-                </span>
+          {loading ? (
+            <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-2">
+              <div className="spinner-overlay">
+                <div className="loading-line"></div>
               </div>
             </div>
-          ))
-        ) : (
-          <div className="p-6 text-center text-gray-500">
-            No notifications found
-          </div>
-        )}
+          ) : notifications.length > 0 ? (
+            notifications.map((notif, index) => (
+              <div
+                key={index}
+                onClick={() => handleRowClick(notif)}
+                className="grid grid-cols-[repeat(4,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
+              >
+                <div className="truncate">{notif.id}</div>
+                <div className="truncate">{notif.category}</div>
+                <div className="truncate">{notif.ticket_body}</div>
+                <div className="font-medium">
+                  <span
+                    className={`${
+                      notif.status === "Resolved"
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {notif.status}
+                  </span>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="p-6 text-center text-gray-500">
+              No notifications found
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
