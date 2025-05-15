@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\ForgotPasswordController;
+
 
 //  Authenticated user info (requires Sanctum token)
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -47,3 +49,8 @@ Route::middleware('auth:api')->group(function () {
     // plus any category routes if needed...
 });
 
+
+// Forgot password routes
+Route::post('sendOTP', [ForgotPasswordController::class, 'sendOTP']);
+Route::post('verifyOTP', [ForgotPasswordController::class, 'verifyOTP']);
+Route::post('resetPassword', [ForgotPasswordController::class, 'resetPassword']);

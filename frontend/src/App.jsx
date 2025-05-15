@@ -18,6 +18,7 @@ import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
 import ForgotPassword from "./Pages/Forgotpass";
 import Otp from "./Pages/Otp";
+import ResetPassword from "./Pages/ResetPassword";
 import About from "./Pages/About";
 import StatusPage from './Pages/agent/Agentstatus'; // Renamed for clarity
 import AgentDashboard from "./Pages/agent/AgentDashboard";
@@ -37,6 +38,8 @@ import UserLayout from "./layout/UserLayout";
 
 import { Toaster } from "react-hot-toast";
 
+
+// binukod na nga yung mga routes, pinag sama sama nanaman dito sa 
 function AppRoutes() {
     const location = useLocation();
     const noLayoutRoutes = ["/", "/signup"];
@@ -50,6 +53,7 @@ function AppRoutes() {
             </Route>
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/Otp" element={<Otp/>} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/about" element={<About/>} />
             <Route path="/status" element={<StatusPage />} /> {/* Removed duplicate */}
 

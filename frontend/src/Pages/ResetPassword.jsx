@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import APIBaseURL from "../APIBaseURL";
 
 const ResetPassword = () => {
-  const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirmation, setNewPasswordConfirmation] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,32 +15,30 @@ const ResetPassword = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const email = localStorage.getItem("resetEmail");
+    const email = localStorage.reset_email;
+
     try {
-      const res = await fetch("http://localhost:8000/api/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          otp,
-          new_password: newPassword,
-          new_password_confirmation: newPasswordConfirmation,
-        }),
+      const response = await axios.post(`${APIBaseURL}/resetPassword`, {
+        email,
+        password: newPassword,
+        password_confirmation: newPasswordConfirmation,
       });
-      const data = await res.json();
-      if (res.ok) {
-        alert("Password reset successful!");
-        localStorage.removeItem("resetEmail");
-        navigate("/signin");
-      } else {
-        setError(data.message || "Failed to reset password");
-      }
+
+      alert("Password reset successful!");
+      localStorage.removeItem("reset_email");
+      navigate("/");
     } catch (err) {
-      setError("Server error");
+      if (err.response && err.response.data) {
+        setError(err.response.data.message || "Failed to reset password");
+      } else {
+        setError("Server error");
+      }
     } finally {
       setLoading(false);
     }
   };
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0C0823] px-4">
@@ -47,16 +47,7 @@ const ResetPassword = () => {
           Reset Password
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">OTP</label>
-            <input
-              type="text"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#1A56DB] focus:border-[#1A56DB]"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              required
-            />
-          </div>
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
             <input
