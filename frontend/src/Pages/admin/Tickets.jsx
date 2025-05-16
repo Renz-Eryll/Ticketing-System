@@ -278,6 +278,7 @@ export const Tickets = () => {
         </div>
       </div>
     </div>
+
     </Layout>
   );
 };
