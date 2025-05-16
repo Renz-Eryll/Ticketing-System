@@ -45,7 +45,7 @@ class ForgotPasswordNotification extends Notification
             ->line('**Note:** Do not share this OTP with anyone for security reasons.')
             ->line('If you did not request a password reset, please ignore this message or contact our support team.')
             ->salutation('Thank you,')
-            ->salutation(config('app.name') . ' QTech');
+            ->salutation(config('app.name') . ' Business Solution Inc.');
     }
 
     /**
