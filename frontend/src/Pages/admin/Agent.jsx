@@ -102,7 +102,6 @@ export const Agent = () => {
     )
   );
 
-  // --- 🛠 Functions for edit and delete ---
   const handleAgentClick = (agent) => {
     setSelectedAgent(agent);
     setIsActionModalOpen(true);
@@ -159,22 +158,21 @@ export const Agent = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            ...formData,
-          }),
+          body: JSON.stringify(formData),
         }
       );
 
       if (!res.ok) throw new Error("Failed to edit agent");
 
-      const updatedAgent = await res.json();
+      const result = await res.json(); // just a message perhaps
 
       setAllAgents((prev) =>
         prev.map((agent) =>
-          agent.id === selectedAgent.id ? updatedAgent : agent
+          agent.id === selectedAgent.id ? { ...agent, ...formData } : agent
         )
       );
-      toast.success(`${updatedAgent.name} has been updated successfully!`);
+
+      toast.success(`${formData.name} has been updated successfully!`);
       setIsEditModalOpen(false);
       setSelectedAgent(null);
       reset();

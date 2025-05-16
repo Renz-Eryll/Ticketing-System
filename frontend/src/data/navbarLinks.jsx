@@ -47,12 +47,16 @@ export const getNavbarLinks = (userRole) => {
       return {
         navLinks: [
           {
-            name: "Dashboard",
-            path: "/customer/dashboard",
+            name: "Home",
+            path: "/customer/home",
           },
           {
-            name: "Tickets",
+            name: "FAQs",
             path: "/customer/tickets",
+          },
+          {
+            name: "Contact Us",
+            path: "/customer/contact-us",
           },
         ],
         notifications: {

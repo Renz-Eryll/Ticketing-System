@@ -7,6 +7,7 @@ import useUser from "../hooks/use-user";
 import { FiUser } from "react-icons/fi";
 import { FaEdit } from "react-icons/fa";
 import { MdMenuOpen } from "react-icons/md";
+import qtechLogo from "../assets/qtechlogo.png";
 
 const Navbar = () => {
   const { activeMenu, logout } = useStateContext();
@@ -42,16 +43,22 @@ const Navbar = () => {
 
   return (
     <div
-      className={`fixed top-0 z-30 bg-white shadow-md w-full flex justify-end items-center
-      px-4 sm:px-6 py-4
-      transition-all duration-300
-      ${
-        activeMenu
-          ? user?.role === "admin" || user?.role === "agent"
-            ? "lg:pl-72"
-            : "xl:pl-35"
-          : "lg:pl-25"
-      }`}
+      className={`fixed top-0 z-30  w-full flex justify-end items-center
+    px-4 sm:px-6 py-4
+    transition-all duration-300
+    ${
+      activeMenu
+        ? user?.role === "admin" || user?.role === "agent"
+          ? "lg:pl-72"
+          : "xl:pl-35"
+        : "lg:pl-25"
+    }
+    ${
+      user?.role === "customer"
+        ? "bg-white text-black shadow-xs"
+        : "bg-white text-black shadow-md"
+    }
+  `}
     >
       {/* Mobile View */}
       {user?.role === "customer" && (
@@ -108,16 +115,19 @@ const Navbar = () => {
       {/* Navbar Start */}
       {user?.role === "customer" && (
         <div className="flex-2 items-center mx-3.5 xl:mx-0 hidden lg:flex">
-          <Link to="/customer/create-ticket">
-            <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center justify-center w-full md:w-auto cursor-pointer">
-              <FaEdit className="mr-2" /> Create Ticket
-            </button>
+          <Link to="/customer/home">
+            <img
+              src={qtechLogo}
+              alt="Qtech Logo"
+              className="h-14 cursor-pointer"
+            />
           </Link>
         </div>
       )}
-      <div className="items-center justify-center flex-2 hidden lg:flex">
+
+      <div className="items-center justify-center flex-4 hidden xl:flex">
         {navbarLinks?.navLinks && (
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-10">
             {navbarLinks.navLinks.map((link) => (
               <NavLink
                 key={link.name}
@@ -133,6 +143,15 @@ const Navbar = () => {
                 {link.name}
               </NavLink>
             ))}
+            {user?.role === "customer" && (
+              <div>
+                <Link to="/customer/create-ticket">
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-1.5 px-4 rounded-md flex items-center justify-center w-full md:w-auto cursor-pointer">
+                    <FaEdit className="mr-2" /> Create Ticket
+                  </button>
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </div>

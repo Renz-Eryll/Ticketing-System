@@ -35,7 +35,7 @@ export const Signin = () => {
       const { role } = user;
       switch (role) {
         case "customer":
-          navigate("/customer/dashboard");
+          navigate("/customer/home");
           break;
         case "admin":
           navigate("/admin/dashboard");
@@ -89,7 +89,7 @@ export const Signin = () => {
       const { role } = user;
       switch (role) {
         case "customer":
-          navigate("/customer/dashboard");
+          navigate("/customer/home");
           break;
         case "admin":
           navigate("/admin/dashboard");

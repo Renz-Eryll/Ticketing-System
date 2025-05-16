@@ -1,12 +1,12 @@
-import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-
+import ScrollToTopButton from "../components/ScrollToTopButton";
 const UserLayout = ({ children }) => {
   return (
     <div className="flex">
-      <div className="flex-1 min-h-screen bg-gray-100">
+      <div className="flex-1 min-h-screen">
         <Navbar />
-        <div className="mt-20 md:mt-28 p-4">{children}</div>
+        <div className="mt-30 md:mt-25 p-0 lg:p-0 bg-white">{children}</div>
+        <ScrollToTopButton />
       </div>
     </div>
   );
