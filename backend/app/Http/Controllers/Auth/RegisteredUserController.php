@@ -4,43 +4,45 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegisteredUserController extends Controller
 {
     /**
      * Handle an incoming registration request.
      */
-    public function store(Request $request): JsonResponse
+    public function store(RegisterRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'lowercase', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'category' => ['nullable', 'string', 'max:255'],
-            'role' => ['nullable', 'string', 'max:255'],
-        ]);
+        try {
+            // Create user
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => $request->role,
+                'terms_accepted_at' => now(),
+            ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'category' => $validated['category'] ?? null,
-            'role' => $validated['role'] ?? 'user',
-        ]);
+            // Generate token
+            $token = $user->createToken('auth_token')->plainTextToken;
 
-        event(new Registered($user));
+            return response()->json([
+                'message' => 'Registration successful',
+                'user' => $user,
+                'token' => $token
+            ], 201);
 
-        $token = $user->createToken('access_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Registration successful',
-            'user' => $user->only(['id', 'name', 'email', 'role', 'category']),
-            'token' => $token,
-        ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Registration failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
