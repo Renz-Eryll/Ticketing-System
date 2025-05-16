@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "../../components/Sidebar";
 import Layout from "../../layout/Layout";
-function EditModal({ isOpen, onClose, ticket, onSave }) {
+function UpdateStatusModal({ isOpen, onClose, ticket, onSave }) {
   const [priority, setPriority] = useState(ticket.priority);
+  const [status, setStatus] = useState(ticket.status);
+
+  useEffect(() => {
+    if (isOpen) {
+      setPriority(ticket.priority);
+      setStatus(ticket.status);
+    }
+  }, [isOpen, ticket]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#08032B] bg-opacity-40 px-2">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-80 px-2">
       <div className="bg-white rounded-lg shadow-lg p-4 sm:p-8 w-full max-w-md relative">
-        <h2 className="text-xl font-semibold mb-4">Edit Ticket</h2>
+        <h2 className="text-xl font-semibold mb-4">Update Ticket Status</h2>
         <form
           onSubmit={e => {
             e.preventDefault();
-            onSave({ priority });
+            onSave({ priority, status });
           }}
           className="space-y-4"
         >
@@ -28,6 +36,19 @@ function EditModal({ isOpen, onClose, ticket, onSave }) {
               <option value="High">High</option>
               <option value="Medium">Medium</option>
               <option value="Low">Low</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Status</label>
+            <select
+              className="w-full border rounded px-3 py-2"
+              value={status}
+              onChange={e => setStatus(e.target.value)}
+              required
+            >
+              <option value="Open">Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved">Done</option>
             </select>
           </div>
           <div className="flex justify-end gap-2 mt-6">
@@ -111,7 +132,7 @@ function PreviewModal({ isOpen, file, onClose }) {
   );
 }
 
-export default function Communication() {
+export default function Agentstatus() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isResolveOpen, setIsResolveOpen] = useState(false);
   const [resolved, setResolved] = useState(false);
@@ -155,14 +176,17 @@ export default function Communication() {
                     {ticket.status}
                   </span>
                 </h1>
-                <div className="space-x-2 flex flex-row">
-                  <button
-                    className="bg-gray-200 px-4 py-2 rounded flex items-center gap-2 text-sm disabled:opacity-50"
-                    onClick={() => setIsEditOpen(true)}
+                <div className="space-x-2 flex flex-row items-center">
+                  <select
+                    className="bg-gray-200 px-4 py-2 rounded text-sm"
+                    value={ticket.status}
+                    onChange={e => setTicket({ ...ticket, status: e.target.value })}
                     disabled={resolved}
                   >
-                    Edit
-                  </button>
+                    <option value="Open">Open</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                  </select>
                   <button
                     onClick={() => setIsResolveOpen(true)}
                     className="bg-[#08032B] text-white px-4 py-2 rounded flex items-center gap-2 text-sm disabled:opacity-50"
@@ -260,7 +284,7 @@ export default function Communication() {
           </div>
         </div>
       </main>
-      <EditModal
+      <UpdateStatusModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         ticket={ticket}

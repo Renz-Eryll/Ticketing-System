@@ -35,11 +35,12 @@ import GuestLayout from "./layout/GuestLayout";
 import AdminLayout from "./layout/AdminLayout";
 import AgentLayout from "./layout/AgentLayout";
 import UserLayout from "./layout/UserLayout";
+import Agentstatus from "./Pages/agent/Agentstatus";
 
 import { Toaster } from "react-hot-toast";
 
 
-// binukod na nga yung mga routes, pinag sama sama nanaman dito sa 
+// binukod na nga yung mga routes, pinag sama sama nanaman dito  
 function AppRoutes() {
     const location = useLocation();
     const noLayoutRoutes = ["/", "/signup"];
@@ -83,6 +84,8 @@ function AppRoutes() {
                 <Route path="tickets" element={<AgentTickets />} />
                 <Route path="tickets/:id" element={<AgentTicketdetails />} />
                 <Route path="status" element={<StatusPage />} /> {/* Corrected path */}
+                <Route path="/agentstatus" element={<Agentstatus />} />
+
             </Route>
         </Routes>
     );

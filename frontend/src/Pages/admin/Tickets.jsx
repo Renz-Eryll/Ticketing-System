@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 import { useEffect, useState } from "react";
+import Sidebar from "../../components/Sidebar";
 
 export const Tickets = () => {
   const [loading, setLoading] = useState(true);
@@ -169,7 +170,8 @@ export const Tickets = () => {
   };
 
   return (
-    <div
+    <layout>
+      <div
       className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
         activeMenu ? "lg:pl-75" : "lg:pl-25"
       }`}
@@ -276,5 +278,8 @@ export const Tickets = () => {
         </div>
       </div>
     </div>
+    </layout>
   );
 };
+
+export default Tickets;
