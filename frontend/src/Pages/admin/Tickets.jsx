@@ -1,4 +1,4 @@
-import { useStateContext } from "../../contexts/ContextProvider";
+import { useStateContext } from "../../contexts/ContextProvider"
 import {
   Navigate,
   useLocation,
