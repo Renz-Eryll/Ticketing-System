@@ -1,52 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
-
-
+import Layout from "../../layout/Layout";
 export const AgentTickets = () => {
-  const { activeMenu, user, login,token } = useStateContext();
+  const { activeMenu, user, login } = useStateContext();
   const navigate = useNavigate();
 
-  const [tickets, setTickets] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
   // Redirect if not logged in
-  useEffect(() => {
   if (!login && !user) {
-    navigate("/");
+    return <navigate to="/" />;
   }
-}, [login, user, navigate]);
 
-if (!login && !user) {
-  return null;
-}
-
-  useEffect(() => {
-  if (!login || !user) return;
-
-  const fetchTickets = async () => {
-    try {
-      const res = await fetch(`http://localhost:8000/api/tickets/agent/${user.id}`, {
-        method: "GET",  
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch tickets");
-      setTickets(data.tickets || []); // make sure to set the tickets from response
-      setLoading(false);
-    } catch (err) {
-      setError(err.message || "Failed to fetch tickets");
-      setLoading(false);
-    }
-  };
-
-  fetchTickets();
-}, [login, user, token]);
+  // kunyareng data
+  const data = [
+    {
+      id: 112381389173,
+      category: "POS for Retail and F&B",
+      priority: "High",
+      agent: "Agent1",
+      date: "March 1, 2025",
+      status: "Unresolved",
+      customer: "Agent Customer Name",
+      description: "Payment terminal not processing transactions",
+    },
+    {
+      id: 2918392821,
+      date: "March 1, 2025",
+      category: "POS for Retail and F&B",
+      priority: "Primary",
+      agent: "Agent2",
+      status: "Resolved",
+      customer: "Customer 2",
+      description: "Payment terminal not processing transactions",
+    },
+  ];
 
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -75,12 +63,13 @@ if (!login && !user) {
   };
 
   return (
-    <div
+    <Layout>
+      <div
       className={`
-        mx-5 md:mx-5 lg:mx-5
-        transition-all duration-300 
-        ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
-      `}
+      mx-5 md:mx-5 lg:mx-5
+      transition-all duration-300 
+      ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
+    `}
     >
       <div className="flex gap-4">
         <div>
@@ -104,14 +93,8 @@ if (!login && !user) {
           <div>Status</div>
         </div>
 
-        {loading && <p className="text-center text-sm text-gray-500">Loading tickets...</p>}
-        {error && <p className="text-center text-sm text-red-500">{error}</p>}
-        {!loading && tickets.length === 0 && (
-          <p className="text-center text-sm text-gray-500">No tickets found.</p>
-        )}
-
         <div className="space-y-2">
-          {tickets.map((item) => (
+          {data.map((item) => (
             <div
               key={item.id}
               onClick={() =>
@@ -120,7 +103,7 @@ if (!login && !user) {
                 })
               }
               className="bg-[#EEF0FF] rounded-md text-sm text-gray-700 py-3 px-4 cursor-pointer hover:bg-[#dfe3ff] transition
-                       grid md:grid-cols-[repeat(6,_1fr)] items-center gap-2"
+                   grid md:grid-cols-[repeat(6,_1fr)] items-center gap-2"
             >
               <div className="hidden md:block truncate text-center">
                 {item.id}
@@ -128,34 +111,58 @@ if (!login && !user) {
               <div className="hidden md:block truncate text-center">
                 {item.category}
               </div>
-              <div className={`hidden md:block truncate text-center ${getPriorityColor(item.priority)}`}>
+              <div
+                className={`hidden md:block truncate text-center ${getPriorityColor(
+                  item.priority
+                )}`}
+              >
                 {item.priority}
               </div>
               <div className="hidden md:block truncate text-center">
-                {item.agent_name}
+                {item.agent}
               </div>
               <div className="hidden md:block truncate text-center">
-                {item.created_at}
+                {item.date}
               </div>
               <div className="hidden md:block truncate text-center">
-                <span className={statusColor(item.status)}>
+                <span className={`truncate ${statusColor(item.status)}`}>
                   {item.status}
                 </span>
               </div>
 
               <div className="md:hidden space-y-1">
-                <div><span className="font-semibold">Ticket ID:</span> {item.id}</div>
-                <div><span className="font-semibold">Category:</span> {item.category}</div>
-                <div><span className="font-semibold">Priority:</span> <span className={getPriorityColor(item.priority)}>{item.priority}</span></div>
-                <div><span className="font-semibold">Agent:</span> {item.agent_name}</div>
-                <div><span className="font-semibold">Date:</span> {item.created_at}</div>
-                <div><span className="font-semibold">Status:</span> <span className={statusColor(item.status)}>{item.status}</span></div>
+                <div>
+                  <span className="font-semibold">Ticket ID:</span> {item.id}
+                </div>
+                <div>
+                  <span className="font-semibold">Category:</span>{" "}
+                  {item.category}
+                </div>
+                <div>
+                  <span className="font-semibold">Priority:</span>{" "}
+                  <span className={getPriorityColor(item.priority)}>
+                    {item.priority}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-semibold">Agent:</span> {item.agent}
+                </div>
+                <div>
+                  <span className="font-semibold">Date:</span> {item.date}
+                </div>
+                <div>
+                  <span className="font-semibold">Status:</span>{" "}
+                  <span className={statusColor(item.status)}>
+                    {item.status}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
     </div>
+    </Layout>
   );
 };
 

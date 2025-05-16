@@ -10,12 +10,13 @@ import { IoBuildOutline } from "react-icons/io5";
 import { RiBillLine } from "react-icons/ri";
 import { BsCashCoin } from "react-icons/bs";
 import categoryImage from "../../assets/categoryImage.png";
-
+import Layout from "../../layout/Layout";
 export const AgentDashboard = () => {
   const { activeMenu } = useStateContext();
   const navigate = useNavigate();
   return (
-    <div
+    <Layout>
+      <div
       className={`
     mx-5 md:mx-5 lg:mx-5
     transition-all duration-300 
@@ -144,6 +145,7 @@ export const AgentDashboard = () => {
         </div>
       </div>
     </div>
+    </Layout>
   );
 };
 
