@@ -52,6 +52,7 @@ class TicketController extends Controller
             'customer_name' => optional($ticket->customer)->name ?? 'N/A',
             'agent_name'    => optional($ticket->agent)->name ?? 'Unassigned',
             'agent_id'      => $ticket->agent_id,
+            'priority'      => $ticket->priority,
         ]);
     }
 
@@ -153,6 +154,76 @@ class TicketController extends Controller
         }
     }
 
+
+      // Update ticket Priority
+    public function updatePriority(Request $request, $id)
+{
+    try {
+        // Validate priority field
+        $request->validate([
+            'priority' => 'required|string|in:Low,Medium,High,Urgent',
+        ]);
+
+        // Find ticket or fail
+        $ticket = Tickets::findOrFail($id);
+
+        // Update priority
+        $ticket->priority = $request->priority;
+        $ticket->save();
+
+        return response()->json([
+            'message' => 'Priority updated successfully',
+            'priority' => $ticket->priority,
+        ]);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'message' => 'Validation failed',
+            'errors' => $e->errors(),
+        ], 422);
+    } catch (\Exception $e) {
+        Log::error('Error updating priority', ['exception' => $e]);
+
+        return response()->json([
+            'message' => 'Server error while updating priority',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+
+    public function getTicketsByAgent($agentId)
+{
+    $agent = User::where('id', $agentId)->where('role', 'agent')->first();
+
+    if (!$agent) {
+        return response()->json(['message' => 'Agent not found'], 404);
+    }
+
+    $tickets = Tickets::with(['agent', 'customer'])
+                      ->where('agent_id', $agentId)
+                      ->latest()
+                      ->get();
+
+    return response()->json([
+        'agent' => [
+            'id' => $agent->id,
+            'name' => $agent->name,
+            'email' => $agent->email,
+        ],
+        'tickets' => $tickets->map(function($ticket) {
+            return [
+                'id'           => $ticket->id,
+                'status'       => $ticket->status,
+                'category'     => $ticket->category,
+                'created_at'   => $ticket->created_at->toDateTimeString(),
+                'agent_name' => $ticket->agent_name,
+                'priority'=> $ticket->priority
+            ];
+        }),
+    ]);
+}
+
+      
     // Helper method to filter tickets by category
     private function filterByCategory($category)
     {

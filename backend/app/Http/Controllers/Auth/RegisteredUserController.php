@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
+use function Laravel\Prompts\password;
+
 class RegisteredUserController extends Controller
 {
     /**
@@ -55,7 +57,15 @@ class RegisteredUserController extends Controller
             'agents' => $agents
         ]);
     }
+    public function getAdmin(): JsonResponse
+        {
+            $agents = User::where('role', 'admin')->get(['id', 'name', 'email','password' ]);
 
+            return response()->json([
+                'message' => 'Agent list retrieved successfully',
+                'agents' => $agents
+            ]);
+        }
 
     public function getAgentsByCategory($category): JsonResponse
     {

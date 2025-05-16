@@ -11,11 +11,11 @@ const TicketDetails = () => {
   const [ticketData, setTicketData] = useState(null);
   const [agents, setAgents] = useState([]);
   const [assignedAgent, setAssignedAgent] = useState("");
-  const [status, setStatus] = useState("");
+  const [priority, setPriority] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  if (!login && !user) return <Navigate to="/" />;
+
 
   const selectedAgentName = useMemo(() => {
     if (assignedAgent) {
@@ -37,7 +37,7 @@ const TicketDetails = () => {
         if (!res.ok) throw new Error(data.message || "Failed to fetch ticket");
         setTicketData(data);
         setAssignedAgent(data.agent_id || "");
-        setStatus(data.status || "Open");
+        setPriority(data.priority || "Open");
       } catch (err) {
         console.error(err);
         setError(err.message);
@@ -105,28 +105,28 @@ const TicketDetails = () => {
   };
 
   // Update Ticket Status
-  const handleStatusUpdate = async () => {
+  const handlePriorityUpdate = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8000/api/tickets/${id}/status`,
+        `http://localhost:8000/api/tickets/${id}/priority`,
         {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status }),
+          body: JSON.stringify({ priority }),
         }
       );
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Status update failed");
+      if (!res.ok) throw new Error(data.message || "priority update failed");
 
-      setTicketData((prev) => ({ ...prev, status }));
-      alert("Status updated successfully");
+      setTicketData((prev) => ({ ...prev, priority }));
+      alert("Priority updated successfully");
     } catch (err) {
       console.error(err);
-      alert("Failed to update status");
+      alert("Failed to update priority");
     }
   };
 
@@ -188,20 +188,25 @@ const TicketDetails = () => {
               {ticketData.created_at}
             </div>
 
-            <div className="font-semibold text-gray-600 mt-6">Status</div>
+             <div className="font-semibold text-gray-600 mt-6">Status</div>
+            <div className="font-bold text-black mt-1">
+                          {ticketData.status}
+                        </div>
+            <div className="font-semibold text-gray-600 mt-6">Priority</div>
+            
             <div className="flex items-center gap-2 mt-1">
               <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
                 className="p-2 border-2 border-black rounded-md"
               >
-                <option value="Open">Open</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Resolved">Resolved</option>
-                <option value="Closed">Closed</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
               </select>
               <button
-                onClick={handleStatusUpdate}
+                onClick={handlePriorityUpdate}
                 className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md"
               >
                 Update
