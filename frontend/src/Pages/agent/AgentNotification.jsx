@@ -1,7 +1,7 @@
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
-
+import Layout from "../../layout/Layout";
 const AgentNotification = () => {
   const navigate = useNavigate();
   const { activeMenu, user, login } = useStateContext();
@@ -51,7 +51,8 @@ const AgentNotification = () => {
   };
 
   return (
-    <div
+    <Layout>
+      <div
       className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
         activeMenu ? "lg:pl-75" : "lg:pl-24"
       }`}
@@ -92,6 +93,7 @@ const AgentNotification = () => {
         ))}
       </div>
     </div>
+    </Layout>
   );
 };
 

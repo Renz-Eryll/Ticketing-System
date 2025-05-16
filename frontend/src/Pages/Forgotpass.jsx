@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // make sure useNavigate is imported here
-
+import axios from "axios";
+import APIBaseURL from '../APIBaseURL'
 const ForgotPassword = () => {
   const navigate = useNavigate();
 
@@ -9,9 +10,18 @@ const ForgotPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Password reset link sent to:", email);
-    setSubmitted(true);
-    navigate("/otp");
+    (async () => {
+      try {
+        await axios.post(`${APIBaseURL}/sendOTP`, {
+          email,
+        });
+        localStorage.setItem('otp_email', email);
+        setSubmitted(true);
+        navigate("/otp");
+      } catch (err) {
+        console.error("Error: ", err);
+      }
+    })();
   };
 
   return (

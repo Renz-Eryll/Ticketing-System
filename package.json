@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "aos": "^2.3.4",
-    "lucide-react": "^0.508.0",
-    "react-hot-toast": "^2.5.2",
-    "react-toastify": "^11.0.5",
-    "slick-carousel": "^1.8.1"
-  }
-}

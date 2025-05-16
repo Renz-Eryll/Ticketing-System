@@ -9,6 +9,8 @@ import Hero3 from "../assets/hero-3.jpg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+
+
 export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -16,6 +18,7 @@ export const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,8 +57,19 @@ export const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    if (!isTermsAccepted) {
+      setError("You must accept the terms and conditions to register.");
+      setLoading(false);
+      return;
+    }
+
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setError("Passwords do not match");
+      setLoading(false);
       return;
     }
 
@@ -72,28 +86,28 @@ export const Signup = () => {
           password,
           role: role,
           password_confirmation: confirmPassword,
+          terms_accepted: isTermsAccepted
         }),
       });
 
-      let data = null;
-
-      const text = await response.text(); // get the raw text
-      if (text) {
-        data = JSON.parse(text); // safely parse if not empty
-      }
+      const data = await response.json();
 
       if (!response.ok) {
-        setError(data?.message || "Registration failed.");
+        setError(data.message || "Registration failed.");
         return;
       }
 
       setSuccess("Signup successful! Redirecting...");
+      // Store the token if needed
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      }
       navigate("/");
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -212,7 +226,12 @@ export const Signup = () => {
 
             {/* Terms & Conditions */}
             <div className="flex items-center text-sm">
-              <input type="checkbox" className="mr-2" />
+              <input 
+                type="checkbox" 
+                className="mr-2" 
+                checked={isTermsAccepted}
+                onChange={(e) => setIsTermsAccepted(e.target.checked)}
+              />
               <label>
                 I have read & accept the{" "}
                 <a
