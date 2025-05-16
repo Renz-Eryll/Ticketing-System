@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 import { useState } from "react";
 import { useEffect } from "react";
-
+import Layout from "../../layout/Layout";
 const AgentTicketdetails = () => {
   const { activeMenu, user, login,token } = useStateContext();
   const { id } = useParams();
@@ -85,6 +85,7 @@ const AgentTicketdetails = () => {
   }
 
   return (
+    <Layout>
     <div
       className={`
         mx-5 md:mx-5 lg:mx-5
@@ -193,6 +194,7 @@ const AgentTicketdetails = () => {
         </div>
       </div>
     </div>
+    </Layout>
   );
 };
 
