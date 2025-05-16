@@ -97,19 +97,6 @@ ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
               </div>
             </div>
 
-          {/* Resolved Tickets */}
-          <div
-            className="p-6 py-7 gap-4 rounded-xl flex items-center space-x-4 border border-gray-100 shadow-md bg-white
-           cursor-pointer hover:text-blue-700 transform transition-all duration-200 hover:scale-103"
-          >
-            <div className="bg-green-100 p-3 rounded-xl text-green-500 text-4xl">
-              <FaTicketAlt />
-            </div>
-            <div>
-              <h3 className="text-md font-semibold mb-2">Resolved Tickets</h3>
-              <h1 className="text-3xl font-extrabold">13, 490</h1>
-            </div>
-          </div>
             {/* Resolved Tickets */}
             <div
               className="p-6 py-7 gap-4 rounded-xl flex items-center space-x-4 border border-gray-100 shadow-md bg-white
@@ -124,21 +111,6 @@ ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
               </div>
             </div>
 
-          {/* Urgent Tickets */}
-          <div
-            className="p-6 py-7 gap-4 rounded-xl flex items-center space-x-4 border border-gray-100 shadow-md bg-white 
-          cursor-pointer hover:text-blue-700 transform transition-all duration-200 hover:scale-103"
-          >
-            <div className="bg-red-100 p-3 rounded-xl text-red-500 text-4xl ">
-              <MdConfirmationNumber />
-            </div>
-            <div>
-              <h3 className="text-md font-semibold mb-2">Urgent Tickets</h3>
-              <h1 className="text-3xl font-extrabold">3, 671</h1>
-            </div>
-          </div>
-        </div>
-      </div>
             {/* Urgent Tickets */}
             <div
               className="p-6 py-7 gap-4 rounded-xl flex items-center space-x-4 border border-gray-100 shadow-md bg-white 
