@@ -21,7 +21,7 @@ export const AgentTickets = () => {
       agent: "Agent1",
       date: "March 1, 2025",
       status: "Unresolved",
-      customer: "Agent Customer Name",
+      customer: "Customer Name",
       description: "Payment terminal not processing transactions",
     },
     {
