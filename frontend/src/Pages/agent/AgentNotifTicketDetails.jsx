@@ -2,7 +2,7 @@ import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
-
+import Layout from "../../layout/Layout";
 const AgentNotifTicketDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,7 +28,8 @@ const AgentNotifTicketDetails = () => {
 
   {/* CHANGES */}
   return (
-    <div
+    <Layout>
+      <div
       className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
         activeMenu ? "lg:pl-75" : "lg:pl-25"
       }`}
@@ -125,6 +126,7 @@ const AgentNotifTicketDetails = () => {
         </div>
       </div>
     </div>
+    </Layout>
   );
   
   

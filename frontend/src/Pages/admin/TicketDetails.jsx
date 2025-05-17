@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  Navigate,
-} from "react-router-dom";
+import {useLocation,useNavigate,useParams,Navigate,} from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
 const TicketDetails = () => {

@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
+<<<<<<< HEAD
 import { useNavigate, Navigate } from "react-router-dom";
 
+=======
+import { useNavigate } from "react-router-dom";
+import Layout from "../../layout/Layout";
+>>>>>>> 0cf3919e2cfbe177bc3d0b746db45529ea502227
 const AgentNotification = () => {
   const { user, login, activeMenu } = useStateContext();
   const [notifications, setNotifications] = useState([]);
@@ -75,8 +80,14 @@ const AgentNotification = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div
       className={`mx-5 transition-all duration-300 ${
+=======
+    <Layout>
+      <div
+      className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
+>>>>>>> 0cf3919e2cfbe177bc3d0b746db45529ea502227
         activeMenu ? "lg:pl-75" : "lg:pl-24"
       }`}
     >
@@ -165,6 +176,7 @@ const AgentNotification = () => {
         </div>
       </div>
     </div>
+    </Layout>
   );
 };
 
