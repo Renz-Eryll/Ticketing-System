@@ -36,6 +36,7 @@ import AdminLayout from "./layout/AdminLayout";
 import AgentLayout from "./layout/AgentLayout";
 import UserLayout from "./layout/UserLayout";
 import Agentstatus from "./Pages/agent/Agentstatus";
+import AgentReply from "./Pages/agent/AgentReply";
 
 import { Toaster } from "react-hot-toast";
 
@@ -85,6 +86,7 @@ function AppRoutes() {
                 <Route path="tickets/:id" element={<AgentTicketdetails />} />
                 <Route path="status" element={<StatusPage />} /> {/* Corrected path */}
                 <Route path="/agentstatus" element={<Agentstatus />} />
+                <Route path="AgentReply" element={<AgentReply />} />
 
             </Route>
         </Routes>
