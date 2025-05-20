@@ -89,8 +89,7 @@ function AppRoutes() {
         <Route path="notification" element={<Layout><AgentNotification /></Layout>} />
         <Route path="notification/:id" element={<Layout><AgentNotifTicketDetails /></Layout>} />
         <Route path="tickets" element={<Layout><AgentTickets /></Layout>} />
-        <Route path="tickets/:id" element={<Layout><AgentTicketdetails /></Layout>} />
-        <Route path="status" element={<Layout><Agentstatus /></Layout>} />
+        <Route path="tickets/:id" element={<Layout><Agentstatus/></Layout>} />
         <Route path="reply" element={<Layout><AgentReply /></Layout>} />
       </Route>
     </Routes>
