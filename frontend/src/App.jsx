@@ -56,9 +56,7 @@ function AppRoutes() {
       <Route path="/status" element={<StatusPage />} />{" "}
       {/* Removed duplicate */}
       <Route path="/customer" element={<UserLayout />}>
-        {" "}
-        {/* Assuming UserLayout is the correct layout */}
-        <Route path="dashboard" element={<CustomerDashboard />} />
+        <Route path="home" element={<Home />} />
         <Route path="tickets" element={<CustomerTicket />} />
         <Route path="notification" element={<CustomerNotification />} />
         <Route

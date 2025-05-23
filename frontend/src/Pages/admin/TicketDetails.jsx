@@ -7,6 +7,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
+import Layout from "../../layout/Layout";
 
 const TicketDetails = () => {
   const { activeMenu, user, login, token } = useStateContext();
@@ -26,7 +27,7 @@ const TicketDetails = () => {
   // compute display name
   const selectedAgentName = useMemo(() => {
     if (assignedAgent) {
-      const a = agents.find(x => String(x.id) === String(assignedAgent));
+      const a = agents.find((x) => String(x.id) === String(assignedAgent));
       if (a) return a.name;
     }
     return ticketData?.agent_name || "Unassigned";
@@ -37,7 +38,7 @@ const TicketDetails = () => {
       try {
         // fetch ticket
         const res1 = await fetch(`http://localhost:8000/api/ticket/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
         const t = await res1.json();
         if (!res1.ok) throw new Error(t.message || "Failed to fetch ticket");
@@ -61,12 +62,17 @@ const TicketDetails = () => {
         // Ensure the category is URL-encoded
         const encodedCategory = encodeURIComponent(ticketData.category);
         console.log("Encoded Category:", encodedCategory);
-        const res2 = await fetch(`http://localhost:8000/api/agentsByCategory/${encodedCategory}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        
+        const res2 = await fetch(
+          `http://localhost:8000/api/agentsByCategory/${encodedCategory}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
         if (!res2.ok) {
-          throw new Error(`Failed to fetch agents for category: ${ticketData.category}`);
+          throw new Error(
+            `Failed to fetch agents for category: ${ticketData.category}`
+          );
         }
 
         const { agents: list } = await res2.json();
@@ -102,7 +108,7 @@ const TicketDetails = () => {
       });
       const updated = await res.json();
       if (!res.ok) throw new Error(updated.message);
-      setTicketData(td => ({ ...td, agent_name: updated.agent_name }));
+      setTicketData((td) => ({ ...td, agent_name: updated.agent_name }));
       alert("Agent assigned successfully!");
     } catch (err) {
       console.error("Error assigning agent:", err);
@@ -132,94 +138,112 @@ const TicketDetails = () => {
   }
 
   return (
-    <div
-      className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
-        activeMenu ? "lg:pl-75" : "lg:pl-25"
-      }`}
-    >
-      <div className="flex gap-4">
-        <IoMdArrowBack
-          className="text-4xl cursor-pointer"
-          onClick={() => navigate(-1)}
-        />
-        <div className="text-3xl font-bold text-[#1D4ED8]">Tickets Details</div>
-      </div>
-
-      <div className="mt-10 border border-gray-100 shadow-sm rounded-xl bg-white">
-        <div className="px-4 grid grid-cols-12">
-          {/* Left column */}
-          <div className="col-span-12 md:col-span-5 p-8 text-sm">
-            <div className="text-gray-600 font-semibold">Ticket ID</div>
-            <div className="text-black font-bold mt-1">{ticketData.id}</div>
-
-            <div className="text-gray-600 font-semibold mt-6">
-              Customer Name
-            </div>
-            <div className="mt-2 text-black font-bold">
-              {ticketData.customer_name}
-            </div>
+    <Layout>
+      <div
+        className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
+          activeMenu ? "lg:pl-75" : "lg:pl-25"
+        }`}
+      >
+        <div className="flex gap-4">
+          <IoMdArrowBack
+            className="text-4xl cursor-pointer"
+            onClick={() => navigate(-1)}
+          />
+          <div className="text-3xl font-bold text-[#1D4ED8]">
+            Tickets Details
           </div>
+        </div>
 
-          {/* Right column */}
-          <div className="col-span-12 md:col-span-7 p-8 text-sm">
-            <div className="text-gray-600 font-semibold mt-2">Created Date</div>
-            <div className="mt-2 text-black font-bold">
-              {ticketData.created_at}
+        <div className="mt-10 border border-gray-100 shadow-sm rounded-xl bg-white">
+          <div className="px-4 grid grid-cols-12">
+            {/* Left column */}
+            <div className="col-span-12 md:col-span-5 p-8 text-sm">
+              <div className="text-gray-600 font-semibold">Ticket ID</div>
+              <div className="text-black font-bold mt-1">{ticketData.id}</div>
+
+              <div className="text-gray-600 font-semibold mt-6">
+                Customer Name
+              </div>
+              <div className="mt-2 text-black font-bold">
+                {ticketData.customer_name}
+              </div>
             </div>
 
-            <div className="text-gray-600 font-semibold mt-6">Status</div>
-            <div className="text-black font-bold mt-1">{ticketData.status}</div>
-          </div>
+            {/* Right column */}
+            <div className="col-span-12 md:col-span-7 p-8 text-sm">
+              <div className="text-gray-600 font-semibold mt-2">
+                Created Date
+              </div>
+              <div className="mt-2 text-black font-bold">
+                {ticketData.created_at}
+              </div>
 
-          {/* Description & timeline */}
-          <div className="col-span-12 md:col-span-5 px-8 mt-5 text-sm">
-            <div className="text-gray-600 font-semibold">Description</div>
-            <div className="mt-2 text-black font-bold">
-              {ticketData.ticket_body}
+              <div className="text-gray-600 font-semibold mt-6">Status</div>
+              <div className="text-black font-bold mt-1">
+                {ticketData.status}
+              </div>
             </div>
 
-            <div className="text-gray-600 font-semibold mt-5">Timeline</div>
-            <div className="text-black font-bold mt-1">Initial Response</div>
-            <div className="text-black font-bold">March 2, 2025 | 9:02 AM</div>
-            <div className="text-black font-bold mt-4">Technical Assigned</div>
-            <div className="text-black font-bold">March 2, 2025 | 9:15 AM</div>
-          </div>
+            {/* Description & timeline */}
+            <div className="col-span-12 md:col-span-5 px-8 mt-5 text-sm">
+              <div className="text-gray-600 font-semibold">Description</div>
+              <div className="mt-2 text-black font-bold">
+                {ticketData.ticket_body}
+              </div>
 
-          {/* Assigned Agent & assignment UI */}
-          <div className="col-span-12 md:col-span-7 px-8 mt-5 text-sm">
-            <div className="text-gray-600 font-semibold">Assigned Agent</div>
-            <div className="text-black font-bold mt-1">{selectedAgentName}</div>
-
-            <div className="mt-5 flex items-center space-x-3">
-              <select
-                value={assignedAgent}
-                onChange={(e) => setAssignedAgent(e.target.value)}
-                className="p-2 border-2 border-black rounded-md focus:outline-none"
-              >
-                <option value="">Select Agent</option>
-                {agents.map(a => (
-                  <option key={a.id} value={a.id}>{a.name}</option>
-                ))}
-              </select>
-              <button
-                onClick={handleAssign}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition"
-              >
-                Assign Agent
-              </button>
+              <div className="text-gray-600 font-semibold mt-5">Timeline</div>
+              <div className="text-black font-bold mt-1">Initial Response</div>
+              <div className="text-black font-bold">
+                March 2, 2025 | 9:02 AM
+              </div>
+              <div className="text-black font-bold mt-4">
+                Technical Assigned
+              </div>
+              <div className="text-black font-bold">
+                March 2, 2025 | 9:15 AM
+              </div>
             </div>
-          </div>
 
-          
+            {/* Assigned Agent & assignment UI */}
+            <div className="col-span-12 md:col-span-7 px-8 mt-5 text-sm">
+              <div className="text-gray-600 font-semibold">Assigned Agent</div>
+              <div className="text-black font-bold mt-1">
+                {selectedAgentName}
+              </div>
 
-          {/* Attachments */}
-          <div className="col-span-12 md:col-span-7 px-8 mt-5 text-sm">
-            <div className="text-gray-600 font-semibold">Attachments</div>
-            <div className="text-black font-bold mt-1">{ticketData.image_path}</div>
+              <div className="mt-5 flex items-center space-x-3">
+                <select
+                  value={assignedAgent}
+                  onChange={(e) => setAssignedAgent(e.target.value)}
+                  className="p-2 border-2 border-black rounded-md focus:outline-none"
+                >
+                  <option value="">Select Agent</option>
+                  {agents.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={handleAssign}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition"
+                >
+                  Assign Agent
+                </button>
+              </div>
+            </div>
+
+            {/* Attachments */}
+            <div className="col-span-12 md:col-span-7 px-8 mt-5 text-sm">
+              <div className="text-gray-600 font-semibold">Attachments</div>
+              <div className="text-black font-bold mt-1">
+                {ticketData.image_path}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

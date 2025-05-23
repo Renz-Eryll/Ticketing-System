@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 import { useEffect, useState } from "react";
+import Layout from "../../layout/Layout";
 
 export const Tickets = () => {
   const [loading, setLoading] = useState(true);
@@ -169,112 +170,114 @@ export const Tickets = () => {
   };
 
   return (
-    <div
-      className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
-        activeMenu ? "lg:pl-75" : "lg:pl-25"
-      }`}
-    >
-      <div className="flex gap-4">
-        <IoMdArrowBack
-          className="text-4xl cursor-pointer"
-          onClick={() => navigate("/admin/ticketCategories")}
-        />
-        <div className="text-3xl font-bold text-[#1D4ED8]">{category}</div>
-      </div>
-
-      <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-lg bg-white min-h-[500px]">
-        <div className="hidden md:grid grid-cols-[repeat(6,_1fr)] items-center text-center font-semibold text-gray-600 text-sm py-2 mb-5">
-          <div>Ticket ID</div>
-          <div>Category</div>
-          <div>Priority</div>
-          <div>Agent</div>
-          <div>Date Created</div>
-          <div>Status</div>
+    <Layout>
+      <div
+        className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
+          activeMenu ? "lg:pl-75" : "lg:pl-25"
+        }`}
+      >
+        <div className="flex gap-4">
+          <IoMdArrowBack
+            className="text-4xl cursor-pointer"
+            onClick={() => navigate("/admin/ticketCategories")}
+          />
+          <div className="text-3xl font-bold text-[#1D4ED8]">{category}</div>
         </div>
-        <div className="space-y-2">
-          {loading ? (
-            <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-2">
-              <div className="spinner-overlay">
-                <div className="loading-line"></div>
-              </div>
-            </div>
-          ) : filteredData.length > 0 ? (
-            filteredData.map((ticket) => (
-              <div
-                key={ticket.id}
-                onClick={() =>
-                  navigate(`/admin/details/${ticket.id}`, {
-                    state: ticket,
-                  })
-                }
-                className="bg-[#EEF0FF] rounded-md text-sm text-gray-700 py-3 px-4 cursor-pointer hover:bg-[#dfe3ff] 
-                transition grid md:grid-cols-[repeat(6,_1fr)] items-center gap-2"
-              >
-                <div className="hidden md:block truncate text-center">
-                  {ticket.id}
-                </div>
-                <div className="hidden md:block truncate text-center">
-                  {ticket.category}
-                </div>
-                <div
-                  className={`hidden md:block truncate text-center ${getPriorityColor(
-                    ticket.priority
-                  )}`}
-                >
-                  {ticket.priority}
-                </div>
-                <div className="hidden md:block truncate text-center">
-                  {ticket.agent_name}
-                </div>
-                <div className="hidden md:block truncate text-center">
-                  {ticket.updated_at}
-                </div>
-                <div className="hidden md:block truncate text-center">
-                  <span className={`truncate ${statusColor(ticket.status)}`}>
-                    {ticket.status}
-                  </span>
-                </div>
 
-                {/* Mobile View */}
-                <div className="md:hidden space-y-1">
-                  <div>
-                    <span className="font-semibold">Ticket ID:</span>{" "}
+        <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-lg bg-white min-h-[500px]">
+          <div className="hidden md:grid grid-cols-[repeat(6,_1fr)] items-center text-center font-semibold text-gray-600 text-sm py-2 mb-5">
+            <div>Ticket ID</div>
+            <div>Category</div>
+            <div>Priority</div>
+            <div>Agent</div>
+            <div>Date Created</div>
+            <div>Status</div>
+          </div>
+          <div className="space-y-2">
+            {loading ? (
+              <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-2">
+                <div className="spinner-overlay">
+                  <div className="loading-line"></div>
+                </div>
+              </div>
+            ) : filteredData.length > 0 ? (
+              filteredData.map((ticket) => (
+                <div
+                  key={ticket.id}
+                  onClick={() =>
+                    navigate(`/admin/details/${ticket.id}`, {
+                      state: ticket,
+                    })
+                  }
+                  className="bg-[#EEF0FF] rounded-md text-sm text-gray-700 py-3 px-4 cursor-pointer hover:bg-[#dfe3ff] 
+                transition grid md:grid-cols-[repeat(6,_1fr)] items-center gap-2"
+                >
+                  <div className="hidden md:block truncate text-center">
                     {ticket.id}
                   </div>
-                  <div>
-                    <span className="font-semibold">Category:</span>{" "}
+                  <div className="hidden md:block truncate text-center">
                     {ticket.category}
                   </div>
-                  <div>
-                    <span className="font-semibold">Priority:</span>{" "}
-                    <span className={getPriorityColor(ticket.priority)}>
-                      {ticket.priority}
-                    </span>
+                  <div
+                    className={`hidden md:block truncate text-center ${getPriorityColor(
+                      ticket.priority
+                    )}`}
+                  >
+                    {ticket.priority}
                   </div>
-                  <div>
-                    <span className="font-semibold">Agent:</span>{" "}
+                  <div className="hidden md:block truncate text-center">
                     {ticket.agent_name}
                   </div>
-                  <div>
-                    <span className="font-semibold">Date:</span>{" "}
+                  <div className="hidden md:block truncate text-center">
                     {ticket.updated_at}
                   </div>
-                  <div>
-                    <span className="font-semibold">Status:</span>{" "}
-                    <span className={statusColor(ticket.status)}>
+                  <div className="hidden md:block truncate text-center">
+                    <span className={`truncate ${statusColor(ticket.status)}`}>
                       {ticket.status}
                     </span>
                   </div>
+
+                  {/* Mobile View */}
+                  <div className="md:hidden space-y-1">
+                    <div>
+                      <span className="font-semibold">Ticket ID:</span>{" "}
+                      {ticket.id}
+                    </div>
+                    <div>
+                      <span className="font-semibold">Category:</span>{" "}
+                      {ticket.category}
+                    </div>
+                    <div>
+                      <span className="font-semibold">Priority:</span>{" "}
+                      <span className={getPriorityColor(ticket.priority)}>
+                        {ticket.priority}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="font-semibold">Agent:</span>{" "}
+                      {ticket.agent_name}
+                    </div>
+                    <div>
+                      <span className="font-semibold">Date:</span>{" "}
+                      {ticket.updated_at}
+                    </div>
+                    <div>
+                      <span className="font-semibold">Status:</span>{" "}
+                      <span className={statusColor(ticket.status)}>
+                        {ticket.status}
+                      </span>
+                    </div>
+                  </div>
                 </div>
+              ))
+            ) : (
+              <div className="p-6 text-center text-gray-500">
+                No tickets found
               </div>
-            ))
-          ) : (
-            <div className="p-6 text-center text-gray-500">
-              No tickets found
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
