@@ -48,7 +48,7 @@ const Notification = () => {
   };
 
   return (
-    <Layout>
+    
       <div
         className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
           activeMenu ? "lg:pl-72" : "lg:pl-24"
@@ -101,7 +101,7 @@ const Notification = () => {
           )}
         </div>
       </div>
-    </Layout>
+    
   );
 };
 
