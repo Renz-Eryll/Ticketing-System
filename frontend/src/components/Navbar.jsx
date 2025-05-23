@@ -42,10 +42,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`fixed top-0 z-30 bg-white shadow-md w-full flex justify-end items-center
-      px-4 sm:px-6 py-4
-      transition-all duration-300
-      ${
+      className={`fixed top-0 z-30 bg-white shadow-md w-full flex justify-end items-center px-4 sm:px-6 py-4 transition-all duration-300 ${
         activeMenu
           ? user?.role === "admin" || user?.role === "agent"
             ? "lg:pl-72"
@@ -102,7 +99,7 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* Navbar Start */}
+      {/* Desktop Navbar */}
       {user?.role === "customer" && (
         <div className="flex-2 items-center mx-3.5 xl:mx-0 hidden lg:flex">
           <Link to="/customer/create-ticket">
@@ -112,6 +109,7 @@ const Navbar = () => {
           </Link>
         </div>
       )}
+
       <div className="items-center justify-center flex-2 hidden lg:flex">
         {navbarLinks?.navLinks && (
           <div className="flex items-center gap-6">
@@ -133,6 +131,7 @@ const Navbar = () => {
           </div>
         )}
       </div>
+
       {navbarLinks && (
         <div
           className={`flex items-center py-3.5 gap-4 relative ${
@@ -150,23 +149,50 @@ const Navbar = () => {
                 setProfileDropdown(false);
               }}
             >
-          {navbarLinks.notifications.icon}
+              {navbarLinks.notifications.icon}
               {navbarLinks.notifications.count > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
                   {navbarLinks.notifications.count}
                 </span>
               )}
             </button>
-        {notifDropdown && (
+            {notifDropdown && (
               <div className="absolute right-0 mt-2 w-[26rem] bg-white shadow-lg rounded-lg z-50 p-4">
-                <p className="text-lg font-semibold mb-3 text-blue-600">Notifications</p>
+                <p className="text-lg font-semibold mb-3 text-blue-600">
+                  Notifications
+                </p>
                 <ul className="space-y-3 max-h-80 overflow-y-auto">
                   {[
-                    { id: 1, name: "Kate Young", message: "Message here", time: "5 mins ago" },
-                    { id: 2, name: "Brandon Newman", message: "Message here", time: "21 mins ago" },
-                    { id: 3, name: "Dave Wood", message: "Message here", time: "2 hrs ago" },
-                    { id: 4, name: "Kate Young", message: "Message here", time: "3 hrs ago" },
-                    { id: 5, name: "Anna Lee", message: "Message here", time: "1 day ago" },
+                    {
+                      id: 1,
+                      name: "Kate Young",
+                      message: "Message here",
+                      time: "5 mins ago",
+                    },
+                    {
+                      id: 2,
+                      name: "Brandon Newman",
+                      message: "Message here",
+                      time: "21 mins ago",
+                    },
+                    {
+                      id: 3,
+                      name: "Dave Wood",
+                      message: "Message here",
+                      time: "2 hrs ago",
+                    },
+                    {
+                      id: 4,
+                      name: "Kate Young",
+                      message: "Message here",
+                      time: "3 hrs ago",
+                    },
+                    {
+                      id: 5,
+                      name: "Anna Lee",
+                      message: "Message here",
+                      time: "1 day ago",
+                    },
                   ].map((notif) => (
                     <Link
                       to={navbarLinks.notifications.path}
@@ -181,7 +207,10 @@ const Navbar = () => {
                         viewBox="0 0 16 16"
                         className="text-gray-500 flex-shrink-0"
                       >
-                        <path fill="currentColor" d="M11 7c0 1.66-1.34 3-3 3S5 8.66 5 7s1.34-3 3-3s3 1.34 3 3" />
+                        <path
+                          fill="currentColor"
+                          d="M11 7c0 1.66-1.34 3-3 3S5 8.66 5 7s1.34-3 3-3s3 1.34 3 3"
+                        />
                         <path
                           fill="currentColor"
                           fillRule="evenodd"
@@ -191,7 +220,9 @@ const Navbar = () => {
                       </svg>
                       <div className="flex-1">
                         <p className="text-sm">
-                          <span className="font-semibold text-blue-600">{notif.name}</span>
+                          <span className="font-semibold text-blue-600">
+                            {notif.name}
+                          </span>
                           <span className="text-gray-700"> {notif.message}</span>
                         </p>
                         <p className="text-xs text-gray-400 mt-1">{notif.time}</p>
@@ -210,7 +241,7 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Profile Dropdown */}
+          {/* Profile */}
           <div className="relative">
             <button
               className="text-xl text-gray-800 border border-gray-500 rounded-t-full rounded-b-full p-2 hover:bg-gray-100 cursor-pointer"
@@ -222,15 +253,15 @@ const Navbar = () => {
               {user?.username || <FiUser />}
             </button>
             {profileDropdown && (
-                <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50 p-2 cursor-pointer">
-                  {navbarLinks.profileMenu.map((item) => {
+              <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50 p-2 cursor-pointer">
+                {navbarLinks.profileMenu.map((item) => {
                   if (item.name === "Logout") {
                     return (
                       <button
                         key={item.name}
                         onClick={handleLogout}
                         className="flex items-center gap-2 w-full px-3 py-2 text-left text-md hover:bg-gray-100 cursor-pointer text-gray-800 mt-4 pt-4 border-t border-gray-200"
-                    >
+                      >
                         <span className="text-lg">{item.icon}</span>
                         <span className="text-md">{item.name}</span>
                       </button>
@@ -241,7 +272,7 @@ const Navbar = () => {
                     <Link
                       key={item.name}
                       to={item.path}
-                      className="flex items-center gap-2 px-3 py-2 text-md hover:bg-gray-100 text-gray-800"
+                      className="flex items-center gap-2 px-3 py-2 text-md hover:bg-gray-100"
                       onClick={() => setProfileDropdown(false)}
                     >
                       <span className="text-lg">{item.icon}</span>
@@ -249,7 +280,7 @@ const Navbar = () => {
                     </Link>
                   );
                 })}
-                </div>
+              </div>
             )}
           </div>
         </div>
