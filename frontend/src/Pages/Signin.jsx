@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import QtechLogo from "../assets/qtechlogo.png";
 import Hero1 from "../assets/hero-1.jpg";
 import Hero2 from "../assets/hero-2.jpg";
@@ -35,7 +36,7 @@ export const Signin = () => {
       const { role } = user;
       switch (role) {
         case "customer":
-          navigate("/customer/dashboard");
+          navigate("/customer/home");
           break;
         case "admin":
           navigate("/admin/dashboard");
@@ -89,7 +90,7 @@ export const Signin = () => {
       const { role } = user;
       switch (role) {
         case "customer":
-          navigate("/customer/dashboard");
+          navigate("/customer/home");
           break;
         case "admin":
           navigate("/admin/dashboard");

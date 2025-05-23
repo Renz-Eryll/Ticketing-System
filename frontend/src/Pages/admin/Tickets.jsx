@@ -1,4 +1,4 @@
-import { useStateContext } from "../../contexts/ContextProvider"
+import { useStateContext } from "../../contexts/ContextProvider";
 import {
   Navigate,
   useLocation,
@@ -170,8 +170,7 @@ export const Tickets = () => {
   };
 
   return (
-    <Layout>
-      <div
+    <div
       className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
         activeMenu ? "lg:pl-75" : "lg:pl-25"
       }`}
@@ -278,8 +277,6 @@ export const Tickets = () => {
         </div>
       </div>
     </div>
-
-    </Layout>
   );
 };
 
