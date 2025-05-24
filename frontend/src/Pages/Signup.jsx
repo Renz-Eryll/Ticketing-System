@@ -97,12 +97,16 @@ export const Signup = () => {
         return;
       }
 
-      setSuccess("Signup successful! Redirecting...");
+      setSuccess("Registration successful! Please check your email for login credentials.");
       // Store the token if needed
       if (data.token) {
         localStorage.setItem('token', data.token);
       }
-      navigate("/");
+      
+      // Redirect after a short delay to allow user to read the success message
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");
