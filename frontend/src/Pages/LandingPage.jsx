@@ -1,30 +1,24 @@
 import { Navigate } from "react-router-dom";
-import { useStateContext } from "../../contexts/ContextProvider";
+import { useStateContext } from "../contexts/ContextProvider";
 import { Link } from "react-router-dom";
 import { FaSearch, FaPhoneAlt } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
-import QtechLogo from "../../assets/qtechlogo.png";
-import BackgroundBottom from "../../assets/background.jpg";
-import BackgroundTop from "../../assets/background10.jpg";
-import Image from "../../assets/img.png";
-import Time from "../../assets/time.png";
-import Support from "../../assets/247.png";
-import Efficiency from "../../assets/efficiency.png";
-import HKR from "../../assets/hkr.png";
-import HPSC from "../../assets/hpsc.jpg";
-import IME from "../../assets/ime.png";
-import Novo from "../../assets/novo.png";
-import Paotsin from "../../assets/paotsin.png";
-import Unilever from "../../assets/unilever.png";
-import Bigmak from "../../assets/bigmak.png";
+import QtechLogo from "../assets/qtechlogo.png";
+import BackgroundBottom from "../assets/background.jpg";
+import BackgroundTop from "../assets/background10.jpg";
+import Image from "../assets/img.png";
+import Time from "../assets/time.png";
+import Support from "../assets/247.png";
+import Efficiency from "../assets/efficiency.png";
+import HKR from "../assets/hkr.png";
+import HPSC from "../assets/hpsc.jpg";
+import IME from "../assets/ime.png";
+import Novo from "../assets/novo.png";
+import Paotsin from "../assets/paotsin.png";
+import Unilever from "../assets/unilever.png";
+import Bigmak from "../assets/bigmak.png";
 
-const Home = () => {
-  const { user } = useStateContext();
-
-  if (!user) {
-    return <Navigate to="/" />;
-  }
-
+const LandingPage = () => {
   return (
     <div
       className={`transition-all duration-300 bg-gray-100 overflow-auto scroll-smooth`}
@@ -38,7 +32,7 @@ const Home = () => {
       >
         <div className="flex flex-col items-center space-y-2  mx-auto mt-2">
           <h1 className="text-2xl lg:text-4xl font-bold text-center lg:text-left">
-            Welcome <span className="text-blue-500">{user.name}!</span>
+            Welcome <span className="text-blue-500">!</span>
           </h1>
           <p className="mt-5 text-lg lg:text-xl text-center lg:text-left">
             Your concerns matter: Ask questions, and we'll handle the rest!
@@ -56,7 +50,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="py-12 max-w-6xl mx-auto text-center cursor-pointer">
+      <div className="py-12 max-w-7xl mx-auto text-center cursor-pointer">
         <div className="flex flex-col items-center mb-0 lg:mb-10">
           <div className="text-2xl lg:text-4xl font-bold text-gray-900 mb-2 ">
             Why Choose Us?
@@ -69,7 +63,7 @@ const Home = () => {
         </div>
 
         <div className="grid lg:grid-cols-3 p-12 lg:p-2 gap-6">
-          <div className="bg-white px-10 py-10  rounded-lg shadow-md text-left transform transition-all duration-200 hover:scale-103">
+          <div className="bg-white px-15 py-10  rounded-lg shadow-md text-left transform transition-all duration-200 hover:scale-103">
             <div className="flex flex-col items-center text-[#1D4ED8]">
               <div className="text-2xl mb-5">
                 <img
@@ -90,7 +84,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="bg-white px-10 py-10 rounded-lg shadow-md text-left transform transition-all duration-200 hover:scale-103">
+          <div className="bg-white px-15 py-10 rounded-lg shadow-md text-left transform transition-all duration-200 hover:scale-103">
             <div className="flex flex-col items-center text-blue-600">
               <div className="text-2xl mb-5">
                 <img
@@ -111,7 +105,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="bg-white px-10 py-10 rounded-lg shadow-md text-left transform transition-all duration-200 hover:scale-103">
+          <div className="bg-white px-15 py-10 rounded-lg shadow-md text-left transform transition-all duration-200 hover:scale-103">
             <div className="flex flex-col items-center text-blue-600">
               <div className="text-2xl mb-5">
                 <img
@@ -134,40 +128,25 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-20 py-10 text-[#08032B]">
-        <div className="flex flex-col-reverse lg:flex-row items-center gap-0 lg:gap-15">
-          {/* Text Section */}
-          <div className="flex-1 flex flex-col space-y-4">
-            <h1 className="text-4xl lg:text-5xl font-bold text-center lg:text-left">
+      <div className="text-[#08032B] max-w-8xl mx-auto px-15 lg:px-32">
+        <div className="flex justify-between items-center gap-10">
+          <div className="flex flex-col space-y-2 mx-auto mt-2">
+            <h1 className="text-3xl lg:text-4xl font-bold text-center lg:text-left">
               Need <span className="text-blue-600">Support?</span>
             </h1>
-            <p className="text-md lg:text-lg text-center lg:text-left">
+            <p className="mt-3 text-md lg:text-lg text-center lg:text-left">
               We're here to help you resolve issues and answer your questions —
               anytime.
             </p>
-            <div className="flex justify-center lg:justify-start">
-              <Link to="/customer/create-ticket">
-                <button className="mt-4 bg-blue-500 text-white hover:bg-blue-700 text-md lg:text-lg py-2 px-5 rounded-md flex items-center group transition">
-                  Submit Ticket
-                  <FaArrowRight className="ml-3 transform -rotate-45 transition duration-300 group-hover:rotate-0" />
-                </button>
-              </Link>
-            </div>
+            <div className="flex flex-col"></div>
           </div>
-
-          <div className="flex-1 flex justify-center">
-            <div className="hidden lg:block ">
-              <img
-                src={Image}
-                alt="support image"
-                className="max-w-full h-auto object-contain"
-              />
-            </div>
+          <div className="hidden lg:block px-0 lg:px-4">
+            <img src={Image} alt="backrground" className="h-130" />
           </div>
         </div>
       </div>
 
-      <div className="py-12 max-w-6xl mx-auto text-center cursor-pointer">
+      <div className="py-12 max-w-7xl mx-auto text-center cursor-pointer">
         <div className="flex flex-col items-center  text-3xl lg:text-4xl  font-bold text-gray-900 mb-0 lg:mb-10">
           Client's Testimonials
         </div>
@@ -304,7 +283,7 @@ const Home = () => {
 
       <div className="px-10 lg:px-2">
         <div
-          className=" max-w-5xl mx-auto text-white px-15 lg:px-3 py-10 lg:py-10 mb-14 
+          className=" max-w-7xl mx-auto text-white px-15 lg:px-3 py-10 lg:py-10 mb-14 
       flex flex-col rounded-lg lg:flex-row items-center justify-between shadow-md bg-cover bg-no-repeat bg-center"
           style={{
             backgroundImage: `linear-gradient(to right, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.7)), url(${BackgroundBottom})`,
@@ -414,4 +393,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LandingPage;

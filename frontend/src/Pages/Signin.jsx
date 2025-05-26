@@ -145,7 +145,7 @@ export const Signin = () => {
           </div>
 
           <h2 className="text-3xl font-bold text-blue-600 mb-6">Sign In</h2>
-          <p className="text-sm mb-6">
+          <div className="text-sm mb-6">
             Don't have an account?{" "}
             {pageLoading && (
               <div className="spinner-overlay">
@@ -159,7 +159,7 @@ export const Signin = () => {
             >
               Sign up
             </Link>
-          </p>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <input

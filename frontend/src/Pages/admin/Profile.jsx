@@ -113,16 +113,7 @@ ${activeMenu ? "lg:pl-75" : "lg:pl-25"}
             </form>
           </div>
 
-          <div className="col-span-12 md:col-span-4 p-4 rounded-xl shadow ">
-            <div className="block p-4">
-              <div className="p-4 font-semibold text-md">
-                Profile Details
-                <div className="mt-3 border-t border-gray-300" />
-              </div>
-              <div className="mt-3 px-4 text-sm">Name: [Administrator]</div>
-              <div className="mt-3 px-4 text-sm">Email: [admin@gmail.com]</div>
-            </div>
-          </div>
+          <div className="col-span-12 md:col-span-4 p-4 rounded-xl shadow "></div>
           <div className="col-span-12 md:col-span-8 p-4 rounded-xl shadow">
             <div className="p-6 text-md font-semibold">
               Change Password

@@ -9,11 +9,11 @@ import {
 import { IoBuildOutline } from "react-icons/io5";
 import { RiBillLine } from "react-icons/ri";
 import { BsCashCoin } from "react-icons/bs";
-import { 
+import {
   MdOutlinePendingActions,
   MdOutlineCheckCircle,
   MdOutlineCancel,
-  MdOutlineOpenInNew
+  MdOutlineOpenInNew,
 } from "react-icons/md";
 import categoryImage from "../../assets/categoryImage.png";
 import Layout from "../../layout/Layout";
@@ -24,7 +24,11 @@ export const AgentDashboard = () => {
 
   return (
     <Layout>
-      <div className={`bg-gray-100 min-h-screen transition-all duration-300 ${activeMenu ? 'ml-70' : 'ml-0'}`}>
+      <div
+        className={`max-h-screen mx-5 lg:mx-0 transition-all ${
+          activeMenu ? "lg:pl-72" : "lg:pl-23"
+        }`}
+      >
         <div className="container mx-auto px-8 py-6">
           <h1 className="text-2xl font-bold mb-6">Agent Dashboard</h1>
 
@@ -46,7 +50,9 @@ export const AgentDashboard = () => {
             </div>
             <div className="bg-white shadow-md rounded-lg p-6 hover:bg-green-50 transition-colors">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-lg font-semibold text-gray-700">Resolved</h2>
+                <h2 className="text-lg font-semibold text-gray-700">
+                  Resolved
+                </h2>
                 <MdOutlineCheckCircle className="text-2xl text-green-600" />
               </div>
               <p className="text-3xl font-bold text-green-600">21</p>
@@ -68,8 +74,12 @@ export const AgentDashboard = () => {
               <div className="border-b border-gray-200 pb-4 last:border-b-0">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="font-semibold text-gray-800">#1001 Cannot access account</h3>
-                    <p className="text-sm text-gray-600">Requestor: John Smith</p>
+                    <h3 className="font-semibold text-gray-800">
+                      #1001 Cannot access account
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Requestor: John Smith
+                    </p>
                     <p className="text-sm text-gray-600">Priority: High</p>
                   </div>
                   <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 transition-colors">
@@ -81,7 +91,9 @@ export const AgentDashboard = () => {
               <div className="border-b border-gray-200 pb-4 last:border-b-0">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="font-semibold text-gray-800">#1002 Error message on checkout</h3>
+                    <h3 className="font-semibold text-gray-800">
+                      #1002 Error message on checkout
+                    </h3>
                     <p className="text-sm text-gray-600">Requestor: Jane Doe</p>
                     <p className="text-sm text-gray-600">Priority: Medium</p>
                   </div>
@@ -94,8 +106,12 @@ export const AgentDashboard = () => {
               <div className="border-b border-gray-200 pb-4 last:border-b-0">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="font-semibold text-gray-800">#1003 Website not loading</h3>
-                    <p className="text-sm text-gray-600">Requestor: Michael Brown</p>
+                    <h3 className="font-semibold text-gray-800">
+                      #1003 Website not loading
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Requestor: Michael Brown
+                    </p>
                     <p className="text-sm text-gray-600">Priority: High</p>
                   </div>
                   <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 transition-colors">
@@ -107,8 +123,12 @@ export const AgentDashboard = () => {
               <div className="border-b border-gray-200 pb-4 last:border-b-0">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="font-semibold text-gray-800">#1004 Issue with payment processing</h3>
-                    <p className="text-sm text-gray-600">Requestor: Emily Johnson</p>
+                    <h3 className="font-semibold text-gray-800">
+                      #1004 Issue with payment processing
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Requestor: Emily Johnson
+                    </p>
                     <p className="text-sm text-gray-600">Priority: Low</p>
                   </div>
                   <button className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2 transition-colors">
@@ -120,8 +140,12 @@ export const AgentDashboard = () => {
               <div className="border-b border-gray-200 pb-4 last:border-b-0">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="font-semibold text-gray-800">#1005 Feature request: Dark mode</h3>
-                    <p className="text-sm text-gray-600">Requestor: Sarah Wilson</p>
+                    <h3 className="font-semibold text-gray-800">
+                      #1005 Feature request: Dark mode
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Requestor: Sarah Wilson
+                    </p>
                     <p className="text-sm text-gray-600">Priority: Low</p>
                   </div>
                   <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 transition-colors">

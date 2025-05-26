@@ -38,13 +38,16 @@ export const Sidebar = () => {
     const handleResize = () => {
       const width = window.innerWidth;
       setScreenSize(width);
-      setActiveMenu(width >= 1024);
+
+      if (width < 1024) {
+        setActiveMenu(false);
+      }
     };
 
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [setActiveMenu, setScreenSize]);
+  }, [setScreenSize]);
 
   useEffect(() => {
     const currentPath = location.pathname.trim();

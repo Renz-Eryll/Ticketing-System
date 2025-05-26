@@ -8,7 +8,7 @@ const UserLayout = () => {
       <div className="flex-1 min-h-screen">
         <Navbar />
         <div className="mt-30 md:mt-25 p-0 lg:p-0 bg-white">
-          <Outlet /> {/* ← this is the key! */}
+          <Outlet />
         </div>
         <ScrollToTopButton />
       </div>
