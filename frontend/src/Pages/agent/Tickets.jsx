@@ -3,7 +3,8 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 import Layout from "../../layout/Layout";
-export const AgentTickets = () => {
+
+const AgentTickets = () => {
   const { activeMenu, user, login, token } = useStateContext();
   const navigate = useNavigate();
 
@@ -39,7 +40,7 @@ export const AgentTickets = () => {
         );
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to fetch tickets");
-        setTickets(data.tickets || []); // make sure to set the tickets from response
+        setTickets(data.tickets || []);
         setLoading(false);
       } catch (err) {
         setError(err.message || "Failed to fetch tickets");
@@ -49,23 +50,21 @@ export const AgentTickets = () => {
 
     fetchTickets();
   }, [login, user, token]);
-    fetchTickets();
-  }, [login, user, token]);
 
-    const getPriorityColor = (priority) => {
-      switch (priority) {
-        case "High":
-          return "text-red-500 font-semibold";
-        case "Primary":
-          return "text-green-500 font-semibold";
-        case "Medium":
-          return "text-yellow-500 font-semibold";
-        case "Low":
-          return "text-gray-500 font-semibold";
-        default:
-          return "text-black";
-      }
-    };
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "High":
+        return "text-red-500 font-semibold";
+      case "Primary":
+        return "text-green-500 font-semibold";
+      case "Medium":
+        return "text-yellow-500 font-semibold";
+      case "Low":
+        return "text-gray-500 font-semibold";
+      default:
+        return "text-black";
+    }
+  };
 
   const statusColor = (status) => {
     switch (status) {
@@ -77,6 +76,7 @@ export const AgentTickets = () => {
         return "text-black";
     }
   };
+
   return (
     <Layout>
       <div

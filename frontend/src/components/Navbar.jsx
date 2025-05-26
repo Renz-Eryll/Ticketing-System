@@ -244,9 +244,14 @@ const Navbar = () => {
                           <span className="font-semibold text-blue-600">
                             {notif.name}
                           </span>
-                          <span className="text-gray-700"> {notif.message}</span>
+                          <span className="text-gray-700">
+                            {" "}
+                            {notif.message}
+                          </span>
                         </p>
-                        <p className="text-xs text-gray-400 mt-1">{notif.time}</p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          {notif.time}
+                        </p>
                       </div>
                     </Link>
                   ))}
@@ -261,50 +266,48 @@ const Navbar = () => {
               </div>
             )}
           </div>
-
-          {/* Profile */}
-          <div className="relative">
-            <button
-              className="text-xl text-gray-800 border border-gray-500 rounded-t-full rounded-b-full p-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => {
-                setProfileDropdown(!profileDropdown);
-                setNotifDropdown(false);
-              }}
-            >
-              {user?.username || <FiUser />}
-            </button>
-            {profileDropdown && (
-              <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50 p-2 cursor-pointer">
-                {navbarLinks.profileMenu.map((item) => {
-                  if (item.name === "Logout") {
-                    return (
-                      <button
-                        key={item.name}
-                        onClick={handleLogout}
-                        className="flex items-center gap-2 w-full px-3 py-2 text-left text-md hover:bg-gray-100 cursor-pointer text-gray-800 mt-4 pt-4 border-t border-gray-200"
-                      >
-                        <span className="text-lg">{item.icon}</span>
-                        <span className="text-md">{item.name}</span>
-                      </button>
-                    );
-                  }
-
+          {user ? (
+            <div className="relative">
+              <button
+                className="text-xl text-gray-800 border border-gray-500 rounded-t-full rounded-b-full p-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  setProfileDropdown(!profileDropdown);
+                  setNotifDropdown(false);
+                }}
+              >
+                {user?.username || <FiUser />}
+              </button>
+              {profileDropdown && (
+                <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50 p-2 cursor-pointer">
+                  {navbarLinks.profileMenu.map((item) => {
+                    if (item.name === "Logout") {
                       return (
-                        <Link
+                        <button
                           key={item.name}
-                          to={item.path}
-                          className="flex items-center gap-2 px-3 py-2 text-md hover:bg-gray-100"
-                          onClick={() => setProfileDropdown(false)}
+                          onClick={handleLogout}
+                          className="flex items-center gap-2 w-full px-3 py-2 text-left text-md hover:bg-gray-100 cursor-pointer text-gray-800 mt-4 pt-4 border-t border-gray-200"
                         >
                           <span className="text-lg">{item.icon}</span>
                           <span className="text-md">{item.name}</span>
-                        </Link>
+                        </button>
                       );
-                    })}
-                  </div>
-                )}
-              </div>
-            </>
+                    }
+
+                    return (
+                      <Link
+                        key={item.name}
+                        to={item.path}
+                        className="flex items-center gap-2 px-3 py-2 text-md hover:bg-gray-100"
+                        onClick={() => setProfileDropdown(false)}
+                      >
+                        <span className="text-lg">{item.icon}</span>
+                        <span className="text-md">{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           ) : (
             <div className="flex gap-2">
               <Link
@@ -328,4 +331,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

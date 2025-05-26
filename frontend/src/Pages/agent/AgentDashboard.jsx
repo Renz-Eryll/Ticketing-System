@@ -1,24 +1,17 @@
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
-import {
-  MdOutlineInventory,
-  MdBarChart,
-  MdOutlinePointOfSale,
-} from "react-icons/md";
-import { IoBuildOutline } from "react-icons/io5";
-import { RiBillLine } from "react-icons/ri";
-import { BsCashCoin } from "react-icons/bs";
+
 import {
   MdOutlinePendingActions,
   MdOutlineCheckCircle,
   MdOutlineCancel,
   MdOutlineOpenInNew,
 } from "react-icons/md";
-import categoryImage from "../../assets/categoryImage.png";
+
 import Layout from "../../layout/Layout";
 
-export const AgentDashboard = () => {
+const AgentDashboard = () => {
   const { activeMenu } = useStateContext();
   const navigate = useNavigate();
 
@@ -157,7 +150,7 @@ export const AgentDashboard = () => {
           </div>
         </div>
       </div>
-    
+    </Layout>
   );
 };
 

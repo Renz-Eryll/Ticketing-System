@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import {
   MdOutlineInventory,
   MdBarChart,
@@ -61,6 +61,9 @@ export const TicketCategories = () => {
   const { activeMenu, user, login } = useStateContext();
   const navigate = useNavigate();
   const [categoriesList, setCategoriesList] = useState(categories);
+  if (!login && !user) {
+    return <Navigate to="/" />;
+  }
 
   useEffect(() => {
     if (!login || !user) {
