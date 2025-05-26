@@ -35,7 +35,7 @@ const TicketDetails = () => {
         if (!res.ok) throw new Error(data.message || "Failed to fetch ticket");
         setTicketData(data);
         setAssignedAgent(data.agent_id || "");
-        setPriority(data.priority || "Open");
+        setPriority(data.priority || "Low");
       } catch (err) {
         console.error(err);
         setError(err.message);

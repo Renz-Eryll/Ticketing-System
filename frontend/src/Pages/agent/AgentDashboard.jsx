@@ -157,7 +157,7 @@ export const AgentDashboard = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    
   );
 };
 

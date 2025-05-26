@@ -49,21 +49,23 @@ export const AgentTickets = () => {
 
     fetchTickets();
   }, [login, user, token]);
+    fetchTickets();
+  }, [login, user, token]);
 
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "High":
-        return "text-red-500 font-semibold";
-      case "Primary":
-        return "text-green-500 font-semibold";
-      case "Medium":
-        return "text-yellow-500 font-semibold";
-      case "Low":
-        return "text-gray-500 font-semibold";
-      default:
-        return "text-black";
-    }
-  };
+    const getPriorityColor = (priority) => {
+      switch (priority) {
+        case "High":
+          return "text-red-500 font-semibold";
+        case "Primary":
+          return "text-green-500 font-semibold";
+        case "Medium":
+          return "text-yellow-500 font-semibold";
+        case "Low":
+          return "text-gray-500 font-semibold";
+        default:
+          return "text-black";
+      }
+    };
 
   const statusColor = (status) => {
     switch (status) {

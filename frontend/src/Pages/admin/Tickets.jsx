@@ -207,7 +207,7 @@ export const Tickets = () => {
   }
 
   return (
-    <Layout>
+   
       <div
         className={` transition-all ${activeMenu ? "lg:pl-72" : "lg:pl-23"}`}
       >

@@ -5,7 +5,6 @@ import {
   MdOutlineInventory,
   MdBarChart,
   MdOutlinePointOfSale,
-  MdAdd,
 } from "react-icons/md";
 import { RiBillLine } from "react-icons/ri";
 import { BsCashCoin } from "react-icons/bs";
