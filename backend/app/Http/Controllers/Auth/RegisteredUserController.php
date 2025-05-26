@@ -26,6 +26,7 @@ class RegisteredUserController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'role' => $request->role,
+                'category' => $request->category,
                 'terms_accepted_at' => now(),
             ]);
 

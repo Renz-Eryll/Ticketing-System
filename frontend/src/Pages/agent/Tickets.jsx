@@ -11,19 +11,12 @@ export const AgentTickets = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Redirect if not logged in
-  useEffect(() => {
-  if (!login && !user) {
-    navigate("/");
-  }
-}, [login, user, navigate]);
 
 if (!login && !user) {
-  return null;
+ navigate("/");
 }
 
   useEffect(() => {
-  if (!login || !user) return;
 
   const fetchTickets = async () => {
     try {
@@ -89,7 +82,7 @@ if (!login && !user) {
           />
         </div>
         <div className="text-3xl font-bold text-[#1D4ED8]">
-          POS for Retail and F&B
+          Tickets
         </div>
       </div>
 
