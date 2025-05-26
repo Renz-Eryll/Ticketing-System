@@ -55,18 +55,6 @@ const Notification = () => {
     navigate(`/admin/notification/${notif.id}`, { state: notif });
   };
 
-<<<<<<< HEAD
-  return (
-    
-      <div
-        className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
-          activeMenu ? "lg:pl-72" : "lg:pl-24"
-        }`}
-      >
-        <div className="text-3xl font-bold text-[#1D4ED8] mb-6">
-          Notification
-        </div>
-=======
     return (
       <Layout>
         <div
@@ -75,7 +63,7 @@ const Notification = () => {
           }`}
         >
           <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Notifications</div>
->>>>>>> 07fb1bf17632c006ffd53436eceb7b5d067973f2
+
 
           <div className="bg-white rounded-lg shadow-sm p-6 min-h-[500px] space-y-2">
             <div className="grid grid-cols-[repeat(5,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
@@ -134,14 +122,8 @@ const Notification = () => {
             </button>
           </div>
         </div>
-<<<<<<< HEAD
-      </div>
-    
-  );
-=======
       </Layout>
     );
->>>>>>> 07fb1bf17632c006ffd53436eceb7b5d067973f2
 };
 
 export default Notification;

@@ -169,7 +169,6 @@ const AgentNotification = () => {
           </div>
         </div>
       </div>
-    </Layout>
   );
 };
 
