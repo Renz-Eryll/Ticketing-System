@@ -344,7 +344,13 @@ export const Agent = () => {
             <div className="flex justify-end gap-2 mt-6">
               <button
                 disabled={currentPage === 1}
-                onClick={() => setCurrentPage((prev) => prev - 1)}
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => {
+                    setCurrentPage((prev) => prev - 1);
+                    setLoading(false);
+                  }, 500); // simulate delay or wait for fetch to finish
+                }}
                 className={`px-3 py-1 rounded-sm text-sm ${
                   currentPage === 1
                     ? "bg-white border border-0.5 border-gray-200 cursor-not-allowed"
@@ -371,7 +377,13 @@ export const Agent = () => {
 
               <button
                 disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((prev) => prev + 1)}
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => {
+                    setCurrentPage((prev) => prev + 1);
+                    setLoading(false);
+                  }, 500);
+                }}
                 className={`px-3 py-1 rounded-sm text-sm ${
                   currentPage === totalPages
                     ? "bg-white border border-0.5 border-gray-200 cursor-not-allowed"

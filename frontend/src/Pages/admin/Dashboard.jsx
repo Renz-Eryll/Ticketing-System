@@ -69,14 +69,14 @@ export const Dashboard = () => {
   }, [token]);
 
   const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "High":
+    switch (priority?.toLowerCase().trim()) {
+      case "high":
         return "text-red-500 font-semibold";
-      case "Primary":
+      case "primary":
         return "text-green-500 font-semibold";
-      case "Medium":
+      case "medium":
         return "text-yellow-500 font-semibold";
-      case "Low":
+      case "low":
         return "text-gray-500 font-semibold";
       default:
         return "text-black";
@@ -84,10 +84,12 @@ export const Dashboard = () => {
   };
 
   const statusColor = (status) => {
-    switch (status) {
-      case "Unresolved":
+    switch (status?.toLowerCase().trim()) {
+      case "unresolved":
         return "text-red-500 font-semibold";
-      case "Resolved":
+      case "pending":
+        return "text-orange-500 font-semibold";
+      case "resolved":
         return "text-green-500 font-semibold";
       default:
         return "text-black";
@@ -143,11 +145,11 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          <div className="bg-blue-950 rounded-md text-white lg:px-15 mt-5 lg:mt-17">
+          <div className="bg-blue-950 rounded-xl border-b-8 border-black text-white lg:px-15 mt-5 lg:mt-17">
             <div className="flex justify-between items-center gap-10">
               <div className="flex flex-col space-y-2 mt-2 mx-auto py-9 lg:mx-0">
                 <div className="flex flex-col space-y-2 mt-2 items-center lg:items-start">
-                  <h1 className="text-3xl lg:text-4xl font-bold text-center lg:text-left">
+                  <h1 className="text-3xl lg:text-4xl font-bold text-center lg:text-left underline">
                     Hello, <span className="text-blue-500">{user.name}!</span>
                   </h1>
                   <p className="mt-3 text-md lg:text-lg text-center lg:text-left">
@@ -326,12 +328,17 @@ export const Dashboard = () => {
               )}
             </div>
           </div>
-
           {filteredData.length >= 3 && (
             <div className="flex justify-end gap-2 mt-6">
               <button
                 disabled={currentPage === 1}
-                onClick={() => setCurrentPage((prev) => prev - 1)}
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => {
+                    setCurrentPage((prev) => prev - 1);
+                    setLoading(false);
+                  }, 500); // simulate delay or wait for fetch to finish
+                }}
                 className={`px-3 py-1 rounded-sm text-sm ${
                   currentPage === 1
                     ? "bg-white border border-0.5 border-gray-200 cursor-not-allowed"
@@ -358,7 +365,13 @@ export const Dashboard = () => {
 
               <button
                 disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((prev) => prev + 1)}
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => {
+                    setCurrentPage((prev) => prev + 1);
+                    setLoading(false);
+                  }, 500);
+                }}
                 className={`px-3 py-1 rounded-sm text-sm ${
                   currentPage === totalPages
                     ? "bg-white border border-0.5 border-gray-200 cursor-not-allowed"

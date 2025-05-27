@@ -298,7 +298,7 @@ const LandingPage = () => {
               as an ICT company for those who have no ICT department.
             </p>
             <div className="flex justify-center items-center mx-auto gap-5">
-              <Link to="/customer/create-ticket">
+              <Link to="/contact-us">
                 <button
                   className="mt-10 text-gray-950 bg-white hover:bg-gray-200 text-lg py-2 md:py-3 px-3 md:px-5 rounded-md flex 
               items-center justify-center w-full md:w-auto cursor-pointer"

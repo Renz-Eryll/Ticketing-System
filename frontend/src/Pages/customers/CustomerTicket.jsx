@@ -11,7 +11,6 @@ import {
   FaEdit,
   FaQuestionCircle,
 } from "react-icons/fa";
-import image from "../../assets/hero-3.png";
 
 const CustomerTicket = () => {
   const { user } = useStateContext();

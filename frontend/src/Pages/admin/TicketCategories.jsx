@@ -1,58 +1,86 @@
 import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate, Navigate } from "react-router-dom";
-import {
-  MdOutlineInventory,
-  MdBarChart,
-  MdOutlinePointOfSale,
-} from "react-icons/md";
-import { RiBillLine } from "react-icons/ri";
-import { BsCashCoin } from "react-icons/bs";
 import { FaArrowRight } from "react-icons/fa";
 import Layout from "../../layout/Layout";
+import POS from "../../assets/point-of-sale.png";
+import Inventory from "../../assets/inventory.png";
+import Utility from "../../assets/utility.png";
+import QSA from "../../assets/accounting.png";
+import HR from "../../assets/hr.png";
 
 const categories = [
   {
     title: "POS for Retail and F&B",
-    icon: <MdOutlinePointOfSale />,
+    icon: (
+      <img
+        src={POS}
+        alt="POS Icon"
+        className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
+      />
+    ),
     category: "POS Retail",
     description: "Log POS errors, outages, and inquiries.",
-    bgColor: "bg-yellow-100",
+    bgColor: "	bg-sky-300",
     textColor: "text-yellow-600",
   },
 
   {
     title: " Inventory Support System",
-    icon: <MdOutlineInventory />,
+    icon: (
+      <img
+        src={Inventory}
+        alt="POS Icon"
+        className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
+      />
+    ),
     category: "Inventory Support",
     description: "Track stock-related issues and requests.",
-    bgColor: "bg-indigo-100",
+    bgColor: "bg-green-300",
     textColor: "text-indigo-600",
   },
 
   {
-    title: "Qtech Utility Billing System",
-    icon: <RiBillLine />,
+    title: "Utility Billing System",
+    icon: (
+      <img
+        src={Utility}
+        alt="POS Icon"
+        className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
+      />
+    ),
     category: "Utility Billing",
-    description: "Report billing disputes and system issues.",
-    bgColor: "bg-sky-100",
+    description: "Billing disputes and system issues.",
+    bgColor: "bg-orange-200",
     textColor: "text-sky-600",
   },
   {
     title: "QSA (Quick and Simple Accounting)",
-    icon: <MdBarChart />,
+    icon: (
+      <img
+        src={QSA}
+        alt="POS Icon"
+        className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
+      />
+    ),
     category: "Accounting System",
-    description: "Raise tickets for accounting system concerns.",
-    bgColor: "bg-emerald-100",
+    description: "Tickets for accounting system concerns.",
+    bgColor: "bg-red-200",
     textColor: "text-emerald-600",
   },
 
   {
     title: "Philippine HR, Payroll and Time Keeping System",
-    icon: <BsCashCoin />,
+    icon: (
+      <img
+        src={HR}
+        alt="POS Icon"
+        className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
+      />
+    ),
     category: "HR Payroll System",
-    description: "Submit HR, payroll, and attendance issues.",
-    bgColor: "bg-rose-100",
+    description: "HR, payroll, and attendance issues.",
+    bgColor: "bg-yellow-200",
     textColor: "text-rose-600",
   },
 ];
@@ -89,30 +117,33 @@ export const TicketCategories = () => {
             {categoriesList.map((item, index) => (
               <div
                 key={index}
-                className="bg-white px-8 py-7 rounded-lg shadow-sm"
+                className="bg-white rounded-2xl shadow-lg cursor-pointer "
+                onClick={() => handleCategoryClick(item.category)}
               >
-                <div className="flex flex-col items-start">
-                  <div
-                    className={`flex items-center justify-center w-20 h-20 mb-4 rounded-full ${item.bgColor} ${item.textColor} text-4xl`}
-                  >
-                    {item.icon}
+                <div className={`py-5 ${item.bgColor} rounded-t-2xl px-5`}>
+                  <div className="flex flex-col items-center">
+                    <div
+                      className={`flex items-center justify-center mb-4 rounded-full  text-2xl`}
+                    >
+                      {item.icon}
+                    </div>
                   </div>
-
+                </div>
+                <div className="px-9 py-8">
                   <h3 className="text-2xl text-gray-800 font-bold mb-3">
                     {item.title}
                   </h3>
-                  <h3 className="text-sm text-gray-600 font-medium mb-2">
+                  <h3 className="text-sm text-gray-600 font-medium  mb-2">
                     {item.description}
                   </h3>
-                </div>
-
-                <div className="mt-5 flex justify-end">
-                  <div
-                    className="text-blue-600 font-semibold hover:underline text-md lg:text-md flex items-center cursor-pointer group transition-all duration-400"
-                    onClick={() => handleCategoryClick(item.category)}
-                  >
-                    <span>View Tickets</span>
-                    <FaArrowRight className="ml-2 transform -rotate-45 transition duration-400 group-hover:rotate-0" />
+                  <div className="mt-5 flex justify-start">
+                    <div
+                      className="text-blue-600 font-semibold hover:underline text-md lg:text-md flex items-center cursor-pointer group transition-all duration-400"
+                      onClick={() => handleCategoryClick(item.category)}
+                    >
+                      <span>View Tickets</span>
+                      <FaArrowRight className="ml-2 transform -rotate-45 transition duration-400 group-hover:rotate-0" />
+                    </div>
                   </div>
                 </div>
               </div>

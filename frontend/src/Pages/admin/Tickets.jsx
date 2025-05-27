@@ -220,7 +220,7 @@ export const Tickets = () => {
             <div className="text-3xl font-bold text-[#1D4ED8]">{category}</div>
           </div>
 
-          <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-md bg-white min-h-[400px]">
+          <div className="max-w mt-10 p-6 py-10 border border-gray-100 shadow-sm rounded-md bg-white max-h-[400px] min-h-[400px]">
             <div className="mb-3 text-md font-semibold text-gray-500">
               Tickets
             </div>
@@ -340,7 +340,13 @@ export const Tickets = () => {
             <div className="flex justify-end gap-2 mt-6">
               <button
                 disabled={currentPage === 1}
-                onClick={() => setCurrentPage((prev) => prev - 1)}
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => {
+                    setCurrentPage((prev) => prev - 1);
+                    setLoading(false);
+                  }, 500); // simulate delay or wait for fetch to finish
+                }}
                 className={`px-3 py-1 rounded-sm text-sm ${
                   currentPage === 1
                     ? "bg-white border border-0.5 border-gray-200 cursor-not-allowed"
@@ -367,7 +373,13 @@ export const Tickets = () => {
 
               <button
                 disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((prev) => prev + 1)}
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => {
+                    setCurrentPage((prev) => prev + 1);
+                    setLoading(false);
+                  }, 500);
+                }}
                 className={`px-3 py-1 rounded-sm text-sm ${
                   currentPage === totalPages
                     ? "bg-white border border-0.5 border-gray-200 cursor-not-allowed"

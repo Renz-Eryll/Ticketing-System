@@ -27,7 +27,7 @@ import AgentDashboard from "./Pages/agent/AgentDashboard";
 import AgentTicketdetails from "./Pages/agent/AgentTicketdetails";
 import AgentNotification from "./Pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
-import { AgentTickets } from "./Pages/agent/Tickets";
+import AgentTickets from "./Pages/agent/Tickets";
 import CustomerTicket from "./Pages/customers/CustomerTicket";
 import CustomerNotification from "./Pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
@@ -41,6 +41,7 @@ import Layout from "./layout/Layout";
 import UserLayout from "./layout/UserLayout";
 import { NotFound } from "./Pages/NotFound";
 import LandingPage from "./Pages/LandingPage";
+import TermsAndConditions from "./Pages/TermsAndConditions";
 
 import { Toaster } from "react-hot-toast";
 
@@ -66,6 +67,7 @@ function AppRoutes() {
       {loading && <div className="loading-line"></div>}
       <Routes>
         <Route path="/landing-page" element={<LandingPage />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/" element={<GuestLayout />}>
           <Route index element={<Signin />} />
           <Route path="/signup" element={<Signup />} />

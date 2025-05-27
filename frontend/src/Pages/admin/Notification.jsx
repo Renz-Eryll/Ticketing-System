@@ -36,7 +36,7 @@ const Notification = () => {
         }
 
         const data = await response.json();
-      setNotifications(data);
+        setNotifications(data);
       } catch (error) {
         console.error("Error fetching tickets:", error);
       } finally {
@@ -55,30 +55,48 @@ const Notification = () => {
     navigate(`/admin/notification/${notif.id}`, { state: notif });
   };
 
-    return (
-      <Layout>
-        <div
-          className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
-            activeMenu ? "lg:pl-72" : "lg:pl-24"
-          }`}
-        >
-          <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Notifications</div>
+  return (
+    <Layout>
+      <div
+        className={` transition-all ${activeMenu ? "lg:pl-72" : "lg:pl-23"}`}
+      >
+        <div className="container mx-auto px-8 py-6">
+          <div className="text-3xl font-bold text-[#1D4ED8] mb-6">
+            Notifications
+          </div>
 
-
-          <div className="bg-white rounded-lg shadow-sm p-6 min-h-[500px] space-y-2">
+          <div className="bg-white rounded-md shadow-sm p-6 min-h-[400px] space-y-2">
             <div className="grid grid-cols-[repeat(5,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
               <div>Customer</div>
               <div>Ticket ID</div>
-            <div>Issue</div>
+              <div>Issue</div>
               <div>Status</div>
               <div>Time</div>
             </div>
 
             {loading ? (
-              <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-2">
-                <div className="spinner-overlay">
-                  <div className="loading-line"></div>
-                </div>
+              <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-3">
+                <svg
+                  className="animate-spin h-8 w-8 text-blue-600"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+                <span>Loading Notifications..</span>
               </div>
             ) : notifications.length > 0 ? (
               notifications.map((notif) => (
@@ -122,8 +140,9 @@ const Notification = () => {
             </button>
           </div>
         </div>
-      </Layout>
-    );
+      </div>
+    </Layout>
+  );
 };
 
 export default Notification;

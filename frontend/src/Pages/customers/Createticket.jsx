@@ -12,6 +12,7 @@ const Createticket = () => {
   const [email, setEmail] = useState("");
   const [ticketBody, setTicketBody] = useState("");
   const [image_path, setImage_path] = useState("");
+  const navigate = useNavigate();
 
   // Redirect if not logged in
   if (!login) {
