@@ -13,7 +13,7 @@ export const Dashboard = () => {
   const [tickets, setTickets] = useState([]);
 
   // Redirect if not logged in
-  if (!login && !user) {
+  if (!login && !user?.id) {
     return <Navigate to="/" />;
   }
 

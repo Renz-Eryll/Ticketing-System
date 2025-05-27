@@ -30,7 +30,7 @@ export const Agent = () => {
     formState: { errors },
   } = useForm();
 
-  if (!login && !user) return <Navigate to="/" />;
+  if (!login && !user?.id) return <Navigate to="/" />;
 
   useEffect(() => {
     async function fetchAgents() {
