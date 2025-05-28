@@ -5,6 +5,6 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   optimizeDeps: {
-    include: ['react-hot-toast'],
+    include: ["react-hot-toast"],
   },
 });

@@ -9,8 +9,6 @@ import Hero3 from "../assets/hero-3.jpg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-
-
 export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -25,16 +23,6 @@ export const Signup = () => {
   const [role, setRole] = useState("customer");
   const navigate = useNavigate();
   const [TermsOpenModal, setTermsOpenModal] = useState(false);
-  const [pageLoading, pageSetLoading] = useState(false);
-  const handleNavigation = (event) => {
-    event.preventDefault();
-    pageSetLoading(true);
-
-    setTimeout(() => {
-      navigate("/");
-      pageSetLoading(false);
-    }, 700);
-  };
 
   const carousel = {
     dots: false,
@@ -86,7 +74,7 @@ export const Signup = () => {
           password,
           role: role,
           password_confirmation: confirmPassword,
-          terms_accepted: isTermsAccepted
+          terms_accepted: isTermsAccepted,
         }),
       });
 
@@ -97,12 +85,14 @@ export const Signup = () => {
         return;
       }
 
-      setSuccess("Registration successful! Please check your email for login credentials.");
+      setSuccess(
+        "Registration successful! Please check your email for login credentials."
+      );
       // Store the token if needed
       if (data.token) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("token", data.token);
       }
-      
+
       // Redirect after a short delay to allow user to read the success message
       setTimeout(() => {
         navigate("/");
@@ -153,14 +143,8 @@ export const Signup = () => {
           <h2 className="text-2xl font-bold text-blue-600 mb-2">Sign Up</h2>
           <p className="text-sm mb-4">
             Already have an account?{" "}
-            {pageLoading && (
-              <div className="spinner-overlay">
-                <div className="loading-line"></div>
-              </div>
-            )}
             <Link
-              to="/"
-              onClick={handleNavigation}
+              to="/signin"
               className="text-blue-600 font-bold hover:underline"
             >
               Sign in
@@ -229,24 +213,24 @@ export const Signup = () => {
             </div>
 
             {/* Terms & Conditions */}
-           <div className="flex items-start space-x-2">
-            <input
-              type="checkbox"
-              id="terms"
-              checked={isTermsAccepted}
-              onChange={(e) => setIsTermsAccepted(e.target.checked)}
-              className="mt-1"
-            />
-            <label htmlFor="terms" className="text-sm">
-              I accept the{" "}
-              <button
-                className="text-blue-600 hover:underline"
-                onClick={openModal}
-              >
-                Terms and Conditions
-              </button>
-            </label>
-          </div>
+            <div className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={isTermsAccepted}
+                onChange={(e) => setIsTermsAccepted(e.target.checked)}
+                className="mt-1"
+              />
+              <label htmlFor="terms" className="text-sm">
+                I accept the{" "}
+                <button
+                  className="text-blue-600 hover:underline"
+                  onClick={openModal}
+                >
+                  Terms and Conditions
+                </button>
+              </label>
+            </div>
 
             {error && <div className="text-red-500 text-sm">{error}</div>}
             {success && <div className="text-green-500 text-sm">{success}</div>}
