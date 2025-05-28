@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+
+import{ useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { useStateContext } from "../../contexts/ContextProvider";
-import Layout from "../../layout/Layout";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar"; 
 
-const AgentReply = () => {
+export const CustomerReply = () => {
   const { activeMenu, user, login, token } = useStateContext();
   const { id } = useParams();
   const [ticketData, setTicketData] = useState(null);
@@ -198,10 +198,10 @@ const fetchMessages = async () => {
                   <div key={idx} className="flex items-start gap-3">
                      
                     <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                      <span className="text-lg">{msg.sender_id === user.id ? "👩‍💻" : msg.sender_name || "👤"}</span>
+                      <span className="text-lg">👩‍💻</span>
                     </div>
                     <div>
-                      <div className="font-semibold">{msg.sender_id === user.id ? "You" : msg.sender_name || "Customer"}</div>
+                      <div className="font-semibold">{user.name}</div>
                       <div className="text-gray-600 text-sm">{msg.created_at ? new Date(msg.created_at).toLocaleString() : ""}</div>
                       <div className="text-gray-800 mt-1">
                         {msg.content}
@@ -257,6 +257,11 @@ const fetchMessages = async () => {
                     {ticketData.created_at}
                   </li>
                   <li>
+                    <span className="font-semibold">First Response</span>
+                    <br />
+                    Jan 15, 2025 - 11:15 AM
+                  </li>
+                  <li>
                     <span className="font-semibold">Status Updated</span>
                     <br />
                     Jan 15, 2025 - 2:45 PM
@@ -290,5 +295,3 @@ const fetchMessages = async () => {
     </div>
   );
 };
-
-export default AgentReply;

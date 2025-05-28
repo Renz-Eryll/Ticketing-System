@@ -78,12 +78,25 @@ class TicketController extends Controller
         $ticket->ticket_body   = $validated['ticket_body'];
 
         if ($request->hasFile('image_path')) {
-            $ticket->image_path = $request->file('image_path')->store('uploads', 'public');
+        $path = $request->file('image_path')->store('uploads', 'public');
+        $ticket->image_path = $path;
         }
 
         $ticket->save();
 
-        return response()->json(['message' => 'Ticket created successfully!'], 201);
+         return response()->json([
+        'message' => 'Ticket created successfully',
+        'ticket'  => [
+            'id'            => $ticket->id,
+            'customer_name'=> $ticket->customer_name,
+            'email'        => $ticket->email,
+            'category'     => $ticket->category,
+            'ticket_body'  => $ticket->ticket_body,
+            'image_url'    => $ticket->image_path 
+                ? asset('storage/' . $ticket->image_path) 
+                : null,
+        ]
+    ]);
     }
 
     // Assign an agent to a ticket

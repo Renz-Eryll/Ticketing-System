@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\ForgotPasswordController;
-
+use App\Http\Controllers\MessageController;
 
 //  Authenticated user info (requires Sanctum token)
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -57,3 +57,8 @@ Route::get('/tickets/agent/{agentId}', [TicketController::class, 'getTicketsByAg
 Route::post('sendOTP', [ForgotPasswordController::class, 'sendOTP']);
 Route::post('verifyOTP', [ForgotPasswordController::class, 'verifyOTP']);
 Route::post('resetPassword', [ForgotPasswordController::class, 'resetPassword']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/messages/{id}', [MessageController::class, 'index']);
+    Route::post('/messages', [MessageController::class, 'store']);
+});

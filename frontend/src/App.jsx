@@ -37,6 +37,7 @@ import CustomerNotification from "./Pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
 import Createticket from "./Pages/customers/Createticket";
 
+
 import GuestLayout from "./layout/GuestLayout";
 import DefaultLayout from "./layout/DefaultLayout";
 import AdminLayout from "./layout/AdminLayout";
@@ -48,6 +49,7 @@ import { Toaster } from "react-hot-toast";
 import { HRPayrollSystem } from "./Pages/admin/HRPayrollSystem";
 import { UtilityBilling } from "./Pages/admin/UtilityBilling";
 import { AccountingSystem } from "./Pages/admin/AccountingSystem";
+import { CustomerReply } from "./Pages/customers/CustomerReply";
 
 function AppRoutes() {
   const location = useLocation();
@@ -72,7 +74,7 @@ function AppRoutes() {
         <Route path="dashboard" element={<UserLayout><CustomerDashboard /></UserLayout>} />
         <Route path="tickets" element={<UserLayout><CustomerTicket /></UserLayout>} />
         <Route path="notification" element={<UserLayout><CustomerNotification /></UserLayout>} />
-        <Route path="tickets/notificationDetails/:id" element={<UserLayout><CustomerNotifTicketDetails /></UserLayout>} />
+        <Route path="tickets/notificationDetails/:id" element={<UserLayout><CustomerReply/></UserLayout>} />
         <Route path="create-ticket" element={<UserLayout><Createticket /></UserLayout>} />
       </Route>
 
@@ -98,7 +100,7 @@ function AppRoutes() {
         <Route path="notification" element={<Layout><AgentNotification /></Layout>} />
         <Route path="notification/:id" element={<Layout><AgentNotifTicketDetails /></Layout>} />
         <Route path="tickets" element={<Layout><AgentTickets /></Layout>} />
-        <Route path="tickets/:id" element={<Layout><Agentstatus/></Layout>} />
+        <Route path="tickets/:id" element={<Layout><AgentReply/></Layout>} />
         <Route path="reply" element={<Layout><AgentReply /></Layout>} />
       </Route>
     </Routes>
