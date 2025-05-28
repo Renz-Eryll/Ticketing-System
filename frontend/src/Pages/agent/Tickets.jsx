@@ -65,7 +65,7 @@ if (!login && !user) {
     }
   };
   return (
-    
+    <Layout>
     <div
       className={`
         mx-5 md:mx-5 lg:mx-5
@@ -147,7 +147,7 @@ if (!login && !user) {
         </div>
       </div>
     </div>
-    
+    </Layout>
   );
 };
 

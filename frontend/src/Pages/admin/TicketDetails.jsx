@@ -156,6 +156,7 @@ const TicketDetails = () => {
   }
 
   return (
+    <Layout>
     <div
       className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
         activeMenu ? "lg:pl-75" : "lg:pl-25"
@@ -268,7 +269,7 @@ const TicketDetails = () => {
         </div>
       </div>
     </div>
-  
+  </Layout>
   );
 };
 

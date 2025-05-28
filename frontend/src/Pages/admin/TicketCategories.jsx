@@ -1,41 +1,90 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useNavigate, Navigate,useLocation } from "react-router-dom";
-import {
-  MdOutlineInventory,
-  MdBarChart,
-  MdOutlinePointOfSale,
-} from "react-icons/md";
-import { RiBillLine } from "react-icons/ri";
-import { BsCashCoin } from "react-icons/bs";
+import { useNavigate, Navigate } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
+import Layout from "../../layout/Layout";
+import POS from "../../assets/point-of-sale.png";
+import Inventory from "../../assets/inventory.png";
+import Utility from "../../assets/utility.png";
+import QSA from "../../assets/accounting.png";
+import HR from "../../assets/hr.png";
 
 const categories = [
   {
-    title: "Qtech Inventory Support System",
-    icon: <MdOutlineInventory className="text-3xl" />,
-    category: "InventorySupport",
-  },
-  {
     title: "POS for Retail and F&B",
-    icon: <MdOutlinePointOfSale className="text-3xl" />,
-    category: "PosRetail",
+    icon: (
+      <img
+        src={POS}
+        alt="POS Icon"
+        className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
+      />
+    ),
+    category: "POSRetail",
+    description: "Log POS errors, outages, and inquiries.",
+    bgColor: "	bg-sky-300",
+    textColor: "text-yellow-600",
   },
+
   {
-    title: "Qtech Utility Billing System",
-    icon: <RiBillLine className="text-3xl" />,
+    title: " Inventory Support System",
+    icon: (
+      <img
+        src={Inventory}
+        alt="POS Icon"
+        className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
+      />
+    ),
+    category: "InventorySupport",
+    description: "Track stock-related issues and requests.",
+    bgColor: "bg-green-300",
+    textColor: "text-indigo-600",
+  },
+
+  {
+    title: "Utility Billing System",
+    icon: (
+      <img
+        src={Utility}
+        alt="POS Icon"
+        className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
+      />
+    ),
     category: "UtilityBilling",
+    description: "Billing disputes and system issues.",
+    bgColor: "bg-orange-200",
+    textColor: "text-sky-600",
   },
   {
     title: "QSA (Quick and Simple Accounting)",
-    icon: <MdBarChart className="text-3xl" />,
+    icon: (
+      <img
+        src={QSA}
+        alt="POS Icon"
+        className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
+      />
+    ),
     category: "AccountingSystem",
+    description: "Tickets for accounting system concerns.",
+    bgColor: "bg-red-200",
+    textColor: "text-emerald-600",
   },
+
   {
     title: "Philippine HR, Payroll and Time Keeping System",
-    icon: <BsCashCoin className="text-3xl" />,
+    icon: (
+      <img
+        src={HR}
+        alt="POS Icon"
+        className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
+      />
+    ),
     category: "HRPayrollSystem",
+    description: "HR, payroll, and attendance issues.",
+    bgColor: "bg-yellow-200",
+    textColor: "text-rose-600",
   },
 ];
+
 
 export const TicketCategories = () => {
   const { activeMenu, user, login } = useStateContext();
@@ -50,6 +99,7 @@ export const TicketCategories = () => {
   };
 
   return (
+    <Layout>
     <div
       className={`mx-5 mt-10 md:mt-3 transition-all duration-300 ${
         activeMenu ? "lg:pl-75" : "lg:pl-25"
@@ -80,5 +130,6 @@ export const TicketCategories = () => {
         ))}
       </div>
     </div>
+    </Layout>
   );
 };

@@ -48,7 +48,7 @@ const AgentReply = () => {
     try {
       const res = await fetch(`http://localhost:8000/api/tickets/${id}/status`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
