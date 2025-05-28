@@ -66,11 +66,15 @@ function AppRoutes() {
     <>
       {loading && <div className="loading-line"></div>}
       <Routes>
-        <Route path="/landing-page" element={<LandingPage />} />
-        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/" element={<GuestLayout />}>
-          <Route index element={<Signin />} />
+          <Route index element={<LandingPage />} />
+
+          <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/terms-and-conditions"
+            element={<TermsAndConditions />}
+          />
         </Route>
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/Otp" element={<Otp />} />

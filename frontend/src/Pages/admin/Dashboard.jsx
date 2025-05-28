@@ -145,29 +145,6 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          <div className="bg-blue-950 rounded-xl border-b-8 border-black text-white lg:px-15 mt-5 lg:mt-17">
-            <div className="flex justify-between items-center gap-10">
-              <div className="flex flex-col space-y-2 mt-2 mx-auto py-9 lg:mx-0">
-                <div className="flex flex-col space-y-2 mt-2 items-center lg:items-start">
-                  <h1 className="text-3xl lg:text-4xl font-bold text-center lg:text-left underline">
-                    Hello, <span className="text-blue-500">{user.name}!</span>
-                  </h1>
-                  <p className="mt-3 text-md lg:text-lg text-center lg:text-left">
-                    Welcome back — here’s what’s happening!
-                  </p>
-                </div>
-              </div>
-
-              <div className="hidden lg:block px-0 -mt-30 lg:px-0">
-                <img
-                  src={Image}
-                  alt="backrground"
-                  className="h-85 rotate-90"
-                  style={{ transform: "rotate(270deg) scaleX(-1)" }}
-                />
-              </div>
-            </div>
-          </div>
           {/* Summary Cards */}
           <div className="max-w mt-5">
             <div className="text-md font-semibold text-gray-500 mb-2">

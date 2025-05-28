@@ -19,17 +19,6 @@ export const Signin = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [pageLoading, pageSetLoading] = useState(false);
-
-  const handleNavigation = (event) => {
-    event.preventDefault();
-    pageSetLoading(true);
-
-    setTimeout(() => {
-      navigate("/Signup");
-      pageSetLoading(false);
-    }, 700);
-  };
 
   useEffect(() => {
     if (login && user) {
@@ -147,14 +136,8 @@ export const Signin = () => {
           <h2 className="text-3xl font-bold text-blue-600 mb-6">Sign In</h2>
           <div className="text-sm mb-6">
             Don't have an account?{" "}
-            {pageLoading && (
-              <div className="spinner-overlay">
-                <div className="loading-line"></div>
-              </div>
-            )}
             <Link
               to="/Signup"
-              onClick={handleNavigation}
               className="text-blue-600 font-bold hover:underline"
             >
               Sign up

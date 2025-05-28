@@ -15,8 +15,8 @@ const Createticket = () => {
   const navigate = useNavigate();
 
   // Redirect if not logged in
-  if (!login) {
-    return <Navigate to="/" />;
+  if (!user) {
+    return <Navigate to="/signin" />;
   }
 
   useEffect(() => {

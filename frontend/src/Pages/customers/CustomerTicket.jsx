@@ -15,7 +15,7 @@ import {
 const CustomerTicket = () => {
   const { user } = useStateContext();
   if (!user) {
-    return <Navigate to="/" />;
+    return <Navigate to="/signin" />;
   }
 
   return (
