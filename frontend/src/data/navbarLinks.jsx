@@ -70,8 +70,12 @@ export const getNavbarLinks = (userRole) => {
             path: "/customer/home",
           },
           {
+            name: "Tickes",
+            path: "/customer/tickes",
+          },
+          {
             name: "FAQs",
-            path: "/customer/tickets",
+            path: "/",
           },
           {
             name: "Contact Us",

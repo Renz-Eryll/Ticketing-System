@@ -59,6 +59,6 @@ Route::post('verifyOTP', [ForgotPasswordController::class, 'verifyOTP']);
 Route::post('resetPassword', [ForgotPasswordController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/messages/{id}', [MessageController::class, 'index']);
+    Route::get('/messages/{ticketId}', [MessageController::class, 'index']);
     Route::post('/messages', [MessageController::class, 'store']);
 });

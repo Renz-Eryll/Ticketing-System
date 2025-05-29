@@ -10,18 +10,17 @@ use Illuminate\Validation\ValidationException;
 class MessageController extends Controller
 {
     // Retrieve messages between authenticated user and another user
-    public function index($userId)
+  public function index($ticketId)
     {
         $authId = Auth::id();
 
-        $messages = Message::where(function ($query) use ($authId, $userId) {
-            $query->where('sender_id', $authId)
-                  ->where('receiver_id', $userId);
-        })->orWhere(function ($query) use ($authId, $userId) {
-            $query->where('sender_id', $userId)
-                  ->where('receiver_id', $authId);
-        })->orderBy('created_at')
-          ->get();
+        $messages = Message::where('customer_ticket_id', $ticketId)
+            ->where(function ($query) use ($authId) {
+                $query->where('sender_id', $authId)
+                    ->orWhere('receiver_id', $authId);
+            })
+            ->orderBy('created_at')
+            ->get();
 
         return response()->json($messages);
     }

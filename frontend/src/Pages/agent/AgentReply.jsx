@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { useStateContext } from "../../contexts/ContextProvider";
 import Layout from "../../layout/Layout";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar"; 
 
 const AgentReply = () => {
@@ -19,12 +19,17 @@ const AgentReply = () => {
   const [content, setContent] = useState("");
 
 
+if (!login && !user?.id) {
+    return <Navigate to="/" />;
+  }
+
   useEffect(() => {
 
       const fetchTicket = async () => {
         setLoading(true);
         try {
           const res = await fetch(`http://localhost:8000/api/ticket/${id}`, {
+             method: "GET",
             headers: { Authorization: `Bearer ${token}` },
           });
           const data = await res.json();
@@ -74,19 +79,25 @@ const AgentReply = () => {
   }
 
 const fetchMessages = async () => {
-    try {
-      const res = await fetch(`http://localhost:8000/api/messages/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json(); // ✅ Fix: parse JSON
-      setMessages(data);
-    } catch (err) {
-      console.error("Error fetching messages", err);
+  try {
+    const lastMessage = messages[messages.length - 1];
+    const lastTimestamp = lastMessage?.created_at;
+
+    const res = await fetch(`http://localhost:8000/api/messages/${id}${lastTimestamp ? `?after=${lastTimestamp}` : ''}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    if (data?.length > 0) {
+      setMessages(prev => [...prev, ...data]);
     }
-  };
+  } catch (err) {
+    console.error("Error fetching messages", err);
+  }
+};
 
 
  const sendMessage = async () => {
@@ -100,9 +111,10 @@ const fetchMessages = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        receiver_id: ticketData.id,
-        customer_ticket_id: ticketData.id,
-        content: content,
+        receiver_id:ticketData.user_id,
+        customer_ticket_id:ticketData.id,
+        sender_id:ticketData.agent_id,
+        content:content,
       }),
     });
 
@@ -128,11 +140,14 @@ const fetchMessages = async () => {
   }
 };
 
+
  useEffect(() => {
-    if (id) {
-      fetchMessages();
-    }
-  }, [id]);
+  const interval = setInterval(() => {
+    fetchMessages();
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, [id, token]);
 
   if (loading) {
     return (

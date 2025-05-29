@@ -28,7 +28,7 @@ import AgentTicketdetails from "./Pages/agent/AgentTicketdetails";
 import AgentNotification from "./Pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
 import AgentTickets from "./Pages/agent/Tickets";
-import CustomerTicket from "./Pages/customers/CustomerTicket";
+import CustomerTicket from "./Pages/customers/Tickets";
 import CustomerNotification from "./Pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
 import Createticket from "./Pages/customers/Createticket";
@@ -42,6 +42,7 @@ import UserLayout from "./layout/UserLayout";
 import { NotFound } from "./Pages/NotFound";
 import LandingPage from "./Pages/LandingPage";
 import TermsAndConditions from "./Pages/TermsAndConditions";
+
 
 import { Toaster } from "react-hot-toast";
 
@@ -93,10 +94,11 @@ function AppRoutes() {
       {/* Customer Routes */}
       <Route path="/customer" element={<UserLayout/>}>
           <Route path="home" element={<Home />} />
-          <Route path="tickets" element={<CustomerTicket />} />
+          <Route path="/customer/tickes" element={<CustomerTicket />} />
           <Route path="notification" element={<CustomerNotification />} />
           <Route path="tickets/notificationDetails/:id" element={<CustomerNotifTicketDetails />}/>
           <Route path="create-ticket" element={<Createticket />} />
+          <Route path="tickets/:id" element={<CustomerReply/>} />
       </Route>
 
       {/* Admin Routes */}

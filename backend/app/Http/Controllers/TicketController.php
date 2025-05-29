@@ -45,6 +45,7 @@ class TicketController extends Controller
         return response()->json([
             'id'            => $ticket->id,
             'status'        => $ticket->status,
+            'user_id'        => $ticket->user_id,
             'ticket_body'   => $ticket->ticket_body,
             'image_path'    => $ticket->image_path,
             'category'      => $ticket->category,
