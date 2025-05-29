@@ -216,16 +216,9 @@ const fetchMessages = async () => {
                 {/* Sidebar Section */}
                 <div className="space-y-6">
                   {/* Status Button - now at the top */}
-                  <div className="flex justify-end">
-                    <select 
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)} 
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg mr-2 cursor-default">
-                        <option value="In Progress">In Progress</option>
-                        <option value="Resolved">Resolved</option>
-                        <option value="Closed">Closed</option>
-                        <option value="Open">Open</option>
-                    </select>
+                  <div className="px-4 py-2  bg-gray-200 text-gray-700 rounded-lg mr-50">
+                        {ticketData.status}
+                    
                   </div>
                   {/* Timeline */}
                   <div className="bg-white rounded-xl shadow p-6">
