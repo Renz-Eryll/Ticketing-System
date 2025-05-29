@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaPhoneAlt, FaEdit } from "react-icons/fa";
@@ -19,8 +19,30 @@ import Bigmak from "../assets/bigmak.png";
 import { PublicNavbar } from "../components/PublicNavbar";
 import ScrollToTopButton from "../components/ScrollToTopButton";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const LandingPage = () => {
+const { user, login } = useStateContext();
+const navigate = useNavigate();
+  useEffect(() => {
+      if (login && user) {
+        const { role } = user;
+        switch (role) {
+          case "customer":
+            navigate("/customer/home");
+            break;
+          case "admin":
+            navigate("/admin/dashboard");
+            break;
+          case "agent":
+            navigate("/agent/dashboard");
+            break;
+          default:
+            navigate("/");
+        }
+      }
+    }, [login, user, navigate]);
+
   return (
     <div className={`transition-all duration-300 bg-gray-100`}>
       <PublicNavbar />

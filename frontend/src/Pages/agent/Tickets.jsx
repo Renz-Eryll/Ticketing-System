@@ -1,44 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 import Layout from "../../layout/Layout";
 export const AgentTickets = () => {
-  const { activeMenu, user, login,token } = useStateContext();
+  const { activeMenu, user, login,token,contextReady } = useStateContext();
   const navigate = useNavigate();
 
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-if (!login && !user) {
- navigate("/");
-}
+
+useEffect(() => {
+  if (!contextReady ||!login || !user?.id || !token) return; 
+  // fetch data...
+}, [contextReady,login, user, token]);
 
   useEffect(() => {
 
-  const fetchTickets = async () => {
-    try {
-      const res = await fetch(`http://localhost:8000/api/tickets/agent/${user.id}`, {
-        method: "GET",  
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch tickets");
-      setTickets(data.tickets || []); // make sure to set the tickets from response
-      setLoading(false);
-    } catch (err) {
-      setError(err.message || "Failed to fetch tickets");
-      setLoading(false);
-    }
-  };
+    const fetchTickets = async () => {
+       if (!contextReady ||!login || !user?.id || !token) return;
+      try {
+        const res = await fetch(`http://localhost:8000/api/tickets/agent/${user.id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to fetch tickets");
+        setTickets(data.tickets || []);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message || "Failed to fetch tickets");
+        setLoading(false);
+      }
+    };
 
     fetchTickets();
-  }, [login, user, token]);
+  }, [contextReady,login, user, token]);
 
+        if (!login && !user?.id && !token) {
+        return <Navigate to="/" />;
+      }
     const getPriorityColor = (priority) => {
       switch (priority) {
         case "High":
@@ -102,7 +108,7 @@ if (!login && !user) {
         )}
 
         <div className="space-y-2">
-          {tickets.map((item) => (
+          {tickets.filter(item => item && item.id).map((item) => (
             <div
               key={item.id}
               onClick={() =>

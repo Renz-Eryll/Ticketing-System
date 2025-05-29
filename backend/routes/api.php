@@ -51,7 +51,7 @@ Route::middleware('auth:api')->group(function () {
     // plus any category routes if needed...
 });
 
-Route::get('/tickets/agent/{agentId}', [TicketController::class, 'getTicketsByAgent']);
+Route::middleware(['auth:sanctum'])->get('/tickets/agent/{id}', [TicketController::class, 'getTicketsByAgent']);
 
 // Forgot password routes
 Route::post('sendOTP', [ForgotPasswordController::class, 'sendOTP']);

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const StateContext = createContext({
   user: null,
@@ -7,42 +7,46 @@ const StateContext = createContext({
   setActiveMenu: () => {},
   screenSize: undefined,
   setScreenSize: () => {},
+  contextReady: false,
 });
+
 export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [screenSize, setScreenSize] = useState(undefined);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [currentCategory, setCurrentCategory] = useState(null);
+  const [contextReady, setContextReady] = useState(false);
 
-  const [user, setUser] = useState(() => {
+  // Load user and token from localStorage when context initializes
+  useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
-      if (!storedUser || storedUser === "undefined" || storedUser === "null") {
-        return null;
-      }
-      return JSON.parse(storedUser);
-    } catch (error) {
-      console.error("Failed to parse stored user:", error);
-      localStorage.removeItem("user"); // Clean up bad data
-      return null;
-    }
-  });
-
-  const [currentCategory, setCurrentCategory] = useState(null);
-  const [token, setToken] = useState(() => {
-    try {
       const storedToken = localStorage.getItem("token");
+
       if (
-        storedToken === "undefined" ||
-        storedToken === "null" ||
-        !storedToken
+        storedUser &&
+        storedUser !== "undefined" &&
+        storedUser !== "null"
       ) {
-        return null;
+        setUser(JSON.parse(storedUser));
       }
-      return storedToken;
+
+      if (
+        storedToken &&
+        storedToken !== "undefined" &&
+        storedToken !== "null"
+      ) {
+        setToken(storedToken);
+      }
     } catch (error) {
-      console.error("Failed to parse stored token:", error);
-      return null;
+      console.error("Error loading context from localStorage:", error);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+    } finally {
+      setContextReady(true); // Mark as ready after trying
     }
-  });
+  }, []);
 
   const login = (userData, userToken) => {
     setUser(userData);
@@ -71,6 +75,7 @@ export const ContextProvider = ({ children }) => {
         logout,
         currentCategory,
         setCurrentCategory,
+        contextReady, // 👈 Add this to context
       }}
     >
       {children}

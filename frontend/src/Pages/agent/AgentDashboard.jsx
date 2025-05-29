@@ -1,6 +1,6 @@
 import React from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import {
   MdOutlinePendingActions,
@@ -12,8 +12,11 @@ import {
 import Layout from "../../layout/Layout";
 
 const AgentDashboard = () => {
-  const { activeMenu } = useStateContext();
+  const { activeMenu,user,login,token } = useStateContext();
   const navigate = useNavigate();
+ if (!login && !user?.id && !token) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Layout>

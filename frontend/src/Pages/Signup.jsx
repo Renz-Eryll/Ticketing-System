@@ -8,6 +8,7 @@ import Hero2 from "../assets/hero-2.jpg";
 import Hero3 from "../assets/hero-3.jpg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +22,7 @@ export const Signup = () => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState("customer");
+  const { user, login } = useStateContext();
   const navigate = useNavigate();
   const [TermsOpenModal, setTermsOpenModal] = useState(false);
 
@@ -33,6 +35,10 @@ export const Signup = () => {
     autoplay: true,
     arrows: false,
   };
+
+ if (!login && !user?.id) {
+     return <Navigate to="/" />;
+   }
 
   const openModal = (e) => {
     e.preventDefault();
