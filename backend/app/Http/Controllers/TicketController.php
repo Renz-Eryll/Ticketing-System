@@ -229,13 +229,52 @@ class TicketController extends Controller
                 'id'           => $ticket->id,
                 'status'       => $ticket->status,
                 'category'     => $ticket->category,
+                'customer_name'=> $ticket->customer_name,
                 'created_at'   => $ticket->created_at->toDateTimeString(),
                 'agent_name' => $ticket->agent_name,
-                'priority'=> $ticket->priority
+                'priority'=> $ticket->priority,
+                'ticket_body'=> $ticket->ticket_body
             ];
         }),
     ]);
 }
+
+public function countInProgressTicketsByAgent($agentId)
+{
+    $inProgressCount = Tickets::where('agent_id', $agentId)
+                              ->where('status', 'In Progress')
+                              ->count();
+
+    return response()->json([
+        'agent_id' => $agentId,
+        'in_progress_ticket_count' => $inProgressCount,
+    ]);
+}
+
+public function countResolveTicketsByAgent($agentId)
+{
+    $resolvedCount = Tickets::where('agent_id', $agentId)
+                            ->where('status', 'Resolved')
+                            ->count();
+
+    return response()->json([
+        'agent_id' => $agentId,
+        'resolved_ticket_count' => $resolvedCount,
+    ]);
+}
+
+public function countCloseTicketsByAgent($agentId)
+{
+    $closedCount = Tickets::where('agent_id', $agentId)
+                          ->where('status', 'Closed')
+                          ->count();
+
+    return response()->json([
+        'agent_id' => $agentId,
+        'closed_ticket_count' => $closedCount,
+    ]);
+}
+
 
       
     // Helper method to filter tickets by category

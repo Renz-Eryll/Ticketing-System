@@ -24,6 +24,14 @@ import { useEffect } from "react";
 const LandingPage = () => {
 const { user, login } = useStateContext();
 const navigate = useNavigate();
+
+useEffect(() => {
+  if (!localStorage.getItem("pageReloaded")) {
+    localStorage.setItem("pageReloaded", "true");
+    window.location.reload();
+  }
+}, []);
+
   useEffect(() => {
       if (login && user) {
         const { role } = user;

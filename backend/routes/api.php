@@ -62,3 +62,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/messages/{ticketId}', [MessageController::class, 'index']);
     Route::post('/messages', [MessageController::class, 'store']);
 });
+//tickets status by agent id
+
+Route::get('/agent/{id}/countInProgressTicketsByAgent', [TicketController::class, 'countInProgressTicketsByAgent']);
+Route::get('/agent/{id}/resolve-ticket-count', [TicketController::class, 'countResolveTicketsByAgent']);
+Route::get('/agent/{id}/close-ticket-count', [TicketController::class, 'countCloseTicketsByAgent']);
+
+

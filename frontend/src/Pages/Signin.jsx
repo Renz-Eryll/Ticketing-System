@@ -20,8 +20,9 @@ export const Signin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    if (login && user) {
+    if (user?.role) {
       const { role } = user;
       switch (role) {
         case "customer":
