@@ -15,9 +15,13 @@ import {
 import Image from "../../assets/dashboard-img.png";
 
 export const Dashboard = () => {
-  const { activeMenu, user, login, token } = useStateContext(); // assuming token is stored in context
+  const { activeMenu, user, login, token,contextReady } = useStateContext(); // assuming token is stored in context
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [closedCount, setCloseCount] = useState(0);
+  const [resolvedCount, setResolvedCount] = useState(0);
+  const [openCount, setOpenCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
   const [tickets, setTickets] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(() => {
@@ -67,6 +71,71 @@ export const Dashboard = () => {
 
     fetchTickets();
   }, [token]);
+
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      if (!contextReady || !login || !user?.id || !token) return;
+      try {
+        const [res, res1, res2,res3] = await Promise.all([
+        
+          fetch(`http://localhost:8000/api/tickets/open-count`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }),
+          fetch(`http://localhost:8000/api/tickets/pending-count`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }),
+          fetch(`http://localhost:8000/api/tickets/resolved-count`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }),
+
+           fetch(`http://localhost:8000/api/tickets/closed-count`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }),
+        ]);
+       
+        const [data, data1, data2,data3] = await Promise.all([
+          res.json(),
+          res1.json(),
+          res2.json(),
+          res3.json()
+      
+        ]);
+  
+        if (!res.ok) throw new Error(data.message || "Failed to fetch open tickets");
+        if (!res1.ok) throw new Error(data1.message || "Failed to fetch pending tickets");
+        if (!res2.ok) throw new Error(data2.message || "Failed to fetch resolved tickets");
+        if (!res3.ok) throw new Error(data3.message || "Failed to fetch close tickets");
+  
+        setOpenCount(data);
+        setPendingCount(data1)
+        setResolvedCount(data2);
+        setCloseCount(data3);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message || "Failed to fetch ticket counts");
+        setLoading(false);
+      }
+    };
+  
+    fetchCount();
+  }, [contextReady, login, user, token]);
 
   const getPriorityColor = (priority) => {
     switch (priority?.toLowerCase().trim()) {
@@ -156,7 +225,7 @@ export const Dashboard = () => {
                   <h2 className="text-lg font-semibold text-gray-700">Open</h2>
                   <MdOutlineOpenInNew className="text-2xl text-blue-600" />
                 </div>
-                <p className="text-3xl font-bold text-blue-600">12</p>
+                <p className="text-3xl font-bold text-blue-600">{openCount?.open_tickets_count ?? 0}</p>
               </div>
               <div className="bg-white shadow-md rounded-lg p-6 hover:bg-yellow-50 transition-colors">
                 <div className="flex items-center justify-between mb-2">
@@ -165,7 +234,7 @@ export const Dashboard = () => {
                   </h2>
                   <MdOutlinePendingActions className="text-2xl text-yellow-600" />
                 </div>
-                <p className="text-3xl font-bold text-yellow-600">5</p>
+                <p className="text-3xl font-bold text-yellow-600">{pendingCount?.pending_tickets_count?? 0}</p>
               </div>
               <div className="bg-white shadow-md rounded-lg p-6 hover:bg-green-50 transition-colors">
                 <div className="flex items-center justify-between mb-2">
@@ -174,7 +243,7 @@ export const Dashboard = () => {
                   </h2>
                   <MdOutlineCheckCircle className="text-2xl text-green-600" />
                 </div>
-                <p className="text-3xl font-bold text-green-600">21</p>
+                <p className="text-3xl font-bold text-green-600">{resolvedCount?.resolved_tickets_count ?? 0}</p>
               </div>
               <div className="bg-white shadow-md rounded-lg p-6 hover:bg-gray-100 transition-colors">
                 <div className="flex items-center justify-between mb-2">
@@ -183,7 +252,7 @@ export const Dashboard = () => {
                   </h2>
                   <MdOutlineCancel className="text-2xl text-gray-600" />
                 </div>
-                <p className="text-3xl font-bold text-gray-600">8</p>
+                <p className="text-3xl font-bold text-gray-600">{closedCount?.closed_tickets_count ?? 0}</p>
               </div>
             </div>
           </div>

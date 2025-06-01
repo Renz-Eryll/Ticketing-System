@@ -274,6 +274,30 @@ public function countCloseTicketsByAgent($agentId)
         'closed_ticket_count' => $closedCount,
     ]);
 }
+public function countOpenTickets()
+{
+    $openCount = Tickets::where('status', 'Opened')->count();
+    return response()->json(['open_tickets_count' => $openCount]);
+}
+
+public function countPendingTickets()
+{
+    $pendingCount = Tickets::where('status', 'Pending')->count();
+    return response()->json(['pending_tickets_count' => $pendingCount]);
+}
+
+public function countResolvedTickets()
+{
+    $resolvedCount = Tickets::where('status', 'Resolved')->count();
+    return response()->json(['resolved_tickets_count' => $resolvedCount]);
+}
+
+public function countClosedTickets()
+{
+    $closedCount = Tickets::where('status', 'Closed')->count();
+    return response()->json(['closed_tickets_count' => $closedCount]);
+}
+
 
 
       
@@ -285,3 +309,5 @@ public function countCloseTicketsByAgent($agentId)
         return response()->json($tickets);
     }
 }
+
+

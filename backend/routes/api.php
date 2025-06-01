@@ -68,4 +68,8 @@ Route::get('/agent/{id}/countInProgressTicketsByAgent', [TicketController::class
 Route::get('/agent/{id}/resolve-ticket-count', [TicketController::class, 'countResolveTicketsByAgent']);
 Route::get('/agent/{id}/close-ticket-count', [TicketController::class, 'countCloseTicketsByAgent']);
 
-
+// count tickets status by admin 
+Route::get('/tickets/open-count', [TicketController::class, 'countOpenTickets']);
+Route::get('/tickets/pending-count', [TicketController::class, 'countPendingTickets']);
+Route::get('/tickets/resolved-count', [TicketController::class, 'countResolvedTickets']);
+Route::get('/tickets/closed-count', [TicketController::class, 'countClosedTickets']);
