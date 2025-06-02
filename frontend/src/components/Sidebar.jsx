@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
-import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
+import { Link, useLocation, Navigate, useNavigate } from "react-router-dom";
 import { MdMenuOpen } from "react-icons/md";
 import { useStateContext } from "../contexts/ContextProvider";
-import Swal from "sweetalert2";
-import { getLinks } from "../data/links";
-import qtechLogo from "../assets/qtechlogo.png";
-=======
-import { Link, useLocation, Navigate } from "react-router-dom";
-import { MdMenuOpen } from "react-icons/md";
-import { useStateContext } from "../contexts/ContextProvider";
-import { useNavigate } from "react-router-dom";
 import { getLinks } from "../data/links";
 import qtechLogo from "../assets/qtechlogo.png";
 import { FaUserCircle } from "react-icons/fa";
-
->>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
 import useUser from "../hooks/use-user";
+import Swal from "sweetalert2"; // Assumed you're using this
 
 export const Sidebar = () => {
   const {
@@ -26,18 +16,15 @@ export const Sidebar = () => {
     setScreenSize,
     logout,
     login,
-<<<<<<< HEAD
     token,
   } = useStateContext();
 
-=======
-  } = useStateContext();
->>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
   const location = useLocation();
   const navigate = useNavigate();
   const user = useUser();
   const [links, setLinks] = useState({});
   const [newTicketsCount, setNewTicketsCount] = useState(0);
+  const [active, setActive] = useState("");
 
   if (!login) {
     return <Navigate to="/" />;
@@ -64,7 +51,6 @@ export const Sidebar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [setScreenSize]);
 
-  // Fetch unread notifications based on readTicketIds in localStorage
   useEffect(() => {
     if (!token || !user?.id) return;
 
@@ -79,17 +65,11 @@ export const Sidebar = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch tickets");
         }
-<<<<<<< HEAD
 
         const data = await response.json();
-
-        // Get read ticket IDs from localStorage
         const readTicketIds = JSON.parse(localStorage.getItem("readTicketIds") || "[]");
-
-        // Filter out tickets already marked as read
         const unreadTickets = data.filter(ticket => !readTicketIds.includes(ticket.id));
         setNewTicketsCount(unreadTickets.length);
-
       } catch (error) {
         console.error("Error fetching tickets:", error);
       }
@@ -97,6 +77,17 @@ export const Sidebar = () => {
 
     fetchTickets();
   }, [token, user]);
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    if (links && links.links) {
+      links.links.forEach((link) => {
+        if (link.path === currentPath) {
+          setActive(link.name);
+        }
+      });
+    }
+  }, [location, links]);
 
   const HandleLogout = async () => {
     const result = await Swal.fire({
@@ -119,17 +110,6 @@ export const Sidebar = () => {
     }
   };
 
-  const [active, setActive] = useState("");
-
-=======
-        if (link.path === currentPath) {
-          setActive(link.name);
-        }
-      });
-    }
-  }, [location, links]);
-
->>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
   return (
     <>
       {screenSize < 1024 && !activeMenu && (
@@ -142,17 +122,9 @@ export const Sidebar = () => {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-screen bg-[#08032B] text-white z-40 transition-all duration-300
-        ${
-          screenSize < 1024
-            ? activeMenu
-              ? "w-64"
-              : "w-0"
-            : activeMenu
-            ? "w-72"
-            : "w-25"
-        }
-        overflow-y-auto`}
+        className={`fixed top-0 left-0 h-screen bg-[#08032B] text-white z-40 transition-all duration-300 ${
+          screenSize < 1024 ? (activeMenu ? "w-64" : "w-0") : activeMenu ? "w-72" : "w-25"
+        } overflow-y-auto`}
       >
         <span
           className={`absolute cursor-pointer top-9.5 right-9 z-50 transition-transform ${
@@ -171,20 +143,17 @@ export const Sidebar = () => {
           >
             <img src={qtechLogo} alt="Qtech Logo" className="h-8" />
           </h1>
-<<<<<<< HEAD
         </div>
 
         <div className="mt-6 border-t border-gray-500" />
 
         <div className="mt-10 px-3">
-=======
-
-          {/* User Profile Section */}
           <div className="border-t border-gray-500 mt-8" />
           {user && (
             <div
-              className={`flex flex-col items-center gap-2 mt-15 transition-all duration-300
-              ${activeMenu ? "w-full p-7" : "w-12 p-2 rounded-lg"}`}
+              className={`flex flex-col items-center gap-2 mt-15 transition-all duration-300 ${
+                activeMenu ? "w-full p-7" : "w-12 p-2 rounded-lg"
+              }`}
             >
               <FaUserCircle
                 className={`text-gray-300 transition-all duration-300 ${
@@ -194,9 +163,7 @@ export const Sidebar = () => {
               {activeMenu && (
                 <div className="text-md text-center capitalize">
                   <div className="font-semibold">{user.name}</div>
-                  <div className="text-gray-400 text-sm capitalize">
-                    {user.role}
-                  </div>
+                  <div className="text-gray-400 text-sm capitalize">{user.role}</div>
                 </div>
               )}
             </div>
@@ -205,16 +172,11 @@ export const Sidebar = () => {
           <div className="border-t border-gray-500 mt-6" />
         </div>
 
-        <div className="mt-5 px-3">
->>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
-          {links && (
+        {links && (
+          <div className="mt-5 px-3">
             <div className="text-sm p-3 space-y-3">
               {activeMenu && links.title && (
-                <h3
-                  className={`text-gray-400 uppercase text-xs tracking-wider px-4 transition-opacity duration-500 ${
-                    activeMenu ? "opacity-100" : "opacity-0"
-                  }`}
-                >
+                <h3 className="text-gray-400 uppercase text-xs tracking-wider px-4 transition-opacity duration-500">
                   {links.title}
                 </h3>
               )}
@@ -240,7 +202,6 @@ export const Sidebar = () => {
                       <span className="text-xl">{link.icon}</span>
                       {activeMenu && <span>{link.name}</span>}
 
-                      {/* Notification Badge */}
                       {isNotificationLink && newTicketsCount > 0 && (
                         <span className="absolute top-2 right-4 flex items-center justify-center min-w-[18px] h-5 px-1 text-xs font-bold text-white bg-red-600 rounded-full select-none">
                           {newTicketsCount}
@@ -250,8 +211,8 @@ export const Sidebar = () => {
                   );
                 })}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </>
   );

@@ -13,45 +13,14 @@ class TicketController extends Controller
     // List tickets for the authenticated user
     public function index()
     {
-<<<<<<< HEAD
-        $tickets = Tickets::where('user_id', Auth::id())
-            ->latest()
-            ->get()
-            ->map(function ($ticket) {
-                return $this->formatTicket($ticket);
-            });
-
-        Log::info('User tickets:', ['user_id' => Auth::id(), 'tickets' => $tickets]);
-
-=======
         $tickets = Tickets::where('user_id', Auth::id())->latest()->get();
         Log::info('User tickets retrieved', ['user_id' => Auth::id()]);
->>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
         return response()->json($tickets);
     }
 
-    // List all tickets (admin) with optional "since" filter for notifications
-    public function allTickets(Request $request)
+    // List all tickets (admin)
+    public function allTickets()
     {
-<<<<<<< HEAD
-        $query = Tickets::query()->latest();
-
-        if ($request->has('since')) {
-            $since = $request->input('since');
-            // Validate date format if needed
-            $query->where('created_at', '>', $since);
-        }
-
-        $tickets = $query->get()->map(function ($ticket) {
-            return $this->formatTicket($ticket);
-        });
-
-        Log::info('All tickets:', ['tickets' => $tickets]);
-
-        return response()->json($tickets);
-    }
-
-=======
         $tickets = Tickets::latest()->get();
         Log::info('All tickets retrieved');
         return response()->json($tickets);
@@ -64,7 +33,6 @@ class TicketController extends Controller
     public function ubs()     { return $this->filterByCategory('QTech Utility Billing System'); }
     public function payroll() { return $this->filterByCategory('Philippine HR, Payroll and Time Keeping System'); }
 
->>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
     // Show a single ticket
     public function show($id)
     {
@@ -74,9 +42,6 @@ class TicketController extends Controller
             return response()->json(['message' => 'Ticket not found'], 404);
         }
 
-<<<<<<< HEAD
-        return response()->json($this->formatTicket($ticket));
-=======
         return response()->json([
             'id'            => $ticket->id,
             'status'        => $ticket->status,
@@ -90,7 +55,6 @@ class TicketController extends Controller
             'agent_id'      => $ticket->agent_id,
             'priority'      => $ticket->priority,
         ]);
->>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
     }
 
     // Store a new ticket
@@ -147,8 +111,8 @@ class TicketController extends Controller
             $ticket = Tickets::findOrFail($id);
 
             $agent = User::where('id', $request->agent_id)
-                ->where('role', 'agent')
-                ->firstOrFail();
+                         ->where('role', 'agent')
+                         ->firstOrFail();
 
             $ticket->agent_id   = $agent->id;
             $ticket->agent_name = $agent->name;
@@ -340,42 +304,9 @@ public function countClosedTickets()
     // Helper method to filter tickets by category
     private function filterByCategory($category)
     {
-<<<<<<< HEAD
-        $tickets = Tickets::where('category', $category)
-            ->latest()
-            ->get()
-            ->map(function ($ticket) {
-                return $this->formatTicket($ticket);
-            });
-
-        Log::info("Tickets for {$category}:", ['tickets' => $tickets]);
-
-=======
         $tickets = Tickets::where('category', $category)->latest()->get();
         Log::info("Tickets filtered by category: $category");
->>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
         return response()->json($tickets);
     }
-
-    // Format ticket output for API consistency
-    private function formatTicket($ticket)
-    {
-        return [
-            'id'            => $ticket->id,
-            'user_id'       => $ticket->user_id,
-            'agent_id'      => $ticket->agent_id,
-            'email'         => $ticket->email,
-            'customer_name' => $ticket->customer_name,
-            'agent_name'    => $ticket->agent_name ?? 'Unassigned',
-            'category'      => $ticket->category,
-            'priority'      => $ticket->priority ?? null,
-            'ticket_body'   => $ticket->ticket_body,
-            'image_path'    => $ticket->image_path,
-            'status'        => $ticket->status,
-            'created_at'    => $ticket->created_at ? $ticket->created_at->toISOString() : null,
-            'updated_at'    => $ticket->updated_at ? $ticket->updated_at->toISOString() : null,
-        ];
-    }
 }
-
 
