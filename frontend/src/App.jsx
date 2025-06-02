@@ -124,50 +124,6 @@ function AppRoutes() {
 
       {/* Agent Routes */}
       <Route path="/agent" element={<AgentLayout />}>
-
-        <Route
-          path="dashboard"
-          element={
-            <Layout>
-              <AgentDashboard />
-            </Layout>
-          }
-        />
-        <Route
-          path="notification"
-          element={
-            <Layout>
-              <AgentNotification />
-            </Layout>
-          }
-        />
-        <Route
-          path="notification/:id"
-          element={
-            <Layout>
-              <AgentNotifTicketDetails />
-            </Layout>
-          }
-        />
-        <Route
-          path="tickets"
-          element={
-            <Layout>
-              <AgentTickets />
-            </Layout>
-          }
-        />
-        <Route
-          path="tickets/:id"
-          element={
-            <Layout>
-              <AgentTicketdetails />
-            </Layout>
-          }
-        />
-      </Route>
-
-
        <Route path="dashboard" element={<AgentDashboard />} />
           <Route path="notification" element={<AgentNotification />} />
           <Route path="notification/:id"element={<AgentNotifTicketDetails />}/>
@@ -176,7 +132,7 @@ function AppRoutes() {
           <Route path="status" element={<StatusPage />} />{" "}
           {/* Corrected path */}
         </Route><Route path="*" element={<NotFound />} />
-
+    </Routes>
     </>
   );
 }
