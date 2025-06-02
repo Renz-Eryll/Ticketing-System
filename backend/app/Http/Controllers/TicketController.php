@@ -13,6 +13,7 @@ class TicketController extends Controller
     // List tickets for the authenticated user
     public function index()
     {
+<<<<<<< HEAD
         $tickets = Tickets::where('user_id', Auth::id())
             ->latest()
             ->get()
@@ -22,12 +23,17 @@ class TicketController extends Controller
 
         Log::info('User tickets:', ['user_id' => Auth::id(), 'tickets' => $tickets]);
 
+=======
+        $tickets = Tickets::where('user_id', Auth::id())->latest()->get();
+        Log::info('User tickets retrieved', ['user_id' => Auth::id()]);
+>>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
         return response()->json($tickets);
     }
 
     // List all tickets (admin) with optional "since" filter for notifications
     public function allTickets(Request $request)
     {
+<<<<<<< HEAD
         $query = Tickets::query()->latest();
 
         if ($request->has('since')) {
@@ -45,21 +51,45 @@ class TicketController extends Controller
         return response()->json($tickets);
     }
 
+=======
+        $tickets = Tickets::latest()->get();
+        Log::info('All tickets retrieved');
+        return response()->json($tickets);
+    }
+
+    // Filter endpoints by category
+    public function pos()     { return $this->filterByCategory('POS for Retail and F&B'); }
+    public function iss()     { return $this->filterByCategory('QTech Inventory Support System'); }
+    public function qsa()     { return $this->filterByCategory('QSA (Quick and Single Accounting)'); }
+    public function ubs()     { return $this->filterByCategory('QTech Utility Billing System'); }
+    public function payroll() { return $this->filterByCategory('Philippine HR, Payroll and Time Keeping System'); }
+
+>>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
     // Show a single ticket
     public function show($id)
     {
         $ticket = Tickets::with(['agent', 'customer'])->find($id);
+
         if (!$ticket) {
             return response()->json(['message' => 'Ticket not found'], 404);
         }
 
+<<<<<<< HEAD
         return response()->json($this->formatTicket($ticket));
-    }
-
-    // Create form (web)
-    public function create()
-    {
-        return view('tickets.create');
+=======
+        return response()->json([
+            'id'            => $ticket->id,
+            'status'        => $ticket->status,
+            'ticket_body'   => $ticket->ticket_body,
+            'image_path'    => $ticket->image_path,
+            'category'      => $ticket->category,
+            'created_at'    => $ticket->created_at->toDateTimeString(),
+            'customer_name' => optional($ticket->customer)->name ?? 'N/A',
+            'agent_name'    => optional($ticket->agent)->name ?? 'Unassigned',
+            'agent_id'      => $ticket->agent_id,
+            'priority'      => $ticket->priority,
+        ]);
+>>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
     }
 
     // Store a new ticket
@@ -92,7 +122,7 @@ class TicketController extends Controller
         return response()->json(['message' => 'Ticket created successfully!'], 201);
     }
 
-    // Assign an agent
+    // Assign an agent to a ticket
     public function assignAgent(Request $request, $id)
     {
         try {
@@ -114,16 +144,15 @@ class TicketController extends Controller
             return response()->json([
                 'agent_id'   => $ticket->agent_id,
                 'agent_name' => $ticket->agent_name,
-            ], 200);
+            ]);
 
-        } catch (\Illuminate\Validation\ValidationException $ve) {
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'message' => 'Validation failed',
-                'errors'  => $ve->errors(),
+                'errors'  => $e->errors(),
             ], 422);
-
         } catch (\Exception $e) {
-            Log::error('assignAgent error', ['exception' => $e]);
+            Log::error('Error assigning agent', ['exception' => $e]);
             return response()->json([
                 'message' => 'Server error while assigning agent',
                 'error'   => $e->getMessage(),
@@ -131,9 +160,110 @@ class TicketController extends Controller
         }
     }
 
-    // Helper for category filtering
+    // Update ticket status
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'status' => 'required|string|in:Open,In Progress,Resolved,Closed',
+            ]);
+
+            $ticket = Tickets::findOrFail($id);
+            $ticket->status = $request->status;
+            $ticket->save();
+
+            return response()->json([
+                'message' => 'Status updated successfully',
+                'status'  => $ticket->status,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors'  => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error updating status', ['exception' => $e]);
+            return response()->json([
+                'message' => 'Server error while updating status',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+      // Update ticket Priority
+    public function updatePriority(Request $request, $id)
+{
+    try {
+        // Validate priority field
+        $request->validate([
+            'priority' => 'required|string|in:Low,Medium,High,Urgent',
+        ]);
+
+        // Find ticket or fail
+        $ticket = Tickets::findOrFail($id);
+
+        // Update priority
+        $ticket->priority = $request->priority;
+        $ticket->save();
+
+        return response()->json([
+            'message' => 'Priority updated successfully',
+            'priority' => $ticket->priority,
+        ]);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'message' => 'Validation failed',
+            'errors' => $e->errors(),
+        ], 422);
+    } catch (\Exception $e) {
+        Log::error('Error updating priority', ['exception' => $e]);
+
+        return response()->json([
+            'message' => 'Server error while updating priority',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+
+    public function getTicketsByAgent($agentId)
+{
+    $agent = User::where('id', $agentId)->where('role', 'agent')->first();
+
+    if (!$agent) {
+        return response()->json(['message' => 'Agent not found'], 404);
+    }
+
+    $tickets = Tickets::with(['agent', 'customer'])
+                      ->where('agent_id', $agentId)
+                      ->latest()
+                      ->get();
+
+    return response()->json([
+        'agent' => [
+            'id' => $agent->id,
+            'name' => $agent->name,
+            'email' => $agent->email,
+        ],
+        'tickets' => $tickets->map(function($ticket) {
+            return [
+                'id'           => $ticket->id,
+                'status'       => $ticket->status,
+                'category'     => $ticket->category,
+                'created_at'   => $ticket->created_at->toDateTimeString(),
+                'agent_name' => $ticket->agent_name,
+                'priority'=> $ticket->priority
+            ];
+        }),
+    ]);
+}
+
+      
+    // Helper method to filter tickets by category
     private function filterByCategory($category)
     {
+<<<<<<< HEAD
         $tickets = Tickets::where('category', $category)
             ->latest()
             ->get()
@@ -143,6 +273,10 @@ class TicketController extends Controller
 
         Log::info("Tickets for {$category}:", ['tickets' => $tickets]);
 
+=======
+        $tickets = Tickets::where('category', $category)->latest()->get();
+        Log::info("Tickets filtered by category: $category");
+>>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
         return response()->json($tickets);
     }
 

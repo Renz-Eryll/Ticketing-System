@@ -21,7 +21,6 @@ const StateContext = createContext({
   login: () => {},
   logout: () => {},
 });
-
 export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [screenSize, setScreenSize] = useState(undefined);
@@ -39,12 +38,24 @@ export const ContextProvider = ({ children }) => {
     }
   });
 
+  const [currentCategory, setCurrentCategory] = useState(null);
   const [token, setToken] = useState(() => {
     try {
       const storedToken = localStorage.getItem("token");
+<<<<<<< HEAD
       return storedToken && storedToken !== "undefined" && storedToken !== "null"
         ? storedToken
         : null;
+=======
+      if (
+        storedToken === "undefined" ||
+        storedToken === "null" ||
+        !storedToken
+      ) {
+        return null;
+      }
+      return storedToken;
+>>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
     } catch (error) {
       console.error("Failed to parse stored token:", error);
       return null;
@@ -211,6 +222,7 @@ export const ContextProvider = ({ children }) => {
         token,
         login,
         logout,
+<<<<<<< HEAD
         tickets,
         fetchTickets,
         readTicketIds,
@@ -222,6 +234,10 @@ export const ContextProvider = ({ children }) => {
         markNotificationAsRead,
         markAllNotificationsAsRead,
         unreadNotificationsCount,
+=======
+        currentCategory,
+        setCurrentCategory,
+>>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
       }}
     >
       {children}
