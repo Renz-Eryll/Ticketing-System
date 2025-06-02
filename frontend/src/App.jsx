@@ -90,6 +90,8 @@ function AppRoutes() {
         <Route path="tickets/:id" element={<Layout><AgentTicketdetails /></Layout>} />
       </Route>
 
+      
+
     </Routes>
 
   );

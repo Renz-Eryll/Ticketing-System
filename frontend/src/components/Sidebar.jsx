@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { MdMenuOpen } from "react-icons/md";
 import { useStateContext } from "../contexts/ContextProvider";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getLinks } from "../data/links";
 import qtechLogo from "../assets/qtechlogo.png";
-
-// get current user
 import useUser from "../hooks/use-user";
 
 export const Sidebar = () => {
-  const { activeMenu, setActiveMenu, screenSize, setScreenSize,logout,login } =
+  const {
+    activeMenu,
+    setActiveMenu,
+    screenSize,
+    setScreenSize,
+    logout,
+    login,
+    token,
+  } = useStateContext();
 
-    useStateContext();
   const location = useLocation();
-  const [active, setActive] = useState("");
   const navigate = useNavigate();
   const user = useUser();
   const [links, setLinks] = useState({});
+  const [newTicketsCount, setNewTicketsCount] = useState(0);
 
-  if(!login){
-    return <Navigate to ='/'/>
+  if (!login) {
+    return <Navigate to="/" />;
   }
 
-  // set SideBar Links
   useEffect(() => {
     if (user) {
       setLinks(getLinks(user.role));
@@ -43,27 +46,38 @@ export const Sidebar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [setActiveMenu, setScreenSize]);
 
+  // Fetch unread notifications based on readTicketIds in localStorage
   useEffect(() => {
-    const currentPath = location.pathname.trim();
-    const splitCurrentPath = currentPath.split("/");
+    if (!token || !user?.id) return;
 
-    if (links) {
-      const allLinks = [...(links.links || []), ...(links.subLinks || [])];
+    const fetchTickets = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/allTickets", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      allLinks.forEach((link) => {
-        if (splitCurrentPath.length == 4) {
-          const get2ndAndMid = `/${splitCurrentPath[1]}/${splitCurrentPath[2]}`;
-          if (get2ndAndMid.trim() === link.path) {
-            setActive(link.name);
-          }
+        if (!response.ok) {
+          throw new Error("Failed to fetch tickets");
         }
 
-        if (link.path === currentPath) {
-          setActive(link.name);
-        }
-      });
-    }
-  }, [location, links]);
+        const data = await response.json();
+
+        // Get read ticket IDs from localStorage
+        const readTicketIds = JSON.parse(localStorage.getItem("readTicketIds") || "[]");
+
+        // Filter out tickets already marked as read
+        const unreadTickets = data.filter(ticket => !readTicketIds.includes(ticket.id));
+        setNewTicketsCount(unreadTickets.length);
+
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    };
+
+    fetchTickets();
+  }, [token, user]);
 
   const HandleLogout = async () => {
     const result = await Swal.fire({
@@ -76,7 +90,6 @@ export const Sidebar = () => {
     });
 
     if (result.isConfirmed) {
-      // clear user data from localstorage
       await Swal.fire({
         title: "Success!",
         text: "You have been logged out.",
@@ -86,6 +99,8 @@ export const Sidebar = () => {
       navigate("/");
     }
   };
+
+  const [active, setActive] = useState("");
 
   return (
     <>
@@ -120,7 +135,7 @@ export const Sidebar = () => {
           <MdMenuOpen className="text-2xl" />
         </span>
 
-        <div className="p-6 pt-8">
+        <div className="p-6 pt-8 flex items-center justify-between">
           <h1
             className={`origin-left font-bold text-2xl transition-all duration-300 cursor-pointer ${
               !activeMenu ? "scale-0" : ""
@@ -128,8 +143,10 @@ export const Sidebar = () => {
           >
             <img src={qtechLogo} alt="Qtech Logo" className="h-8" />
           </h1>
-          <div className="mt-6 border-t border-gray-500" />
         </div>
+
+        <div className="mt-6 border-t border-gray-500" />
+
         <div className="mt-10 px-3">
           {links && (
             <div className="text-sm p-3 space-y-3">
@@ -143,26 +160,36 @@ export const Sidebar = () => {
                 </h3>
               )}
 
-              {/* Main Links */}
               {links.links &&
-                links.links.map((link) => (
-                  <Link
-                    to={link.path}
-                    key={link.name}
-                    onClick={() => {
-                      setActive(link.name);
-                      if (screenSize < 1024) setActiveMenu(false);
-                    }}
-                    className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300 ${
-                      active === link.name
-                        ? "bg-[#1D4ED8] text-white"
-                        : "text-white hover:bg-[#1a1445]"
-                    }`}
-                  >
-                    <span className="text-xl">{link.icon}</span>
-                    {activeMenu && <span>{link.name}</span>}
-                  </Link>
-                ))}
+                links.links.map((link) => {
+                  const isNotificationLink = link.name.toLowerCase() === "notification";
+
+                  return (
+                    <Link
+                      to={link.path}
+                      key={link.name}
+                      onClick={() => {
+                        setActive(link.name);
+                        if (screenSize < 1024) setActiveMenu(false);
+                      }}
+                      className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300 ${
+                        active === link.name
+                          ? "bg-[#1D4ED8] text-white"
+                          : "text-white hover:bg-[#1a1445]"
+                      } relative`}
+                    >
+                      <span className="text-xl">{link.icon}</span>
+                      {activeMenu && <span>{link.name}</span>}
+
+                      {/* Notification Badge */}
+                      {isNotificationLink && newTicketsCount > 0 && (
+                        <span className="absolute top-2 right-4 flex items-center justify-center min-w-[18px] h-5 px-1 text-xs font-bold text-white bg-red-600 rounded-full select-none">
+                          {newTicketsCount}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
             </div>
           )}
         </div>
