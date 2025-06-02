@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 const useUser = () => {
   const [user, setUser] = useState(null);
 
+
   useEffect(() => {
     if (typeof localStorage === "undefined") return;
 

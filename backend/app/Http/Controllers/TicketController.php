@@ -80,6 +80,7 @@ class TicketController extends Controller
         return response()->json([
             'id'            => $ticket->id,
             'status'        => $ticket->status,
+            'user_id'        => $ticket->user_id,
             'ticket_body'   => $ticket->ticket_body,
             'image_path'    => $ticket->image_path,
             'category'      => $ticket->category,
@@ -103,7 +104,7 @@ class TicketController extends Controller
             'email'       => 'required|email',
             'category'    => 'required|string|max:255',
             'ticket_body' => 'required|string',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_path'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $ticket = new Tickets();
@@ -113,13 +114,26 @@ class TicketController extends Controller
         $ticket->category      = $validated['category'];
         $ticket->ticket_body   = $validated['ticket_body'];
 
-        if ($request->hasFile('image')) {
-            $ticket->image_path = $request->file('image')->store('uploads', 'public');
+        if ($request->hasFile('image_path')) {
+        $path = $request->file('image_path')->store('uploads', 'public');
+        $ticket->image_path = $path;
         }
 
         $ticket->save();
 
-        return response()->json(['message' => 'Ticket created successfully!'], 201);
+         return response()->json([
+        'message' => 'Ticket created successfully',
+        'ticket'  => [
+            'id'            => $ticket->id,
+            'customer_name'=> $ticket->customer_name,
+            'email'        => $ticket->email,
+            'category'     => $ticket->category,
+            'ticket_body'  => $ticket->ticket_body,
+            'image_url'    => $ticket->image_path 
+                ? asset('storage/' . $ticket->image_path) 
+                : null,
+        ]
+    ]);
     }
 
     // Assign an agent to a ticket
@@ -251,13 +265,76 @@ class TicketController extends Controller
                 'id'           => $ticket->id,
                 'status'       => $ticket->status,
                 'category'     => $ticket->category,
+                'customer_name'=> $ticket->customer_name,
                 'created_at'   => $ticket->created_at->toDateTimeString(),
                 'agent_name' => $ticket->agent_name,
-                'priority'=> $ticket->priority
+                'priority'=> $ticket->priority,
+                'ticket_body'=> $ticket->ticket_body
             ];
         }),
     ]);
 }
+
+public function countInProgressTicketsByAgent($agentId)
+{
+    $inProgressCount = Tickets::where('agent_id', $agentId)
+                              ->where('status', 'In Progress')
+                              ->count();
+
+    return response()->json([
+        'agent_id' => $agentId,
+        'in_progress_ticket_count' => $inProgressCount,
+    ]);
+}
+
+public function countResolveTicketsByAgent($agentId)
+{
+    $resolvedCount = Tickets::where('agent_id', $agentId)
+                            ->where('status', 'Resolved')
+                            ->count();
+
+    return response()->json([
+        'agent_id' => $agentId,
+        'resolved_ticket_count' => $resolvedCount,
+    ]);
+}
+
+public function countCloseTicketsByAgent($agentId)
+{
+    $closedCount = Tickets::where('agent_id', $agentId)
+                          ->where('status', 'Closed')
+                          ->count();
+
+    return response()->json([
+        'agent_id' => $agentId,
+        'closed_ticket_count' => $closedCount,
+    ]);
+}
+public function countOpenTickets()
+{
+    $openCount = Tickets::where('status', 'Opened')->count();
+    return response()->json(['open_tickets_count' => $openCount]);
+}
+
+public function countPendingTickets()
+{
+    $pendingCount = Tickets::where('status', 'Pending')->count();
+    return response()->json(['pending_tickets_count' => $pendingCount]);
+}
+
+public function countResolvedTickets()
+{
+    $resolvedCount = Tickets::where('status', 'Resolved')->count();
+    return response()->json(['resolved_tickets_count' => $resolvedCount]);
+}
+
+public function countClosedTickets()
+{
+    $closedCount = Tickets::where('status', 'Closed')->count();
+    return response()->json(['closed_tickets_count' => $closedCount]);
+}
+
+
 
       
     // Helper method to filter tickets by category
@@ -300,3 +377,5 @@ class TicketController extends Controller
         ];
     }
 }
+
+

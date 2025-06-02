@@ -1,67 +1,64 @@
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
-
-
+import Layout from "../../layout/Layout";
 export const AgentTickets = () => {
-  const { activeMenu, user, login,token } = useStateContext();
+  const { activeMenu, user, login,token,contextReady } = useStateContext();
   const navigate = useNavigate();
 
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Redirect if not logged in
-  useEffect(() => {
-  if (!login && !user) {
-    navigate("/");
-  }
-}, [login, user, navigate]);
 
-if (!login && !user) {
-  return null;
-}
+useEffect(() => {
+  if (!contextReady ||!login || !user?.id || !token) return; 
+  // fetch data...
+}, [contextReady,login, user, token]);
 
   useEffect(() => {
-  if (!login || !user) return;
 
-  const fetchTickets = async () => {
-    try {
-      const res = await fetch(`http://localhost:8000/api/tickets/agent/${user.id}`, {
-        method: "GET",  
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch tickets");
-      setTickets(data.tickets || []); // make sure to set the tickets from response
-      setLoading(false);
-    } catch (err) {
-      setError(err.message || "Failed to fetch tickets");
-      setLoading(false);
-    }
-  };
+    const fetchTickets = async () => {
+       if (!contextReady ||!login || !user?.id || !token) return;
+      try {
+        const res = await fetch(`http://localhost:8000/api/tickets/agent/${user.id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to fetch tickets");
+        setTickets(data.tickets || []);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message || "Failed to fetch tickets");
+        setLoading(false);
+      }
+    };
 
-  fetchTickets();
-}, [login, user, token]);
+    fetchTickets();
+  }, [contextReady,login, user, token]);
 
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "High":
-        return "text-red-500 font-semibold";
-      case "Primary":
-        return "text-green-500 font-semibold";
-      case "Medium":
-        return "text-yellow-500 font-semibold";
-      case "Low":
-        return "text-gray-500 font-semibold";
-      default:
-        return "text-black";
-    }
-  };
+        if (!login && !user?.id && !token) {
+        return <Navigate to="/" />;
+      }
+    const getPriorityColor = (priority) => {
+      switch (priority) {
+        case "High":
+          return "text-red-500 font-semibold";
+        case "Primary":
+          return "text-green-500 font-semibold";
+        case "Medium":
+          return "text-yellow-500 font-semibold";
+        case "Low":
+          return "text-gray-500 font-semibold";
+        default:
+          return "text-black";
+      }
+    };
 
   const statusColor = (status) => {
     switch (status) {
@@ -73,8 +70,8 @@ if (!login && !user) {
         return "text-black";
     }
   };
-
   return (
+    <Layout>
     <div
       className={`
         mx-5 md:mx-5 lg:mx-5
@@ -90,7 +87,7 @@ if (!login && !user) {
           />
         </div>
         <div className="text-3xl font-bold text-[#1D4ED8]">
-          POS for Retail and F&B
+          Tickets
         </div>
       </div>
 
@@ -111,7 +108,7 @@ if (!login && !user) {
         )}
 
         <div className="space-y-2">
-          {tickets.map((item) => (
+          {tickets.filter(item => item && item.id).map((item) => (
             <div
               key={item.id}
               onClick={() =>
@@ -156,6 +153,7 @@ if (!login && !user) {
         </div>
       </div>
     </div>
+    </Layout>
   );
 };
 

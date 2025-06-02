@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { IoMdArrowBack } from "react-icons/io";
 
 const Createticket = () => {
   const { activeMenu, user, login, token } = useStateContext();
@@ -10,10 +11,12 @@ const Createticket = () => {
   const [category, setCategory] = useState("");
   const [email, setEmail] = useState("");
   const [ticketBody, setTicketBody] = useState("");
+  const [image_path, setImage_path] = useState("");
+  const navigate = useNavigate();
 
   // Redirect if not logged in
-  if (!login) {
-    return <Navigate to="/" />;
+  if (!user) {
+    return <Navigate to="/signin" />;
   }
 
   useEffect(() => {
@@ -33,7 +36,7 @@ const Createticket = () => {
       formData.append("customer_name", user.name);
 
       if (fileRef.current && fileRef.current.files[0]) {
-        formData.append("file", fileRef.current.files[0]); // Append the file
+        formData.append("image_path", fileRef.current.files[0]); // Append the file
       }
 
       const response = await fetch("http://localhost:8000/api/tickets", {
@@ -79,13 +82,22 @@ const Createticket = () => {
         setPreview(reader.result);
       };
       reader.readAsDataURL(file);
+      setImage_path(file.name);
     }
   };
 
   return (
     <div className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 `}>
-      <main className="mt-10 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-blue-600 mb-6">Create Ticket</h1>
+      <main className=" max-w-7xl mx-auto">
+        <div className="flex gap-4 mt-30">
+          <IoMdArrowBack
+            className="text-4xl cursor-pointer"
+            onClick={() => navigate("/customer/home")}
+          />
+          <h1 className="text-3xl font-bold text-blue-600 mb-6">
+            Create Ticket
+          </h1>
+        </div>
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold mb-1">Create Quick Ticket</h2>
           <p className="text-gray-400 mb-4">
@@ -141,12 +153,12 @@ const Createticket = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600">
+              <label className="block mb-1 text-sm font-medium text-gray-600">
                 Upload Photo
               </label>
               <div
                 onClick={handleUploadfile}
-                className="border border-dashed border-gray-300 p-10 flex flex-col items-center justify-center rounded-md cursor-pointer hover:bg-gray-50 transition"
+                className="border border-dashed border-gray-300 p-5 flex flex-col items-center justify-center rounded-md cursor-pointer hover:bg-gray-50 transition"
               >
                 <input
                   onChange={handleFileChange}

@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\MessageController;
 
 //  Authenticated user info (requires Sanctum token)
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -42,8 +44,6 @@ Route::delete('/agents/{id}', [RegisteredUserController::class, 'deleteAgent']);
 Route::put('/assignAgent/{id}', [TicketController::class, 'assignAgent']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('tickets', [TicketController::class, 'allTickets']);
-    Route::get('tickets/{id}', [TicketController::class, 'show']);
     Route::put('assignAgent/{id}', [TicketController::class, 'assignAgent']);
     Route::middleware(['auth:sanctum'])->put('/tickets/{id}/status', [TicketController::class, 'updateStatus']);
     Route::middleware(['auth:sanctum'])->put('/tickets/{id}/priority', [TicketController::class, 'updatePriority']);
@@ -51,7 +51,25 @@ Route::middleware('auth:api')->group(function () {
     // plus any category routes if needed...
 });
 
-Route::get('/tickets/agent/{agentId}', [TicketController::class, 'getTicketsByAgent']);
+Route::middleware(['auth:sanctum'])->get('/tickets/agent/{id}', [TicketController::class, 'getTicketsByAgent']);
 
+// Forgot password routes
+Route::post('sendOTP', [ForgotPasswordController::class, 'sendOTP']);
+Route::post('verifyOTP', [ForgotPasswordController::class, 'verifyOTP']);
+Route::post('resetPassword', [ForgotPasswordController::class, 'resetPassword']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/messages/{ticketId}', [MessageController::class, 'index']);
+    Route::post('/messages', [MessageController::class, 'store']);
+});
+//tickets status by agent id
 
+Route::get('/agent/{id}/countInProgressTicketsByAgent', [TicketController::class, 'countInProgressTicketsByAgent']);
+Route::get('/agent/{id}/resolve-ticket-count', [TicketController::class, 'countResolveTicketsByAgent']);
+Route::get('/agent/{id}/close-ticket-count', [TicketController::class, 'countCloseTicketsByAgent']);
+
+// count tickets status by admin 
+Route::get('/tickets/open-count', [TicketController::class, 'countOpenTickets']);
+Route::get('/tickets/pending-count', [TicketController::class, 'countPendingTickets']);
+Route::get('/tickets/resolved-count', [TicketController::class, 'countResolvedTickets']);
+Route::get('/tickets/closed-count', [TicketController::class, 'countClosedTickets']);

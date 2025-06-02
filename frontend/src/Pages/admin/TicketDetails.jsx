@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
-
+import Layout from "../../layout/Layout";
 const TicketDetails = () => {
   const { activeMenu, user, login, token } = useStateContext();
   const { id } = useParams();
@@ -15,7 +15,10 @@ const TicketDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
+  // Redirect if not logged in
+  if (!login && !user?.id) {
+    return <Navigate to="/" />;
+  }
 
   const selectedAgentName = useMemo(() => {
     if (assignedAgent) {
@@ -37,7 +40,7 @@ const TicketDetails = () => {
         if (!res.ok) throw new Error(data.message || "Failed to fetch ticket");
         setTicketData(data);
         setAssignedAgent(data.agent_id || "");
-        setPriority(data.priority || "Open");
+        setPriority(data.priority || "Low");
       } catch (err) {
         console.error(err);
         setError(err.message);
@@ -153,6 +156,7 @@ const TicketDetails = () => {
   }
 
   return (
+    <Layout>
     <div
       className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
         activeMenu ? "lg:pl-75" : "lg:pl-25"
@@ -265,6 +269,7 @@ const TicketDetails = () => {
         </div>
       </div>
     </div>
+  </Layout>
   );
 };
 

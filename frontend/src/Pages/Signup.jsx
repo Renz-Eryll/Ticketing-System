@@ -8,6 +8,7 @@ import Hero2 from "../assets/hero-2.jpg";
 import Hero3 from "../assets/hero-3.jpg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,22 +17,14 @@ export const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState("customer");
+  const { user, login } = useStateContext();
   const navigate = useNavigate();
   const [TermsOpenModal, setTermsOpenModal] = useState(false);
-  const [pageLoading, pageSetLoading] = useState(false);
-  const handleNavigation = (event) => {
-    event.preventDefault();
-    pageSetLoading(true);
-
-    setTimeout(() => {
-      navigate("/");
-      pageSetLoading(false);
-    }, 700);
-  };
 
   const carousel = {
     dots: false,
@@ -42,6 +35,10 @@ export const Signup = () => {
     autoplay: true,
     arrows: false,
   };
+
+ if (!login && !user?.id) {
+     return <Navigate to="/" />;
+   }
 
   const openModal = (e) => {
     e.preventDefault();
@@ -54,8 +51,19 @@ export const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    if (!isTermsAccepted) {
+      setError("You must accept the terms and conditions to register.");
+      setLoading(false);
+      return;
+    }
+
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setError("Passwords do not match");
+      setLoading(false);
       return;
     }
 
@@ -72,28 +80,34 @@ export const Signup = () => {
           password,
           role: role,
           password_confirmation: confirmPassword,
+          terms_accepted: isTermsAccepted,
         }),
       });
 
-      let data = null;
-
-      const text = await response.text(); // get the raw text
-      if (text) {
-        data = JSON.parse(text); // safely parse if not empty
-      }
+      const data = await response.json();
 
       if (!response.ok) {
-        setError(data?.message || "Registration failed.");
+        setError(data.message || "Registration failed.");
         return;
       }
 
-      setSuccess("Signup successful! Redirecting...");
-      navigate("/");
+      setSuccess(
+        "Registration successful! Please check your email for login credentials."
+      );
+      // Store the token if needed
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+
+      // Redirect after a short delay to allow user to read the success message
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (err) {
       console.error("Signup failed:", err);
       setError("An unexpected error occurred.");
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -135,14 +149,8 @@ export const Signup = () => {
           <h2 className="text-2xl font-bold text-blue-600 mb-2">Sign Up</h2>
           <p className="text-sm mb-4">
             Already have an account?{" "}
-            {pageLoading && (
-              <div className="spinner-overlay">
-                <div className="loading-line"></div>
-              </div>
-            )}
             <Link
-              to="/"
-              onClick={handleNavigation}
+              to="/signin"
               className="text-blue-600 font-bold hover:underline"
             >
               Sign in
@@ -211,19 +219,25 @@ export const Signup = () => {
             </div>
 
             {/* Terms & Conditions */}
-            <div className="flex items-center text-sm">
-              <input type="checkbox" className="mr-2" />
-              <label>
-                I have read & accept the{" "}
-                <a
-                  href="#"
+            <div className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={isTermsAccepted}
+                onChange={(e) => setIsTermsAccepted(e.target.checked)}
+                className="mt-1"
+              />
+              <label htmlFor="terms" className="text-sm">
+                I accept the{" "}
+                <button
+                  className="text-blue-600 hover:underline"
                   onClick={openModal}
-                  className="text-blue-600 font-bold hover:underline"
                 >
                   Terms and Conditions
-                </a>
+                </button>
               </label>
             </div>
+
             {error && <div className="text-red-500 text-sm">{error}</div>}
             {success && <div className="text-green-500 text-sm">{success}</div>}
 

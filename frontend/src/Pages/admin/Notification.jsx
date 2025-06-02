@@ -1,6 +1,6 @@
-  import React, { useEffect, useState } from "react";
-  import { useStateContext } from "../../contexts/ContextProvider";
-  import { useNavigate, Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useStateContext } from "../../contexts/ContextProvider";
+import { useNavigate, Navigate } from "react-router-dom";
 
 <<<<<<< HEAD
   const Notification = () => {
@@ -70,7 +70,6 @@ const Notification = () => {
       setUnreadCount(0);
 =======
         const data = await response.json();
-        console.log(data); // Optional: For debugging
         setNotifications(data);
       } catch (error) {
         console.error("Error fetching tickets:", error);
@@ -91,150 +90,103 @@ const Notification = () => {
   if (!token || !user?.id) {
     return <Navigate to="/" />;
   }
->>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
 
-        // Update lastSeen to this notification if it's newer
-        const currentLastSeen = new Date(lastSeen);
-        const notifDate = new Date(notif.created_at);
-        if (notifDate > currentLastSeen) {
-          localStorage.setItem(lastSeenKey, notifDate.toISOString());
-        }
-      }
+  const handleRowClick = (notif) => {
+    navigate(`/admin/notification/${notif.id}`, {
+      state: notif,
+    });
+  };
 
-      navigate(`/admin/notification/${notif.id}`, { state: notif });
-    };
+  return (
+    <div
+      className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
+        activeMenu ? "lg:pl-72" : "lg:pl-24"
+      }`}
+    >
+      <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Notification</div>
 
-    const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      return date.toLocaleString(undefined, {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    };
-
-    if (!token || !user?.id) {
-      return <Navigate to="/" />;
-    }
-
-    return (
-      <div
-        className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
-          activeMenu ? "lg:pl-72" : "lg:pl-24"
-        }`}
-      >
-        <div className="flex items-center justify-between text-3xl font-bold text-[#1D4ED8] mb-6">
-          <span>Notification</span>
-
-          <div className="flex items-center gap-3">
-            {unreadCount > 0 && (
-              <span className="relative inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-600 rounded-full">
-                {unreadCount}
-              </span>
-            )}
-
-            {unreadCount > 0 && (
-              <button
-                onClick={markAllAsRead}
-                className="px-3 py-1 text-sm font-semibold text-white bg-blue-600 rounded hover:bg-blue-700 transition"
-                aria-label="Mark all notifications as read"
-              >
-                Mark All as Read
-              </button>
-            )}
-          </div>
+      <div className="bg-white rounded-lg shadow-sm p-6 min-h-[500px] space-y-2">
+        <div className="grid grid-cols-[repeat(4,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
+          <div>Ticket ID</div>
+          <div>Category</div>
+          <div>Issue</div>
+          <div>Status</div>
         </div>
-<<<<<<< HEAD
-
-        <div className="bg-white rounded-lg shadow-sm p-6 min-h-[500px] space-y-3">
-          {loading ? (
-            <p className="text-center text-gray-500">Loading tickets...</p>
-          ) : error ? (
-            <p className="text-center text-red-500">{error}</p>
-          ) : notifications.length === 0 ? (
-            <p className="text-center text-gray-500">No notifications found.</p>
-          ) : (
-            notifications.map((notif) => {
-              const lastSeen = localStorage.getItem(lastSeenKey) || "1970-01-01T00:00:00Z";
-              const isUnread = new Date(notif.created_at) > new Date(lastSeen);
-=======
         {loading ? (
           <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-2">
             <div className="spinner-overlay">
               <div className="loading-line"></div>
             </div>
-          </div>
-        ) : notifications.length > 0 ? (
-          notifications.map((notif, index) => (
-            <div
-              key={index}
-              onClick={() => handleRowClick(notif)}
-              className="grid grid-cols-[repeat(4,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
-            >
-              <div className="truncate">{notif.id}</div>
-              <div className="truncate">{notif.category}</div>
-              <div className="truncate">{notif.ticket_body}</div>
-              <div className="font-medium">
-                <span
-                  className={`${
-                    notif.status === "Resolved"
-                      ? "text-green-600"
-                      : "text-red-500"
-                  }`}
+
+            {loading ? (
+              <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-3">
+                <svg
+                  className="animate-spin h-8 w-8 text-blue-600"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
                 >
-                  {notif.status}
-                </span>
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+                <span>Loading Notifications..</span>
               </div>
-            </div>
-          ))
-        ) : (
-          <div className="p-6 text-center text-gray-500">
-            No notifications found
+            ) : notifications.length > 0 ? (
+              notifications.map((notif) => (
+                <div
+                  key={notif.id}
+                  onClick={() => handleRowClick(notif)}
+                  className="grid grid-cols-[repeat(5,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
+                >
+                  <div className="truncate">{notif.customer}</div>
+                  <div className="truncate">#{notif.id}</div>
+                  <div className="truncate">{notif.issue}</div>
+                  <div className="font-medium">
+                    <span
+                      className={`${
+                        notif.status === "Resolved"
+                          ? "text-green-600"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {notif.status}
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    {formatTimeAgo(notif.created_at)}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="p-6 text-center text-gray-500 italic">
+                No notifications available.
+              </div>
+            )}
+          </div>
+
+          <div className="p-4 flex justify-center border-t border-gray-200 mt-6">
+            <button
+              onClick={() => alert("See More clicked!")}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              See More
+            </button>
           </div>
         )}
       </div>
     </div>
   );
 };
->>>>>>> 543cf3588179d2ef851815785039bf25a23c4187
-
-              return (
-                <div
-                  key={notif.id}
-                  onClick={() => handleRowClick(notif)}
-                  className={`flex items-center justify-between p-4 rounded-md cursor-pointer transition ${
-                    isUnread ? "bg-blue-50" : "bg-[#EEF0FF]"
-                  } hover:bg-blue-100`}
-                >
-                  <div className="flex-1 text-sm text-gray-800 truncate">
-                    <strong>{notif.category} ticket submitted</strong>:&nbsp;
-                    {notif.ticket_body.length > 80
-                      ? notif.ticket_body.substring(0, 77) + "..."
-                      : notif.ticket_body}
-                  </div>
-
-                  <div className="flex items-center space-x-4 ml-4">
-                    <span className="text-xs text-gray-500 whitespace-nowrap">
-                      {formatDate(notif.created_at)}
-                    </span>
-                    <span
-                      className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                        notif.status === "Resolved"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {notif.status}
-                    </span>
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
-      </div>
-    );
-  };
 
   export default Notification;

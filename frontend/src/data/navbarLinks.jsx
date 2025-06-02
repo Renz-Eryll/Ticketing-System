@@ -1,5 +1,12 @@
-import { MdNotificationsNone, MdOutlineLogout } from "react-icons/md";
+import {
+  MdNotificationsNone,
+  MdOutlineLogout,
+  MdInfoOutline,
+} from "react-icons/md";
 import { FiUser } from "react-icons/fi";
+import { FaFileContract } from "react-icons/fa6";
+import { FaInfoCircle } from "react-icons/fa";
+import { GoFile } from "react-icons/go";
 
 export const getNavbarLinks = (userRole) => {
   if (!userRole) return null;
@@ -19,6 +26,13 @@ export const getNavbarLinks = (userRole) => {
             path: "/admin/profile",
           },
 
+          /* DI PA TO WORKING*/
+          {
+            name: "Terms and Conditions",
+            icon: <GoFile />,
+            path: "/terms-and-conditions",
+          },
+
           {
             name: "Logout",
             icon: <MdOutlineLogout />,
@@ -36,6 +50,11 @@ export const getNavbarLinks = (userRole) => {
         },
         profileMenu: [
           {
+            name: "Terms and Conditions",
+            icon: <GoFile />,
+            path: "/terms-and-conditions",
+          },
+          {
             name: "Logout",
             icon: <MdOutlineLogout />,
             path: null,
@@ -47,12 +66,20 @@ export const getNavbarLinks = (userRole) => {
       return {
         navLinks: [
           {
-            name: "Dashboard",
-            path: "/customer/dashboard",
+            name: "Home",
+            path: "/customer/home",
           },
           {
-            name: "Tickets",
-            path: "/customer/tickets",
+            name: "Tickes",
+            path: "/customer/tickes",
+          },
+          {
+            name: "FAQs",
+            path: "/",
+          },
+          {
+            name: "Contact Us",
+            path: "/customer/contact-us",
           },
         ],
         notifications: {
@@ -61,6 +88,16 @@ export const getNavbarLinks = (userRole) => {
           count: 2,
         },
         profileMenu: [
+          {
+            name: "About Us",
+            icon: <MdInfoOutline />,
+            path: "/About",
+          },
+          {
+            name: "Terms and Conditions",
+            icon: <GoFile />,
+            path: "/terms-and-conditions",
+          },
           {
             name: "Logout",
             icon: <MdOutlineLogout />,
