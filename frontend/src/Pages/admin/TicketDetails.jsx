@@ -93,6 +93,40 @@ const TicketDetails = () => {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Assignment failed");
+      const result  = await fetch("http://localhost:8000/api/agentnotification", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          
+        },
+         body: JSON.stringify({
+          ticket_id:id,
+          name:"Admin",
+          title: "New Assign Ticket",
+          message: "A new ticket has been submitted.",
+        }),
+        credentials: "include",
+      });
+
+
+       
+      const res1  = await fetch("http://localhost:8000/api/customernotification", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          
+        },
+         body: JSON.stringify({
+          ticket_id:id,
+          title: "New Assign Ticket",
+          message: "A new ticket has been submitted.",
+        }),
+        credentials: "include",
+      });
 
       setTicketData((prev) => ({
         ...prev,

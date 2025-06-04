@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useStateContext } from "../contexts/ContextProvider";
 import { getNavbarLinks } from "../data/navbarLinks";
 import { Link, useNavigate, NavLink } from "react-router-dom";
@@ -9,20 +9,75 @@ import { FaEdit } from "react-icons/fa";
 import { MdMenuOpen } from "react-icons/md";
 import qtechLogo from "../assets/qtechlogo.png";
 
+const formatTimeAgo = (timestamp) => {
+  const now = new Date();
+  const time = new Date(timestamp);
+  const diffSeconds = Math.floor((now - time) / 1000);
+
+  if (diffSeconds < 60) return `${diffSeconds}s ago`;
+  if (diffSeconds < 3600) return `${Math.floor(diffSeconds / 60)}m ago`;
+  if (diffSeconds < 86400) return `${Math.floor(diffSeconds / 3600)}h ago`;
+  return `${Math.floor(diffSeconds / 86400)}d ago`;
+};
+
 const Navbar = () => {
-  const { activeMenu, logout } = useStateContext();
-  const user = useUser();
-  const navigate = useNavigate();
-  const [navbarLinks, setNavbarLinks] = useState(null);
+   const { activeMenu, logout, token, user } = useStateContext();
+  const userData = useUser();
+ const navigate = useNavigate();
+   const [navbarLinks, setNavbarLinks] = useState(null);
   const [notifDropdown, setNotifDropdown] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const [notifications, setNotifications] = useState([]);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const [notifError, setNotifError] = useState(null);
+  const mobileMenuCloseBtnRef = useRef(null);
   useEffect(() => {
     if (user) {
       setNavbarLinks(getNavbarLinks(user.role));
     }
   }, [user]);
+
+
+   useEffect(() => {
+    if (!notifDropdown) return;
+    if (!token || !user?.id) return;
+
+    const fetchNotifications = async () => {
+      setNotifLoading(true);
+      setNotifError(null);
+      try {
+        const { role } = user;
+          let url = "";
+        switch (role) {
+          case "customer":
+            url = "";
+            break;
+          case "admin":
+            url = "http://localhost:8000/api/allNotifications";
+            break;
+          case "agent":
+            url = `http://localhost:8000/api/Customernotifications/${user.id}`;
+            break;
+          default:
+            return;
+        }
+        if (!url) return;
+         const res = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+         const data = await res.json();
+        setNotifications(Array.isArray(data) ? data : []);
+       
+      } catch (error) {
+        setNotifError(error.message || "Failed to load notifications");
+      } finally {
+        setNotifLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, [notifDropdown, token, user]);
 
   const handleLogout = async () => {
     const result = await Swal.fire({
@@ -40,6 +95,44 @@ const Navbar = () => {
       navigate("/signin");
     }
   };
+   // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const notifDropdownEl = document.getElementById("notif-dropdown");
+      const profileDropdownEl = document.getElementById("profile-dropdown");
+      const notifButtonEl = document.getElementById("notif-button");
+      const profileButtonEl = document.getElementById("profile-button");
+
+      if (
+        notifDropdown &&
+        notifDropdownEl &&
+        !notifDropdownEl.contains(event.target) &&
+        notifButtonEl &&
+        !notifButtonEl.contains(event.target)
+      ) {
+        setNotifDropdown(false);
+      }
+
+      if (
+        profileDropdown &&
+        profileDropdownEl &&
+        !profileDropdownEl.contains(event.target) &&
+        profileButtonEl &&
+        !profileButtonEl.contains(event.target)
+      ) {
+        setProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [notifDropdown, profileDropdown]);
+
+  useEffect(() => {
+    if (mobileMenuOpen && mobileMenuCloseBtnRef.current) {
+      mobileMenuCloseBtnRef.current.focus();
+    }
+  }, [mobileMenuOpen]);
 
   return (
     <div
@@ -183,78 +276,28 @@ const Navbar = () => {
                   Notifications
                 </p>
                 <ul className="space-y-3 max-h-80 overflow-y-auto">
-                  {[
-                    {
-                      id: 1,
-                      name: "Kate Young",
-                      message: "Message here",
-                      time: "5 mins ago",
-                    },
-                    {
-                      id: 2,
-                      name: "Brandon Newman",
-                      message: "Message here",
-                      time: "21 mins ago",
-                    },
-                    {
-                      id: 3,
-                      name: "Dave Wood",
-                      message: "Message here",
-                      time: "2 hrs ago",
-                    },
-                    {
-                      id: 4,
-                      name: "Kate Young",
-                      message: "Message here",
-                      time: "3 hrs ago",
-                    },
-                    {
-                      id: 5,
-                      name: "Anna Lee",
-                      message: "Message here",
-                      time: "1 day ago",
-                    },
-                  ].map((notif) => (
-                    <Link
-                      to={navbarLinks.notifications.path}
-                      key={notif.id}
-                      className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded-lg transition duration-150"
-                      onClick={() => setNotifDropdown(false)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width={40}
-                        height={40}
-                        viewBox="0 0 16 16"
-                        className="text-gray-500 flex-shrink-0"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M11 7c0 1.66-1.34 3-3 3S5 8.66 5 7s1.34-3 3-3s3 1.34 3 3"
-                        />
-                        <path
-                          fill="currentColor"
-                          fillRule="evenodd"
-                          d="M16 8c0 4.42-3.58 8-8 8s-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8M4 13.75C4.16 13.484 5.71 11 7.99 11c2.27 0 3.83 2.49 3.99 2.75A6.98 6.98 0 0 0 14.99 8c0-3.87-3.13-7-7-7s-7 3.13-7 7c0 2.38 1.19 4.49 3.01 5.75"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <div className="flex-1">
-                        <p className="text-sm">
-                          <span className="font-semibold text-blue-600">
-                            {notif.name}
-                          </span>
-                          <span className="text-gray-700">
-                            {" "}
-                            {notif.message}
-                          </span>
-                        </p>
-                        <p className="text-xs text-gray-400 mt-1">
-                          {notif.time}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
+                   {notifications.map((notif) => (
+                  <li
+                    key={notif.ticket_id}
+                    className="p-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
+                    onClick={() => handleNotifClick(notif)}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        handleNotifClick(notif);
+                      }
+                    }}
+                  >
+                    <div className="font-semibold">
+                      {notif.name
+                        ? `${notif.name} posted a ticket`
+                        : `${notif.title}`}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {formatTimeAgo(notif.created_at)}
+                    </div>
+                  </li>
+                ))}
                 </ul>
                 <Link
                   to={navbarLinks.notifications.path}
