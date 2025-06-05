@@ -88,7 +88,7 @@ Route::get('/allNotifications', [AdminNotificationController::class, 'index']);
 
 //notification agent
 Route::post('/agentnotification', [AgentNotificationController::class, 'store']);
-
+Route::get('/agentnotifications/{user_ID}', [AgentNotificationController::class, 'getByTicketId']);
 //notification customer
 Route::post('/customernotification', [CustomerNotificationController::class, 'store']);
-Route::get('/Customernotifications/{ticket_id}', [CustomerNotificationController::class, 'getByTicketId']);
+Route::get('/Customernotifications/{customer_id}', [CustomerNotificationController::class, 'getByTicketId']);

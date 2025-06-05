@@ -9,7 +9,7 @@ class AgentNotification extends Model
     protected $fillable = [
         'ticket_id',
         'title',
-        'user_id',
+        'user_ID',
         'name',
         'message',
         'is_read',
@@ -21,6 +21,6 @@ class AgentNotification extends Model
     }
         public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'user_ID');
     }
 }

@@ -13,6 +13,15 @@ class AgentNotificationController extends Controller
         $notifications = AgentNotification::orderBy('created_at', 'desc')->get();
         return response()->json($notifications);
     }
+    
+     public function getByTicketId($user_ID)
+{
+    $notifications = AgentNotification::where('user_ID', $user_ID)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return response()->json($notifications);
+}
 
     // Store new notification
    public function store(Request $request)
@@ -20,7 +29,7 @@ class AgentNotificationController extends Controller
     try {
         $validated = $request->validate([
             'ticket_id' => 'required|integer|exists:tickets,id',
-            'user_id' => 'required|integer|exists:tickets,id',
+            'user_ID' => 'required|integer|exists:users,id',
             'title' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'message' => 'required|string',

@@ -51,13 +51,13 @@ const Navbar = () => {
           let url = "";
         switch (role) {
           case "customer":
-            url = "";
+            url = `http://localhost:8000/api/Customernotifications/${user.id}`;
             break;
           case "admin":
             url = "http://localhost:8000/api/allNotifications";
             break;
           case "agent":
-            url = `http://localhost:8000/api/Customernotifications/${user.id}`;
+            url = `http://localhost:8000/api/agentnotifications/${user.id}`;
             break;
           default:
             return;

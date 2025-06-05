@@ -14,9 +14,9 @@ class CustomerNotificationController extends Controller
         return response()->json($notifications);
     }
 
-    public function getByTicketId($user_id)
+    public function getByTicketId($customer_id)
 {
-    $notifications = CustomerNotification::where('user_id', $user_id)
+    $notifications = CustomerNotification::where('customer_id', $customer_id)
         ->orderBy('created_at', 'desc')
         ->get();
 
@@ -29,7 +29,7 @@ class CustomerNotificationController extends Controller
     try {
         $validated = $request->validate([
             'ticket_id' => 'required|integer|exists:tickets,id',
-            'user_id' => 'required|integer|exists:tickets,id',
+            'customer_id' => 'required|integer|exists:users,id',
             'title' => 'required|string|max:255',
             'message' => 'required|string',
         ]);

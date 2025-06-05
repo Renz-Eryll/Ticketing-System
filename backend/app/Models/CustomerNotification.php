@@ -8,7 +8,7 @@ class CustomerNotification extends Model
 {
     protected $fillable = [
         'ticket_id',
-        'user_id',
+        'customer_id',
         'title',
         'message',
         'is_read',
@@ -20,6 +20,6 @@ class CustomerNotification extends Model
     }
         public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'customer_id');
     }
 }
