@@ -37,7 +37,7 @@ const Navbar = () => {
     if (result.isConfirmed) {
       await Swal.fire("Logged Out", "See you next time!", "success");
       logout();
-      navigate("/");
+      navigate("/signin");
     }
   };
 
@@ -111,7 +111,7 @@ const Navbar = () => {
 
       {/* Desktop Navbar */}
       {user?.role === "customer" && (
-        <div className="flex-2 items-center mx-3.5 xl:mx-0 hidden lg:flex">
+        <div className="flex-1 items-center mx-3.5 xl:mx-0 hidden lg:flex">
           <Link to="/customer/home">
             <img
               src={qtechLogo}
