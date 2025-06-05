@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\AdminNotificationController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\AgentNotificationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CustomerNotificationController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -11,6 +14,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\MessageController;
+use App\Models\AgentNotification;
 
 //  Authenticated user info (requires Sanctum token)
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -77,3 +81,14 @@ Route::get('/tickets/closed-count', [TicketController::class, 'countClosedTicket
 Route::get('/users/{id}', [RegisteredUserController::class, 'getUserById']);
 Route::put('/users/{id}/update-name-email', [RegisteredUserController::class, 'updateUserNameAndEmail']);
 Route::middleware('auth:sanctum')->put('/update-password/{id}', [RegisteredUserController::class, 'updatePassword']);
+
+//notification admin
+Route::post('/notification', [AdminNotificationController::class, 'store']);
+Route::get('/allNotifications', [AdminNotificationController::class, 'index']);
+
+//notification agent
+Route::post('/agentnotification', [AgentNotificationController::class, 'store']);
+Route::get('/agentnotifications/{user_ID}', [AgentNotificationController::class, 'getByTicketId']);
+//notification customer
+Route::post('/customernotification', [CustomerNotificationController::class, 'store']);
+Route::get('/Customernotifications/{customer_id}', [CustomerNotificationController::class, 'getByTicketId']);
