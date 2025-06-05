@@ -103,7 +103,7 @@ const TicketDetails = () => {
         },
          body: JSON.stringify({
           ticket_id:id,
-          user_ID: ticketData.agent_id,
+          user_id: data.agent_id,
           name:"Admin",
           title: "New Assign Ticket",
           message: "A new ticket has been submitted.",

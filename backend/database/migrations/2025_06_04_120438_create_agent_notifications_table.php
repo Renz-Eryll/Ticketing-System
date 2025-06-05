@@ -13,14 +13,26 @@ return new class extends Migration
     {
         Schema::create('agent_notifications', function (Blueprint $table) {
             $table->id();
-        $table->foreignId('ticket_id')->constrained('tickets')->onDelete('cascade');
-        $table->foreignId('user_ID')->constrained('users')->onDelete('cascade');
-        $table->string('name');
-        $table->string('title');
-        $table->text('message');
-        $table->boolean('is_read')->default(false); // Track if notification is read
-        $table->timestamps();
 
+            // Foreign key to tickets table
+            $table->foreignId('ticket_id')
+                ->constrained()
+                ->onDelete('cascade');
+
+            // Foreign key to users table (agent user)
+            $table->foreignId('user_id') // use snake_case 'user_id' for consistency
+                ->constrained()
+                ->onDelete('cascade');
+
+            // Notification details
+            $table->string('name');    // Who posted the ticket / sender
+            $table->string('title');   // Notification title
+            $table->text('message');   // Full notification message
+
+            // Read status
+            $table->boolean('is_read')->default(false);
+
+            $table->timestamps();
         });
     }
 
@@ -29,6 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admin_notifications');
+        Schema::dropIfExists('agent_notifications');
     }
 };
