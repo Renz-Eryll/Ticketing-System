@@ -311,4 +311,3 @@ public function countClosedTickets()
     }
 }
 
-

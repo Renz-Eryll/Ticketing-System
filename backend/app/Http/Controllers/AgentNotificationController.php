@@ -4,81 +4,153 @@ namespace App\Http\Controllers;
 
 use App\Models\AgentNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Validation\ValidationException;
 
 class AgentNotificationController extends Controller
 {
-    // Show all notifications
+    /**
+     * Display a listing of all agent notifications (optional admin use).
+     */
     public function index()
     {
-        $notifications = AgentNotification::orderBy('created_at', 'desc')->get();
-        return response()->json($notifications);
+        try {
+            $notifications = AgentNotification::orderBy('created_at', 'desc')->get();
+            return response()->json($notifications);
+        } catch (\Exception $e) {
+            Log::error('Error fetching all agent notifications: ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to fetch notifications.'], 500);
+        }
     }
-    
-     public function getByTicketId($user_ID)
-{
-    $notifications = AgentNotification::where('user_ID', $user_ID)
-        ->orderBy('created_at', 'desc')
-        ->get();
 
-    return response()->json($notifications);
-}
+    /**
+     * Display notifications specific to an agent by user ID.
+     */
+    public function agentNotifications($user_id)
+    {
+        try {
+            $notifications = AgentNotification::where('user_id', $user_id)
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-    // Store new notification
-   public function store(Request $request)
-{
-    try {
-        $validated = $request->validate([
-            'ticket_id' => 'required|integer|exists:tickets,id',
-            'user_ID' => 'required|integer|exists:users,id',
-            'title' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'message' => 'required|string',
-        ]);
-
-        $notification = AgentNotification::create($validated);
-
-        return response()->json([
-            'message' => 'Notification created successfully.',
-            'data' => $notification,
-        ], 201);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return response()->json([
-            'errors' => $e->errors(),
-            'message' => 'Validation failed',
-        ], 422);
+            return response()->json($notifications);
+        } catch (\Exception $e) {
+            Log::error('Error fetching notifications for user ' . $user_id . ': ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to fetch notifications for the user.'], 500);
+        }
     }
-}
 
+    /**
+     * Store a newly created agent notification.
+     */
+    public function store(Request $request)
+    {
+        Log::info('AgentNotification store request received', $request->all());
 
-    // Show single notification
+        try {
+            $validated = $request->validate([
+                'ticket_id' => 'required|integer|exists:tickets,id',
+                'user_id'   => 'required|integer|exists:users,id',
+                'title'     => 'required|string|max:255',
+                'name'      => 'required|string|max:255',
+                'message'   => 'required|string',
+            ]);
+
+            $notification = AgentNotification::create($validated);
+
+            Log::info('AgentNotification created successfully', ['notification_id' => $notification->id]);
+
+            return response()->json([
+                'message' => 'Notification created successfully.',
+                'data'    => $notification,
+            ], 201);
+        } catch (ValidationException $e) {
+            Log::error('AgentNotification validation failed', $e->errors());
+
+            return response()->json([
+                'message' => 'Validation failed.',
+                'errors'  => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('AgentNotification store error: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'An unexpected error occurred.',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Display a specific notification by ID.
+     */
     public function show($id)
     {
-        $notification = AgentNotification::findOrFail($id);
-        return response()->json($notification);
+        try {
+            $notification = AgentNotification::findOrFail($id);
+            return response()->json($notification);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Notification not found.',
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Error fetching notification ID ' . $id . ': ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to fetch notification.'], 500);
+        }
     }
 
-    // Update (e.g., mark as read)
+    /**
+     * Update an agent notification (e.g., mark as read).
+     */
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'is_read' => 'required|boolean',
-        ]);
+        try {
+            $validated = $request->validate([
+                'is_read' => 'required|boolean',
+            ]);
 
-        $notification = AgentNotification::findOrFail($id);
-        $notification->update($validated);
+            $notification = AgentNotification::findOrFail($id);
+            $notification->update($validated);
 
-        return response()->json([
-            'message' => 'Notification updated.',
-            'data' => $notification,
-        ]);
+            return response()->json([
+                'message' => 'Notification updated successfully.',
+                'data'    => $notification,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Notification not found.',
+            ], 404);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed.',
+                'errors'  => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error updating notification ID ' . $id . ': ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to update notification.'], 500);
+        }
     }
 
-    // Delete a notification
+    /**
+     * Remove a specific notification by ID.
+     */
     public function destroy($id)
     {
-        $notification = AgentNotification::findOrFail($id);
-        $notification->delete();
+        try {
+            $notification = AgentNotification::findOrFail($id);
+            $notification->delete();
 
-        return response()->json(['message' => 'Notification deleted.']);
+            return response()->json([
+                'message' => 'Notification deleted successfully.',
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Notification not found.',
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Error deleting notification ID ' . $id . ': ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to delete notification.'], 500);
+        }
     }
 }

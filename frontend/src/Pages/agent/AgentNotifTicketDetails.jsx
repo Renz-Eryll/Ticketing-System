@@ -70,7 +70,7 @@ const AgentNotifTicketDetails = () => {
           {/* Right */}
           <div className="col-span-12 md:col-span-6 px-4">
             <div className="mb-4">
-              <div className="text-gray-600 font-semibold">User Name:</div>
+              <div className="text-gray-600 font-semibold">Username:</div>
               <div className="mt-1 font-bold">{ticketData.customer}</div>
             </div>
             <div className="mb-4">
