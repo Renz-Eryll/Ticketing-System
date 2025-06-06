@@ -66,7 +66,9 @@ const CustomerNotification = () => {
   return (
     <div className="mx-5 md:mx-10 lg:mx-20 transition-all duration-300">
       <div className="max-w-7xl mx-auto">
-        <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Notifications</div>
+        <div className="text-3xl font-bold text-[#1D4ED8] mb-6">
+          Notifications
+        </div>
 
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
@@ -108,10 +110,15 @@ const CustomerNotification = () => {
                               clipRule="evenodd"
                             />
                           </svg>
-                          <div className="font-medium text-gray-900">{notif.user_name}</div>
+                          <div className="font-medium text-gray-900">
+                            {notif.user_name}
+                          </div>
                         </td>
                         <td className="px-6 py-4 text-center">#{notif.id}</td>
-                        <td className="px-6 py-4 text-center truncate max-w-xs" title={notif.ticket_body}>
+                        <td
+                          className="px-6 py-4 text-center truncate max-w-xs"
+                          title={notif.ticket_body}
+                        >
                           {notif.ticket_body}
                         </td>
                         <td className="px-6 py-4 text-center">
@@ -132,7 +139,10 @@ const CustomerNotification = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5" className="text-center py-6 text-gray-500 italic">
+                      <td
+                        colSpan="5"
+                        className="text-center py-6 text-gray-500 italic"
+                      >
                         No notifications available.
                       </td>
                     </tr>

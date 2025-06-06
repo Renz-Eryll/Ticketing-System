@@ -37,7 +37,7 @@ const Navbar = () => {
     if (result.isConfirmed) {
       await Swal.fire("Logged Out", "See you next time!", "success");
       logout();
-      navigate("/");
+      navigate("/signin");
     }
   };
 
