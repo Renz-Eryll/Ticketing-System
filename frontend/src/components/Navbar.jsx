@@ -420,28 +420,33 @@ const markNotificationAsRead = async (notifId) => {
                   <p className="text-gray-500">No notifications available.</p>
                 ) : (
                   <ul className="space-y-3 max-h-80 overflow-y-auto">
-                    {notifications.map((notif) => (
-                      <li
-                        key={notif.id}
-                        className="p-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
-                        onClick={() => handleNotifClick(notif)}
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            handleNotifClick(notif);
-                          }
-                        }}
-                        role="menuitem"
-                        aria-label={notif.name ? `${notif.name} posted a ticket` : notif.title}
-                      >
-                        <div className="font-semibold">
-                          {notif.name ? `${notif.name} posted a ticket` : notif.title}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {formatTimeAgo(notif.created_at)}
-                        </div>
-                      </li>
-                    ))}
+                  {notifications.map((notif) => (
+                  <li
+                    key={notif.id}
+                    className="p-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0 relative"
+                    onClick={() => handleNotifClick(notif)}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        handleNotifClick(notif);
+                      }
+                    }}
+                    role="menuitem"
+                    aria-label={notif.name ? `${notif.name} posted a ticket` : notif.title}
+                  >
+                    {/* Red dot for unread notifications */}
+                    {!notif.is_read && (
+                      <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-red-600 rounded-full" />
+                    )}
+
+                    <div className="font-semibold">
+                      {notif.name ? `${notif.name} posted a ticket` : notif.title}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {formatTimeAgo(notif.created_at)}
+                    </div>
+                  </li>
+                ))}
                   </ul>
                 )}
                 <Link

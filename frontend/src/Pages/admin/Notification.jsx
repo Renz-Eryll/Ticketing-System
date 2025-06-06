@@ -145,7 +145,7 @@ const Notification = () => {
         activeMenu ? "lg:pl-72" : "lg:pl-24"
       }`}
     >
-      <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Agent Notifications</div>
+      <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Notifications</div>
 
       <div className="grid gap-4 min-h-[500px] bg-white rounded-lg shadow-sm p-6">
         {loading ? (

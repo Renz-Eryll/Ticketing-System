@@ -46,7 +46,7 @@ const AgentNotifTicketDetails = () => {
             onClick={() => navigate(-1)}
           />
           <h1 className="text-2xl md:text-3xl font-bold text-blue-700">
-            Ticket Details
+            Notification Details
           </h1>
         </div>
 
