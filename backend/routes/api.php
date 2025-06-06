@@ -73,16 +73,26 @@ Route::middleware('auth:sanctum')->group(function () {
 // Admin Notifications (public)
 Route::post('/notification', [AdminNotificationController::class, 'store']);
 Route::get('/allNotifications', [AdminNotificationController::class, 'index']);
-
+Route::put('/adminUpdateNotif/{id}', [AdminNotificationController::class, 'update']);
+Route::get('/admin-unread-count', [AdminNotificationController::class, 'getUnreadCount']);
+Route::put('/admin-notifications/mark-all-read', [AdminNotificationController::class, 'markAllAsRead']);
 // Agent Notifications (authenticated)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/agentnotification', [AgentNotificationController::class, 'store']);
     Route::get('/agentnotifications/{user_id}', [AgentNotificationController::class, 'agentNotifications']); // uses user_id param
+    Route::get('/agent-notifications/{id}', [AgentNotificationController::class, 'show']);
+    Route::put('/updateNotif/{id}', [AgentNotificationController::class, 'update']);
+    Route::get('/unread-count/{id}', [AgentNotificationController::class, 'getUnreadCount']);
+    Route::put('/notifications/mark-all-read/{userId}', [AgentNotificationController::class, 'markAllAsRead']);
 });
 
 // Customer Notifications (public)
 Route::post('/customernotification', [CustomerNotificationController::class, 'store']);
-Route::get('/customernotifications/{customer_id}', [CustomerNotificationController::class, 'getByTicketId']);
+Route::get('/customernotif/{customer_id}', [CustomerNotificationController::class, 'getCustomerNotifications']);
+Route::put('/customer-updateNotif/{id}', [CustomerNotificationController::class, 'update']);
+Route::get('/customer-unread-count/{customer_id}', [CustomerNotificationController::class, 'getUnreadCount']);
+Route::get('/customer-notifications/{id}', [CustomerNotificationController::class, 'show']);
+Route::put('/customer-notifications/mark-all-read/{userId}', [CustomerNotificationController::class, 'markAllAsRead']);
 
 // 🔐 Password Reset
 Route::post('/sendOTP', [ForgotPasswordController::class, 'sendOTP']);

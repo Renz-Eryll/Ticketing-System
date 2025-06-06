@@ -4,145 +4,77 @@ import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 
 const CustomerNotifTicketDetails = () => {
-  const { activeMenu, user, token } = useStateContext();
-  const navigate = useNavigate();
+const navigate = useNavigate();
+  const { activeMenu, user, login, token } = useStateContext();
   const { id } = useParams();
-  const [ticketData, setTicketData] = useState(null);
+  const [notifData, setNotifData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Redirect if not logged in
-  if (!user?.id) {
-    return <Navigate to="/" />;
-  }
+  if (!login && !user) return <Navigate to="/" />;
 
   useEffect(() => {
-    const fetchTicket = async () => {
+    const fetchNotif = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(`http://localhost:8000/api/ticket/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
+        const res = await fetch(`http://localhost:8000/api/customer-notifications/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || "Failed to fetch ticket");
-        }
-
-        setTicketData(data);
-        setLoading(false);
+        if (!res.ok) throw new Error("Failed to fetch ticket details.");
+        const data = await res.json();
+        setNotifData(data);
       } catch (err) {
         setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
-
-    fetchTicket();
+    fetchNotif();
   }, [id, token]);
 
-  if (loading) return <div className="p-10">Loading...</div>;
-  if (error) return <div className="p-10 text-red-500">Error: {error}</div>;
-
-  {/* CHANGES */}
   return (
-    <div
-      className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
-        activeMenu ? "lg:pl-75" : "lg:pl-25"
-      }`}
-    > 
-      <div className="flex gap-4 items-center">
-        <IoMdArrowBack
-          className="text-4xl cursor-pointer"
-          onClick={() => navigate("/customer/notification")}
-        />
-        <div className="text-3xl font-bold text-[#1D4ED8]">
-          Ticket ID: {ticketData.ticketNumber}
-        </div></div>
-  
-      <div className="bg-white rounded-md p-6 min-h-[500px] mt-6 text-sm text-black">
-        {/* First Section */}
-        <div className="grid grid-cols-12 gap-y-6">
-          {/* Left */}
-          <div className="col-span-12 md:col-span-6 px-4">
-            <div className="mb-4">
-              <div className="text-gray-600 font-semibold">Status:</div>
-              <div className="mt-1 font-bold">{ticketData.status}</div>
-            </div>
-            <div className="mb-4">
-              <div className="text-gray-600 font-semibold">Priority:</div>
-              <div className="mt-1 font-bold">{ticketData.priority}</div>
-            </div>
-            <div className="mb-4">
-              <div className="text-gray-600 font-semibold">Category:</div>
-              <div className="mt-1 font-bold">{ticketData.department}</div>
-            </div>
-            <div className="mb-4">
-              <div className="text-gray-600 font-semibold">Create Date:</div>
-              <div className="mt-1 font-bold">{ticketData.date}</div>
-            </div>
-          </div>
-  
-          {/* Right */}
-          <div className="col-span-12 md:col-span-6 px-4">
-            <div className="mb-4">
-              <div className="text-gray-600 font-semibold">User Name:</div>
-              <div className="mt-1 font-bold">{ticketData.customer}</div>
-            </div>
-            <div className="mb-4">
-              <div className="text-gray-600 font-semibold">Email:</div>
-              <div className="mt-1 font-bold">{ticketData.email}</div>
-            </div>
-          </div>
+
+      <div
+        className={`transition-all duration-300 px-4 md:px-6 lg:px-8 ${
+          activeMenu ? "lg:pl-72" : "lg:pl-24"
+        }`}
+      >
+        <div className="flex items-center gap-3 mt-6">
+          <IoMdArrowBack
+            className="text-3xl text-gray-700 hover:text-blue-600 cursor-pointer"
+            onClick={() => navigate(-1)}
+          />
+          <h1 className="text-2xl md:text-3xl font-bold text-blue-700">
+            Ticket Details
+          </h1>
         </div>
-  
-        <div className="border-t border-gray-300 my-6" />
-  
-        {/* Second Section */}
-        <div className="grid grid-cols-12 gap-y-6">
-          <div className="col-span-12 md:col-span-6 px-4">
-            <div className="mb-4">
-              <div className="text-gray-600 font-semibold">Assigned To:</div>
-              <div className="mt-1 font-bold">{ticketData.agent}</div>
+
+        <div className="bg-white rounded-xl shadow-md mt-6 p-6 min-h-[300px]">
+          {loading ? (
+            <div className="text-center text-gray-500">Loading ticket details...</div>
+          ) : error ? (
+            <div className="text-center text-red-500">Error: {error}</div>
+          ) : notifData ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm md:text-base">
+              <div>
+                <p className="text-gray-500 font-medium mb-1">Ticket ID</p>
+                <p className="font-bold text-gray-800">{notifData.id || 'N/A'}</p>
+              </div>
+              <div>
+                <p className="text-gray-500 font-medium mb-1">Title</p>
+                <p className="font-bold text-gray-800">{notifData.title || 'N/A'}</p>
+              </div>
+              <div className="md:col-span-2">
+                <p className="text-gray-500 font-medium mb-1">Message</p>
+                <p className="font-bold text-gray-800">{notifData.message || 'N/A'}</p>
+              </div>
             </div>
-            <div className="mb-4">
-              <div className="text-gray-600 font-semibold">Due Date:</div>
-              <div className="mt-1 font-bold">{ticketData.dueDate}</div>
-            </div>
-          </div>
-  
-          <div className="col-span-12 md:col-span-6 px-4">
-            <div className="mb-4">
-              <div className="text-gray-600 font-semibold">Help Topic (Category):</div>
-              <div className="mt-1 font-bold">{ticketData.helpTopic}</div>
-            </div>
-            <div className="mb-4">
-              <div className="text-gray-600 font-semibold">Last Response:</div>
-              <div className="mt-1 font-bold">{ticketData.lastResponse}</div>
-            </div>
-          </div>
-        </div>
-  
-        {/* Concern Message */}
-        <div className="border-t border-gray-300 my-6" />
-        <div className="px-4">
-          <div className="text-gray-600 font-semibold mb-2">Message:</div>
-          <div className="font-medium text-[15px] leading-relaxed">
-            {ticketData.lastMessage}
-          </div>
-        </div>
-  
-         {/* Attachment Section */}
-         <div className="px-4 mt-6">
-          <div className="text-gray-600 font-semibold mb-2">Attachment:</div>
-          <div className="text-blue-600 underline cursor-pointer">
-            {ticketData.attachment || "No attachment available"}
-          </div>
+          ) : (
+            <div className="text-center text-gray-500">No data found.</div>
+          )}
         </div>
       </div>
-    </div>
+
   );
 };
 

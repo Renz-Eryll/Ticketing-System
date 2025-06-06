@@ -51,7 +51,7 @@ class AgentNotificationController extends Controller
         try {
             $validated = $request->validate([
                 'ticket_id' => 'required|integer|exists:tickets,id',
-                'user_id'   => 'required|integer|exists:users,id',
+                'user_ID'   => 'required|integer|exists:users,id',
                 'title'     => 'required|string|max:255',
                 'name'      => 'required|string|max:255',
                 'message'   => 'required|string',
@@ -82,9 +82,7 @@ class AgentNotificationController extends Controller
         }
     }
 
-    /**
-     * Display a specific notification by ID.
-     */
+
     public function show($id)
     {
         try {
@@ -103,34 +101,53 @@ class AgentNotificationController extends Controller
     /**
      * Update an agent notification (e.g., mark as read).
      */
-    public function update(Request $request, $id)
-    {
-        try {
-            $validated = $request->validate([
-                'is_read' => 'required|boolean',
-            ]);
+ public function update(Request $request, $id)
+{
+    try {
+        $validated = $request->validate([
+            'is_read' => 'required|boolean',
+        ]);
 
-            $notification = AgentNotification::findOrFail($id);
-            $notification->update($validated);
+        $notification = AgentNotification::findOrFail($id);
+        $notification->is_read = $validated['is_read'];
+        $notification->save();
 
-            return response()->json([
-                'message' => 'Notification updated successfully.',
-                'data'    => $notification,
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'message' => 'Notification not found.',
-            ], 404);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Validation failed.',
-                'errors'  => $e->errors(),
-            ], 422);
-        } catch (\Exception $e) {
-            Log::error('Error updating notification ID ' . $id . ': ' . $e->getMessage());
-            return response()->json(['message' => 'Failed to update notification.'], 500);
-        }
+        return response()->json([
+            'message' => 'Notification updated successfully.',
+            'data'    => $notification,
+        ]);
+    } catch (ModelNotFoundException $e) {
+        return response()->json([
+            'message' => 'Notification not found.',
+        ], 404);
+    } catch (ValidationException $e) {
+        return response()->json([
+            'message' => 'Validation failed.',
+            'errors'  => $e->errors(),
+        ], 422);
+    } catch (\Exception $e) {
+        Log::error('Error updating notification ID ' . $id . ': ' . $e->getMessage());
+        return response()->json(['message' => 'Failed to update notification.'], 500);
     }
+}
+
+public function getUnreadCount($agentId)
+{
+    $count = AgentNotification::where('user_id', $agentId)
+                         ->where('is_read', false)
+                         ->count();
+
+    return response()->json(['unread_count' => $count]);
+}
+
+public function markAllAsRead($userId)
+{
+    AgentNotification::where('user_id', $userId)
+                ->where('is_read', false)
+                ->update(['is_read' => true]);
+
+    return response()->json(['message' => 'All notifications marked as read']);
+}
 
     /**
      * Remove a specific notification by ID.

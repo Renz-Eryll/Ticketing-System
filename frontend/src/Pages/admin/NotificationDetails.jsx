@@ -1,283 +1,77 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
-import {
-  Navigate,
-  useNavigate,
-  useParams,
-  useLocation,
-} from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 import Layout from "../../layout/Layout";
 
 const NotificationDetails = () => {
+  const navigate = useNavigate();
   const { activeMenu, user, login, token } = useStateContext();
   const { id } = useParams();
-  const navigate = useNavigate();
-
-  const [ticketData, setTicketData] = useState(null);
-  const [agents, setAgents] = useState([]);
-  const [assignedAgent, setAssignedAgent] = useState("");
+  const [notifData, setNotifData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  if (!login && !user) {
-    return <Navigate to="/" />;
-  }
-
-  // compute display name
-  const selectedAgentName = useMemo(() => {
-    if (assignedAgent) {
-      const a = agents.find((x) => String(x.id) === String(assignedAgent));
-      if (a) return a.name;
-    }
-    return ticketData?.agent_name || "Unassigned";
-  }, [assignedAgent, agents, ticketData]);
+  if (!login && !user) return <Navigate to="/" />;
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchNotif = async () => {
+      setLoading(true);
       try {
-        // fetch ticket
-        const res1 = await fetch(`http://localhost:8000/api/ticket/${id}`, {
+        const res = await fetch(`http://localhost:8000/api/agent-notifications/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        const t = await res1.json();
-        if (!res1.ok) throw new Error(t.message || "Failed to fetch ticket");
-        setTicketData(t);
-        setAssignedAgent(t.agent_id || "");
+        if (!res.ok) throw new Error("Failed to fetch ticket details.");
+        const data = await res.json();
+        setNotifData(data);
       } catch (err) {
-        console.error("Error fetching ticket:", err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+    fetchNotif();
   }, [id, token]);
-
-  useEffect(() => {
-    const fetchAgents = async () => {
-      if (!ticketData?.category) return;
-
-      try {
-        // Ensure the category is URL-encoded
-        const encodedCategory = encodeURIComponent(ticketData.category);
-
-        const res2 = await fetch(
-          `http://localhost:8000/api/agentsByCategory/${encodedCategory}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        if (!res2.ok) {
-          throw new Error(
-            `Failed to fetch agents for category: ${ticketData.category}`
-          );
-        }
-
-        const { agents: list } = await res2.json();
-        if (Array.isArray(list)) {
-          setAgents(list);
-        } else {
-          console.error("Agents response format is incorrect:", list);
-        }
-      } catch (err) {
-        console.error("Error fetching agents:", err);
-        setError(err.message || "Failed to load agents.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAgents();
-  }, [ticketData?.category, token]);
-
-  const handleAssign = async () => {
-    if (!assignedAgent) {
-      alert("Please select an agent");
-      return;
-    }
-    try {
-      const res = await fetch(`http://localhost:8000/api/assignAgent/${id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ agent_id: assignedAgent }),
-      });
-      const updated = await res.json();
-      if (!res.ok) throw new Error(updated.message);
-      setTicketData((td) => ({ ...td, agent_name: updated.agent_name }));
-      alert("Agent assigned successfully!");
-    } catch (err) {
-      console.error("Error assigning agent:", err);
-      alert("Assignment failed");
-    }
-  };
 
   return (
     <Layout>
       <div
-        className={` transition-all ${activeMenu ? "lg:pl-72" : "lg:pl-23"}`}
+        className={`transition-all duration-300 px-4 md:px-6 lg:px-8 ${
+          activeMenu ? "lg:pl-72" : "lg:pl-24"
+        }`}
       >
-        <div className="container mx-auto px-8 py-6">
-          {loading && (
-            <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-3">
-              <svg
-                className="animate-spin h-8 w-8 text-blue-600"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8H4z"
-                ></path>
-              </svg>
-              <span>Loading Ticket Details...</span>
+        <div className="flex items-center gap-3 mt-6">
+          <IoMdArrowBack
+            className="text-3xl text-gray-700 hover:text-blue-600 cursor-pointer"
+            onClick={() => navigate(-1)}
+          />
+          <h1 className="text-2xl md:text-3xl font-bold text-blue-700">
+            Ticket Details
+          </h1>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-md mt-6 p-6 min-h-[300px]">
+          {loading ? (
+            <div className="text-center text-gray-500">Loading ticket details...</div>
+          ) : error ? (
+            <div className="text-center text-red-500">Error: {error}</div>
+          ) : notifData ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm md:text-base">
+              <div>
+                <p className="text-gray-500 font-medium mb-1">Ticket ID</p>
+                <p className="font-bold text-gray-800">{notifData.id|| 'N/A'}</p>
+              </div>
+              <div>
+                <p className="text-gray-500 font-medium mb-1">Title</p>
+                <p className="font-bold text-gray-800">{notifData.title || 'N/A'}</p>
+              </div>
+              <div className="md:col-span-2">
+                <p className="text-gray-500 font-medium mb-1">Message</p>
+                <p className="font-bold text-gray-800">{notifData.message || 'N/A'}</p>
+              </div>
             </div>
-          )}
-
-          {/* Error State */}
-          {error && (
-            <div className="text-center text-red-500 mt-10">Error: {error}</div>
-          )}
-
-          {!loading && !error && (
-            <>
-              <div className="flex gap-4 items-center">
-                <IoMdArrowBack
-                  className="text-4xl cursor-pointer"
-                  onClick={() => navigate("/admin/notification")}
-                />
-
-                <div className="text-3xl font-bold text-[#1D4ED8]">
-                  Ticket ID: {ticketData.ticketNumber}
-                </div>
-              </div>
-
-              <div className="bg-white rounded-md p-6 min-h-[500px] mt-6 text-sm text-black">
-                {/* First Section */}
-                <div className="grid grid-cols-12 gap-y-6">
-                  {/* Left */}
-                  <div className="col-span-12 md:col-span-6 px-4">
-                    <div className="mb-4">
-                      <div className="text-gray-600 font-semibold">Status:</div>
-                      <div className="mt-1 font-bold">{ticketData.status}</div>
-                    </div>
-                    <div className="mb-4">
-                      <div className="text-gray-600 font-semibold">
-                        Priority:
-                      </div>
-                      <div className="mt-1 font-bold">
-                        {ticketData.priority}
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <div className="text-gray-600 font-semibold">
-                        Category:
-                      </div>
-                      <div className="mt-1 font-bold">
-                        {ticketData.department}
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <div className="text-gray-600 font-semibold">
-                        Create Date:
-                      </div>
-                      <div className="mt-1 font-bold">{ticketData.date}</div>
-                    </div>
-                  </div>
-
-                  {/* Right */}
-                  <div className="col-span-12 md:col-span-6 px-4">
-                    <div className="mb-4">
-                      <div className="text-gray-600 font-semibold">
-                        User Name:
-                      </div>
-                      <div className="mt-1 font-bold">
-                        {ticketData.customer}
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <div className="text-gray-600 font-semibold">Email:</div>
-                      <div className="mt-1 font-bold">{ticketData.email}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border-t border-gray-300 my-6" />
-
-                {/* Second Section */}
-                <div className="grid grid-cols-12 gap-y-6">
-                  <div className="col-span-12 md:col-span-6 px-4">
-                    <div className="mb-4">
-                      <div className="text-gray-600 font-semibold">
-                        Assigned To:
-                      </div>
-                      <div className="mt-1 font-bold">{ticketData.agent}</div>
-                    </div>
-                    <div className="mb-4">
-                      <div className="text-gray-600 font-semibold">
-                        Due Date:
-                      </div>
-                      <div className="mt-1 font-bold">{ticketData.dueDate}</div>
-                    </div>
-                  </div>
-
-                  <div className="col-span-12 md:col-span-6 px-4">
-                    <div className="mb-4">
-                      <div className="text-gray-600 font-semibold">
-                        Help Topic (Category):
-                      </div>
-                      <div className="mt-1 font-bold">
-                        {ticketData.helpTopic}
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <div className="text-gray-600 font-semibold">
-                        Last Response:
-                      </div>
-                      <div className="mt-1 font-bold">
-                        {ticketData.lastResponse}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Concern Message */}
-                <div className="border-t border-gray-300 my-6" />
-                <div className="px-4">
-                  <div className="text-gray-600 font-semibold mb-2">
-                    Message:
-                  </div>
-                  <div className="font-medium text-[15px] leading-relaxed">
-                    {ticketData.lastMessage}
-                  </div>
-                </div>
-
-                {/* Attachment Section */}
-                <div className="px-4 mt-6">
-                  <div className="text-gray-600 font-semibold mb-2">
-                    Attachment:
-                  </div>
-                  {/* This should map over any attachments if there are multiple */}
-                  <div className="text-blue-600 underline cursor-pointer">
-                    {ticketData.attachment || "No attachment available"}
-                  </div>
-                </div>
-              </div>
-            </>
+          ) : (
+            <div className="text-center text-gray-500">No data found.</div>
           )}
         </div>
       </div>

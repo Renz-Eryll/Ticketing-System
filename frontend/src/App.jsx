@@ -96,7 +96,7 @@ function AppRoutes() {
           <Route path="home" element={<Home />} />
           <Route path="/customer/tickes" element={<CustomerTicket />} />
           <Route path="notification" element={<CustomerNotification />} />
-          <Route path="tickets/notificationDetails/:id" element={<CustomerNotifTicketDetails />}/>
+          <Route path="notif/:id" element={<CustomerNotifTicketDetails />}/>
           <Route path="create-ticket" element={<Createticket />} />
           <Route path="tickets/:id" element={<CustomerReply/>} />
       </Route>
@@ -109,7 +109,7 @@ function AppRoutes() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="agent"element={ <> <Toaster position="top-right" reverseOrder={false} /> <Agent /> </> }/>
           <Route path="notification" element={<Notification />} />
-          <Route path="notification/:id" element={<NotificationDetails />} />
+          <Route path="notif/:id" element={<NotificationDetails />} />
           <Route path="ticketCategories" element={<TicketCategories />} />
           <Route path="tickets" element={<Tickets />} />
           <Route path="details/:id" element={<TicketDetails />} />
@@ -126,12 +126,12 @@ function AppRoutes() {
       <Route path="/agent" element={<AgentLayout />}>
        <Route path="dashboard" element={<AgentDashboard />} />
           <Route path="notification" element={<AgentNotification />} />
-          <Route path="notification/:id"element={<AgentNotifTicketDetails />}/>
+          <Route path="notif/:id" element={<AgentNotifTicketDetails />} />
           <Route path="tickets" element={<AgentTickets />} />
           <Route path="tickets/:id" element={<AgentReply/>} />
           <Route path="status" element={<StatusPage />} />{" "}
           {/* Corrected path */}
-        </Route><Route path="*" element={<NotFound />} />
+        </Route>
     </Routes>
     </>
   );

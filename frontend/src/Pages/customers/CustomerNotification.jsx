@@ -1,155 +1,218 @@
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate, Navigate } from "react-router-dom";
+import Layout from "../../layout/Layout";
 
 const CustomerNotification = () => {
-  const { user, token } = useStateContext();
-  const [notifications, setNotifications] = useState([]);
+  const { user, token, activeMenu } = useStateContext();
   const navigate = useNavigate();
 
-  console.log("Token:", token);
-  console.log("User:", user);
+  const [notifData, setNotifData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [error, setError] = useState(null);
+  const lastSeenKey = "agentLastSeenTicketTimestamp";
+  
 
-  if (token === undefined || user === undefined) {
-    return null; // or a spinner if you want
+  useEffect(() => {
+    if (!user?.id) return; // guard for user id
+    const fetchNotif = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`http://localhost:8000/api/customernotif/${user.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error("Failed to fetch ticket details.");
+        const data = await res.json();
+        setNotifData(data);
+
+        // Set unread count based on last seen timestamp
+        const lastSeen = localStorage.getItem(lastSeenKey) || "1970-01-01T00:00:00Z";
+        const unread = data.filter((notif) => new Date(notif.created_at) > new Date(lastSeen)).length;
+        setUnreadCount(unread);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNotif();
+  }, [token, user?.id]);
+
+  useEffect(() => {
+  const fetchUnreadCount = async () => {
+    try {
+      const res = await fetch(`http://localhost:8000/api/customer-unread-count/${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const data = await res.json();
+      setUnreadCount(data.unread_count);
+    } catch (err) {
+      console.error("Error fetching unread count:", err);
+    }
+  };
+
+  if (user?.id && token) {
+    fetchUnreadCount();
   }
+}, [user.id, token]); 
+
+
+  
+  
+
+const markNotificationAsRead = async (notifId) => {
+  try {
+    const res = await fetch(`http://localhost:8000/api/customer-updateNotif/${notifId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ is_read: true }),
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to mark notification as read');
+    }
+
+    const updatedNotif = await res.json();
+    console.log('Notification marked as read:', updatedNotif);
+
+    // Optional: update UI immediately
+    setNotifData((prevData) =>
+      prevData.map((n) =>
+        n.id === notifId ? { ...n, is_read: true } : n
+      )
+    );
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const markAllAsRead = async () => {
+  try {
+    const res = await fetch(`http://localhost:8000/api/customer-notifications/mark-all-read/${user.id}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.ok) {
+      // Optional: refresh your notifications state
+
+      setUnreadCount(0);
+    } else {
+      console.error("Failed to mark all as read");
+    }
+  } catch (err) {
+    console.error("Error:", err);
+  }
+};
+
+
+    const handleNotifClick = (notif) => {
+    if (notif.ticket_id) {
+     navigate(`/customer/notif/${notif.id}`);
+      markNotificationAsRead(notif.id);
+    }
+  };
+
+  const formatTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000); // seconds
+
+    if (diff < 60) return `${diff} seconds ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
+    return `${Math.floor(diff / 86400)} days ago`;
+  };
 
   if (!token || !user?.id) {
     return <Navigate to="/" />;
   }
 
-  useEffect(() => {
-    const mockData = Array.from({ length: 15 }, (_, i) => {
-      const statusOptions = ["Open", "Resolved", "Pending"];
-      const now = new Date();
-
-      return {
-        id: i + 1,
-        user_name: `User ${i + 1}`,
-        user_email: `user${i + 1}@example.com`,
-        ticket_body: `Sample ticket message ${i + 1}`,
-        status: statusOptions[i % statusOptions.length],
-        created_at: new Date(now - i * 60 * 60 * 1000).toISOString(),
-      };
-    });
-
-    setNotifications(mockData);
-  }, [token, user]);
-
-  const handleRowClick = (notif) => {
-    navigate(`/customer/tickets/notificationDetails/${notif.id}`, {
-      state: notif,
-    });
-  };
-
-  const handleSeeMore = () => {
-    alert("See More clicked!");
-  };
-
-  const TableWrapper = ({ children }) => {
-    if (notifications.length > 10) {
-      return <div className="max-h-[500px] overflow-y-auto">{children}</div>;
-    }
-    return <>{children}</>;
-  };
-
-  const formatTimeAgo = (timestamp) => {
-    const diff = Math.floor((new Date() - new Date(timestamp)) / 60000); // minutes
-    if (diff < 1) return "Just now";
-    if (diff < 60) return `${diff} min${diff > 1 ? "s" : ""} ago`;
-    const hours = Math.floor(diff / 60);
-    if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-    const days = Math.floor(hours / 24);
-    return `${days} day${days > 1 ? "s" : ""} ago`;
-  };
-
   return (
-    <div className="mx-5 md:mx-10 lg:mx-20 transition-all duration-300">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Notifications</div>
+   
+    
+    <div
+      className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
+        activeMenu ? "lg:pl-72" : "lg:pl-24"
+      }`}
+    >
+      <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Agent Notifications</div>
 
-        <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <TableWrapper>
-              <table className="min-w-full text-sm text-gray-700">
-                <thead className="uppercase text-gray-500 bg-white">
-                  <tr>
-                    <th className="px-6 py-4 text-center">User</th>
-                    <th className="px-6 py-4 text-center">Ticket No</th>
-                    <th className="px-6 py-4 text-center">Message</th>
-                    <th className="px-6 py-4 text-center">Status</th>
-                    <th className="px-6 py-4 text-center">Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {notifications.length > 0 ? (
-                    notifications.map((notif, index) => (
-                      <tr
-                        key={index}
-                        onClick={() => handleRowClick(notif)}
-                        className="bg-white hover:bg-gray-50 cursor-pointer"
-                      >
-                        <td className="flex items-center gap-3 px-6 py-4">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width={40}
-                            height={40}
-                            viewBox="0 0 16 16"
-                            className="text-gray-500 flex-shrink-0"
-                          >
-                            <path
-                              fill="currentColor"
-                              d="M11 7c0 1.66-1.34 3-3 3S5 8.66 5 7s1.34-3 3-3s3 1.34 3 3"
-                            />
-                            <path
-                              fill="currentColor"
-                              fillRule="evenodd"
-                              d="M16 8c0 4.42-3.58 8-8 8s-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8M4 13.75C4.16 13.484 5.71 11 7.99 11c2.27 0 3.83 2.49 3.99 2.75A6.98 6.98 0 0 0 14.99 8c0-3.87-3.13-7-7-7s-7 3.13-7 7c0 2.38 1.19 4.49 3.01 5.75"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          <div className="font-medium text-gray-900">{notif.user_name}</div>
-                        </td>
-                        <td className="px-6 py-4 text-center">#{notif.id}</td>
-                        <td className="px-6 py-4 text-center truncate max-w-xs" title={notif.ticket_body}>
-                          {notif.ticket_body}
-                        </td>
-                        <td className="px-6 py-4 text-center">
-                          <span
-                            className={`${
-                              notif.status === "Resolved"
-                                ? "text-green-600"
-                                : "text-red-500"
-                            } font-medium`}
-                          >
-                            {notif.status}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-xs text-gray-400 text-center">
-                          {formatTimeAgo(notif.created_at)}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="5" className="text-center py-6 text-gray-500 italic">
-                        No notifications available.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </TableWrapper>
-          </div>
-
-          <div className="p-4 flex justify-center border-t border-gray-200">
-            <button
-              onClick={handleSeeMore}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+      <div className="grid gap-4 min-h-[500px] bg-white rounded-lg shadow-sm p-6">
+        {loading ? (
+          <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-3">
+            <svg
+              className="animate-spin h-8 w-8 text-blue-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
             >
-              See More
-            </button>
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              ></path>
+            </svg>
+            <span>Loading Notifications..</span>
           </div>
+        ) : error ? (
+          <div className="p-6 text-center text-red-500">{error}</div>
+        ) : notifData.length > 0 ? (
+          notifData.map((notif) => (
+             <div
+            key={notif.id}
+            onClick={() => handleNotifClick(notif)}
+            className={`relative border rounded-xl p-4 shadow-sm transition hover:shadow-md cursor-pointer ${
+              !notif.is_read ? "border-l-4 border-blue-500 bg-blue-50" : "bg-white"
+            }`}
+          >
+            {/* Unread red dot */}
+            {!notif.is_read && (
+              <span className="absolute left-2 top-2 w-2 h-2 bg-red-500 rounded-full"></span>
+            )}
+
+            <div className="pl-2">
+              <p className="text-base font-semibold text-gray-800 mb-1">{notif.message}</p>
+              <p className="text-sm text-gray-500">{formatTimeAgo(notif.created_at)}</p>
+            </div>
+          </div>
+          ))
+        ) : (
+          <div className="p-6 text-center text-gray-500 italic">
+            No notifications available.
+          </div>
+        )}
+
+        <div className="p-4 flex justify-between border-t border-gray-200 mt-6">
+          <button
+            onClick={markAllAsRead}
+            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition"
+          >
+            Mark All as Read ({unreadCount})
+          </button>
+          <button
+            onClick={() => alert("See More clicked!")}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          >
+            See More
+          </button>
         </div>
       </div>
     </div>

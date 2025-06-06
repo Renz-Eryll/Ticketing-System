@@ -10,7 +10,7 @@ class AgentNotification extends Model
 {
     protected $fillable = [
         'ticket_id',
-        'user_id',
+        'user_ID',
         'title',
         'name',
         'message',
@@ -19,7 +19,7 @@ class AgentNotification extends Model
 
     public function ticket()
     {
-        return $this->belongsTo(Ticket::class, 'ticket_id');
+        return $this->belongsTo(Tickets::class, 'ticket_id');
     }
 
     public function user()

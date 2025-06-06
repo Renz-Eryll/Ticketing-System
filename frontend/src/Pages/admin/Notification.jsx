@@ -1,111 +1,153 @@
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNavigate, Navigate } from "react-router-dom";
+import Layout from "../../layout/Layout";
 
 const Notification = () => {
-  const { activeMenu, user, token } = useStateContext();
-  const navigate = useNavigate();
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [error, setError] = useState(null);
+    const { user, token, activeMenu } = useStateContext();
+    const navigate = useNavigate();
+  
+    const [notifData, setNotifData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [unreadCount, setUnreadCount] = useState(0);
+    const [error, setError] = useState(null);
+    const lastSeenKey = "agentLastSeenTicketTimestamp";
 
-  const lastSeenKey = "lastSeenTicketTimestamp";
+    useEffect(() => {
+       const fetchNotif = async () => {
+         setLoading(true);
+         try {
+           const res = await fetch(`http://localhost:8000/api/allNotifications`, {
+             headers: { Authorization: `Bearer ${token}` },
+           });
+           if (!res.ok) throw new Error("Failed to fetch ticket details.");
+           const data = await res.json();
+           setNotifData(data);
+   
+           // Set unread count based on last seen timestamp
+           const lastSeen = localStorage.getItem(lastSeenKey) || "1970-01-01T00:00:00Z";
+           const unread = data.filter((notif) => new Date(notif.created_at) > new Date(lastSeen)).length;
+           setUnreadCount(unread);
+         } catch (err) {
+           setError(err.message);
+         } finally {
+           setLoading(false);
+         }
+       };
+       fetchNotif();
+     }, [token, user?.id]);
+   
 
-  useEffect(() => {
-    if (!token || !user?.id) return;
-
-    const fetchTickets = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await fetch("http://localhost:8000/api/allTickets", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch tickets");
-        }
-
-        const data = await response.json();
-        setNotifications(data);
-
-        const lastSeen = localStorage.getItem(lastSeenKey) || "1970-01-01T00:00:00Z";
-        const newCount = data.filter(
-          (ticket) => new Date(ticket.created_at) > new Date(lastSeen)
-        ).length;
-        setUnreadCount(newCount);
-      } catch (err) {
-        setError(err.message || "Something went wrong");
-        setNotifications([]);
-        setUnreadCount(0);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTickets();
-  }, [token, user]);
-
-  const markAllAsRead = () => {
-    if (notifications.length === 0) return;
-
-    const newestTimestamp = notifications.reduce((max, ticket) => {
-      const createdAt = new Date(ticket.created_at);
-      return createdAt > max ? createdAt : max;
-    }, new Date("1970-01-01T00:00:00Z"));
-
-    localStorage.setItem(lastSeenKey, newestTimestamp.toISOString());
-    setUnreadCount(0);
-  };
-
-  const handleRowClick = (notif) => {
-    const lastSeen = localStorage.getItem(lastSeenKey) || "1970-01-01T00:00:00Z";
-    const isUnread = new Date(notif.created_at) > new Date(lastSeen);
-
-    if (isUnread && unreadCount > 0) {
-      setUnreadCount((prev) => prev - 1);
-    }
-
-    navigate(`/admin/notification/${notif.id}`, {
-      state: notif,
+     
+     useEffect(() =>{
+       const fetchUnreadCount = async () => {
+       try {
+         const res = await fetch(`http://localhost:8000/api/admin-unread-count`, {
+           headers: {
+             Authorization: `Bearer ${token}`
+           }
+         });
+         const data = await res.json();
+         setUnreadCount(data.unread_count);
+       } catch (err) {
+         console.error("Error fetching unread count:", err);
+       }
+     };
+     fetchUnreadCount();
+     })
+   
+     
+   
+   const markNotificationAsRead = async (notifId) => {
+     try {
+       const res = await fetch(`http://localhost:8000/api/adminUpdateNotif/${notifId}`, {
+         method: 'PUT',
+         headers: {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`,
+         },
+         body: JSON.stringify({ is_read: true }),
+       });
+   
+       if (!res.ok) {
+         throw new Error('Failed to mark notification as read');
+       }
+   
+       const updatedNotif = await res.json();
+       console.log('Notification marked as read:', updatedNotif);
+   
+       // Optional: update UI immediately
+       setNotifData((prevData) =>
+         prevData.map((n) =>
+           n.id === notifId ? { ...n, is_read: true } : n
+         )
+       );
+     } catch (err) {
+       console.error(err);
+     }
+   };
+   
+ const markAllAsRead = async () => {
+  try {
+    const res = await fetch(`http://localhost:8000/api/admin-notifications/mark-all-read`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     });
-  };
 
-  if (!token || !user?.id) {
-    return <Navigate to="/" />;
+    if (res.ok) {
+      const data = await res.json();
+      console.log(data.message); // Optional: log success message
+
+      // Reset unread count locally
+      setUnreadCount(0);
+
+      // Optional: refetch notifications list here if needed
+    } else {
+      console.error("Failed to mark all as read");
+    }
+  } catch (err) {
+    console.error("Error:", err);
   }
+};
 
-  const formatTimeAgo = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = Math.floor((now - date) / 1000); // in seconds
-
-    if (diff < 60) return `${diff} seconds ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
-    return `${Math.floor(diff / 86400)} days ago`;
-  };
-
+   
+   
+       const handleNotifClick = (notif) => {
+       if (notif.ticket_id) {
+        navigate(`/admin/notif/${notif.id}`);
+         markNotificationAsRead(notif.id);
+       }
+     };
+   
+     const formatTimeAgo = (dateString) => {
+       const date = new Date(dateString);
+       const now = new Date();
+       const diff = Math.floor((now - date) / 1000); // seconds
+   
+       if (diff < 60) return `${diff} seconds ago`;
+       if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
+       if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
+       return `${Math.floor(diff / 86400)} days ago`;
+     };
+   
+     if (!token || !user?.id) {
+       return <Navigate to="/" />;
+     }
+   
   return (
+    <Layout>
+    
     <div
       className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 ${
         activeMenu ? "lg:pl-72" : "lg:pl-24"
       }`}
     >
-      <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Notification</div>
+      <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Agent Notifications</div>
 
-      <div className="bg-white rounded-lg shadow-sm p-6 min-h-[500px] space-y-2">
-        <div className="grid grid-cols-[repeat(4,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
-          <div>Ticket ID</div>
-          <div>Category</div>
-          <div>Issue</div>
-          <div>Status</div>
-        </div>
-
+      <div className="grid gap-4 min-h-[500px] bg-white rounded-lg shadow-sm p-6">
         {loading ? (
           <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-3">
             <svg
@@ -130,31 +172,27 @@ const Notification = () => {
             </svg>
             <span>Loading Notifications..</span>
           </div>
-        ) : notifications.length > 0 ? (
-          notifications.map((notif) => (
-            <div
-              key={notif.id}
-              onClick={() => handleRowClick(notif)}
-              className="grid grid-cols-[repeat(5,_1fr)] bg-[#EEF0FF] rounded-md text-center text-sm text-gray-700 py-3 px-4 items-center cursor-pointer hover:bg-[#dfe3ff] transition"
-            >
-              <div className="truncate">#{notif.id}</div>
-              <div className="truncate">{notif.category}</div>
-              <div className="truncate">{notif.issue}</div>
-              <div className="font-medium">
-                <span
-                  className={`${
-                    notif.status === "Resolved"
-                      ? "text-green-600"
-                      : "text-red-500"
-                  }`}
-                >
-                  {notif.status}
-                </span>
-              </div>
-              <div className="text-xs text-gray-400">
-                {formatTimeAgo(notif.created_at)}
-              </div>
+        ) : error ? (
+          <div className="p-6 text-center text-red-500">{error}</div>
+        ) : notifData.length > 0 ? (
+          notifData.map((notif) => (
+             <div
+            key={notif.id}
+            onClick={() => handleNotifClick(notif)}
+            className={`relative border rounded-xl p-4 shadow-sm transition hover:shadow-md cursor-pointer ${
+              !notif.is_read ? "border-l-4 border-blue-500 bg-blue-50" : "bg-white"
+            }`}
+          >
+            {/* Unread red dot */}
+            {!notif.is_read && (
+              <span className="absolute left-2 top-2 w-2 h-2 bg-red-500 rounded-full"></span>
+            )}
+
+            <div className="pl-2">
+              <p className="text-base font-semibold text-gray-800 mb-1">{notif.message}</p>
+              <p className="text-sm text-gray-500">{formatTimeAgo(notif.created_at)}</p>
             </div>
+          </div>
           ))
         ) : (
           <div className="p-6 text-center text-gray-500 italic">
@@ -178,6 +216,8 @@ const Notification = () => {
         </div>
       </div>
     </div>
+      
+    </Layout>
   );
 };
 
