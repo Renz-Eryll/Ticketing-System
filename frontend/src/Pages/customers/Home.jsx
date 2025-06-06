@@ -20,11 +20,11 @@ import Bigmak from "../../assets/bigmak.png";
 import { motion } from "framer-motion";
 
 const Home = () => {
-  const { user } = useStateContext();
+  const { user,login,token } = useStateContext();
 
-  if (!user) {
-    return <Navigate to="/" />;
-  }
+  if (!login && !user?.id) {
+      return <Navigate to="/" />;
+    }
 
   return (
     <div className={`transition-all duration-300 bg-gray-100 `}>
@@ -51,7 +51,7 @@ const Home = () => {
             >
               <div className="flex flex-col items-center mx-auto">
                 <h1 className="text-2xl lg:text-5xl font-bold text-center lg:text-left">
-                  Welcome <span className="text-blue-500">{user.name}!</span>
+                  Welcome <span className="text-blue-500">{user?.name}!</span>
                 </h1>
                 <p className="mt-8 text-lg lg:text-xl text-center lg:text-left">
                   Your concerns matter: Ask questions, and we'll handle the
@@ -77,7 +77,7 @@ const Home = () => {
                   </button>
                 </Link>
                 <Link
-                  to="/customer/create-ticket"
+                  to="/contact-us"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <button className="bg-white hover:scale-105 text-gray-800 text-lg py-3 px-5 rounded-sm flex items-center justify-center cursor-pointer group transition-all duration-400">

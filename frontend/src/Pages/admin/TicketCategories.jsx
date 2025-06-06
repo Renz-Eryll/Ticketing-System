@@ -19,7 +19,7 @@ const categories = [
         className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
       />
     ),
-    category: "POS Retail",
+    category: "POSRetail",
     description: "Log POS errors, outages, and inquiries.",
     bgColor: "	bg-sky-300",
     textColor: "text-yellow-600",
@@ -34,7 +34,7 @@ const categories = [
         className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
       />
     ),
-    category: "Inventory Support",
+    category: "InventorySupport",
     description: "Track stock-related issues and requests.",
     bgColor: "bg-green-300",
     textColor: "text-indigo-600",
@@ -49,7 +49,7 @@ const categories = [
         className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
       />
     ),
-    category: "Utility Billing",
+    category: "UtilityBilling",
     description: "Billing disputes and system issues.",
     bgColor: "bg-orange-200",
     textColor: "text-sky-600",
@@ -63,7 +63,7 @@ const categories = [
         className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
       />
     ),
-    category: "Accounting System",
+    category: "AccountingSystem",
     description: "Tickets for accounting system concerns.",
     bgColor: "bg-red-200",
     textColor: "text-emerald-600",
@@ -78,34 +78,29 @@ const categories = [
         className="max-w-full w-35 h-auto object-contain hover:scale-110 transition-all duration-300"
       />
     ),
-    category: "HR Payroll System",
+    category: "HRPayrollSystem",
     description: "HR, payroll, and attendance issues.",
     bgColor: "bg-yellow-200",
     textColor: "text-rose-600",
   },
 ];
 
+
 export const TicketCategories = () => {
   const { activeMenu, user, login } = useStateContext();
   const navigate = useNavigate();
-  const [categoriesList, setCategoriesList] = useState(categories);
+ 
   if (!login && !user) {
     return <Navigate to="/" />;
   }
 
-  useEffect(() => {
-    if (!login || !user) {
-      navigate("/");
-    }
-  }, [login, user, navigate]);
-
   const handleCategoryClick = (category) => {
-    navigate("/admin/tickets", { state: { category } });
+    navigate(`/admin/ticketCategories/${category}`);
   };
 
   return (
     <Layout>
-      <div className={`transition-all ${activeMenu ? "lg:pl-72" : "lg:pl-23"}`}>
+     <div className={`transition-all ${activeMenu ? "lg:pl-72" : "lg:pl-23"}`}>
         <div className="container px-8 py-6">
           <div className="text-3xl font-bold text-[#1D4ED8] mb-1">
             Ticket Categories
@@ -113,8 +108,9 @@ export const TicketCategories = () => {
           <div className="text-sm font-semibold text-gray-500">
             Manage tickets by category
           </div>
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categoriesList.map((item, index) => (
+
+       <div className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categories.map((item, index) => (
               <div
                 key={index}
                 className="bg-white rounded-2xl shadow-lg cursor-pointer "
@@ -138,7 +134,7 @@ export const TicketCategories = () => {
                   </h3>
                   <div className="mt-5 flex justify-start">
                     <div
-                      className="text-blue-600 font-semibold hover:underline text-md lg:text-md flex items-center cursor-pointer group transition-all duration-400"
+               className="text-blue-600 font-semibold hover:underline text-md lg:text-md flex items-center cursor-pointer group transition-all duration-400"
                       onClick={() => handleCategoryClick(item.category)}
                     >
                       <span>View Tickets</span>

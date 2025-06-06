@@ -63,7 +63,7 @@ export const Agent = () => {
     resolver: yupResolver(addAgentSchema),
   });
 
-  if (!login && !user) return <Navigate to="/" />;
+  if (!login && !user?.id) return <Navigate to="/" />;
 
   useEffect(() => {
     async function fetchAgents() {
@@ -74,6 +74,7 @@ export const Agent = () => {
         });
         if (!res.ok) throw new Error("Failed to fetch agents");
         const data = await res.json();
+        
         if (data && Array.isArray(data.agents)) {
           setAllAgents(data.agents);
         } else {

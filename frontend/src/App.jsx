@@ -28,7 +28,7 @@ import AgentTicketdetails from "./Pages/agent/AgentTicketdetails";
 import AgentNotification from "./Pages/agent/AgentNotification";
 import AgentNotifTicketDetails from "./Pages/agent/AgentNotifTicketDetails";
 import AgentTickets from "./Pages/agent/Tickets";
-import CustomerTicket from "./Pages/customers/CustomerTicket";
+import CustomerTicket from "./Pages/customers/Tickets";
 import CustomerNotification from "./Pages/customers/CustomerNotification";
 import CustomerNotifTicketDetails from "./Pages/customers/CustomerNotifTicketDetails";
 import Createticket from "./Pages/customers/Createticket";
@@ -43,9 +43,18 @@ import { NotFound } from "./Pages/NotFound";
 import LandingPage from "./Pages/LandingPage";
 import TermsAndConditions from "./Pages/TermsAndConditions";
 
+
 import { Toaster } from "react-hot-toast";
 
-// binukod na nga yung mga routes, pinag sama sama nanaman dito sa
+
+import { HRPayrollSystem } from "./Pages/admin/HRPayrollSystem";
+import { UtilityBilling } from "./Pages/admin/UtilityBilling";
+import { AccountingSystem } from "./Pages/admin/AccountingSystem";
+import { CustomerReply } from "./Pages/customers/CustomerReply";
+import { PosRetail } from "./Pages/admin/PosRetail";
+import {InventorySupport} from "./Pages/admin/InventorySupport";
+import AgentReply from "./Pages/agent/AgentReply";
+
 function AppRoutes() {
   const location = useLocation();
   const noLayoutRoutes = ["/", "/signup"];
@@ -64,8 +73,8 @@ function AppRoutes() {
 
   return (
     <>
-      {loading && <div className="loading-line"></div>}
-      <Routes>
+    <Routes>
+      {/* Guest Routes */}
         <Route path="/" element={<GuestLayout />}>
           <Route index element={<LandingPage />} />
 
@@ -76,59 +85,54 @@ function AppRoutes() {
             element={<TermsAndConditions />}
           />
         </Route>
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/Otp" element={<Otp />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/status" element={<StatusPage />} />{" "}
-        {/* Removed duplicate */}
-        <Route path="/customer" element={<UserLayout />}>
-          {" "}
-          {/* Assuming UserLayout is the correct layout */}
+
+      {/* Standalone Public Pages */}
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/Otp" element={<Otp />} />
+      <Route path="/about" element={<About />} />
+
+      {/* Customer Routes */}
+      <Route path="/customer" element={<UserLayout/>}>
           <Route path="home" element={<Home />} />
-          <Route path="tickets" element={<CustomerTicket />} />
+          <Route path="/customer/tickes" element={<CustomerTicket />} />
           <Route path="notification" element={<CustomerNotification />} />
-          <Route
-            path="tickets/notificationDetails/:id"
-            element={<CustomerNotifTicketDetails />}
-          />
+          <Route path="notif/:id" element={<CustomerNotifTicketDetails />}/>
           <Route path="create-ticket" element={<Createticket />} />
-        </Route>
-        <Route path="/admin" element={<AdminLayout />}>
-          {" "}
+          <Route path="tickets/:id" element={<CustomerReply/>} />
+      </Route>
+
+      {/* Admin Routes */}
+
+      
+      <Route path="/admin" element={<AdminLayout />}>
+
           <Route path="dashboard" element={<Dashboard />} />
-          <Route
-            path="agent"
-            element={
-              <>
-                <Toaster position="top-right" reverseOrder={false} />
-                <Agent />
-              </>
-            }
-          />
+          <Route path="agent"element={ <> <Toaster position="top-right" reverseOrder={false} /> <Agent /> </> }/>
           <Route path="notification" element={<Notification />} />
-          <Route path="notification/:id" element={<NotificationDetails />} />
+          <Route path="notif/:id" element={<NotificationDetails />} />
           <Route path="ticketCategories" element={<TicketCategories />} />
           <Route path="tickets" element={<Tickets />} />
           <Route path="details/:id" element={<TicketDetails />} />
           <Route path="profile" element={<Profile />} />
-        </Route>
-        <Route path="/agent" element={<AgentLayout />}>
-          {" "}
-          {/* Assuming AgentLayout is the correct layout */}
-          <Route path="dashboard" element={<AgentDashboard />} />
+        
+        <Route path="ticketCategories/PosRetail" element={<Layout><PosRetail/></Layout>} />
+        <Route path="ticketCategories/InventorySupport" element={<Layout><InventorySupport/></Layout>} />
+        <Route path="ticketCategories/HRPayrollSystem" element={<Layout><HRPayrollSystem/></Layout>} />
+        <Route path="ticketCategories/UtilityBilling" element={<Layout><UtilityBilling/></Layout>} />
+        <Route path="ticketCategories/AccountingSystem" element={<Layout><AccountingSystem/></Layout>} />
+      </Route>
+
+      {/* Agent Routes */}
+      <Route path="/agent" element={<AgentLayout />}>
+       <Route path="dashboard" element={<AgentDashboard />} />
           <Route path="notification" element={<AgentNotification />} />
-          <Route
-            path="notification/:id"
-            element={<AgentNotifTicketDetails />}
-          />
+          <Route path="notif/:id" element={<AgentNotifTicketDetails />} />
           <Route path="tickets" element={<AgentTickets />} />
-          <Route path="tickets/:id" element={<AgentTicketdetails />} />
+          <Route path="tickets/:id" element={<AgentReply/>} />
           <Route path="status" element={<StatusPage />} />{" "}
           {/* Corrected path */}
         </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+    </Routes>
     </>
   );
 }

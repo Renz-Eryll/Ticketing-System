@@ -12,17 +12,11 @@ export const AgentTickets = () => {
   const [error, setError] = useState(null);
 
 
-useEffect(() => {
-  if (!contextReady ||!login || !user?.id || !token) return; 
-  // fetch data...
-}, [contextReady,login, user, token]);
-
   useEffect(() => {
 
     const fetchTickets = async () => {
-       if (!contextReady ||!login || !user?.id || !token) return;
       try {
-        const res = await fetch(`http://localhost:8000/api/tickets/agent/${user.id}`, {
+        const res = await fetch(`http://localhost:8000/api/notif`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -31,7 +25,7 @@ useEffect(() => {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to fetch tickets");
-        setTickets(data.tickets || []);
+        setTickets(data.tickets ?? data ?? []);
         setLoading(false);
       } catch (err) {
         setError(err.message || "Failed to fetch tickets");
@@ -40,7 +34,7 @@ useEffect(() => {
     };
 
     fetchTickets();
-  }, [contextReady,login, user, token]);
+  }, [token]);
 
         if (!login && !user?.id && !token) {
         return <Navigate to="/" />;
@@ -71,7 +65,7 @@ useEffect(() => {
     }
   };
   return (
-    <Layout>
+   
     <div
       className={`
         mx-5 md:mx-5 lg:mx-5
@@ -83,7 +77,7 @@ useEffect(() => {
         <div>
           <IoMdArrowBack
             className="text-4xl cursor-pointer"
-            onClick={() => navigate("/agent/dashboard")}
+            onClick={() => navigate("/customer/home")}
           />
         </div>
         <div className="text-3xl font-bold text-[#1D4ED8]">
@@ -108,11 +102,11 @@ useEffect(() => {
         )}
 
         <div className="space-y-2">
-          {tickets.filter(item => item && item.id).map((item) => (
+          {tickets.map((item) => (
             <div
               key={item.id}
               onClick={() =>
-                navigate(`/agent/tickets/${item.id}`, {
+                navigate(`/customer/tickets/${item.id}`, {
                   state: item,
                 })
               }
@@ -153,8 +147,7 @@ useEffect(() => {
         </div>
       </div>
     </div>
-    </Layout>
+
   );
 };
-
 export default AgentTickets;
