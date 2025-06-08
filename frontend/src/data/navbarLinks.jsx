@@ -4,8 +4,6 @@ import {
   MdInfoOutline,
 } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
-import { FaFileContract } from "react-icons/fa6";
-import { FaInfoCircle } from "react-icons/fa";
 import { GoFile } from "react-icons/go";
 
 export const getNavbarLinks = (userRole) => {
@@ -70,16 +68,12 @@ export const getNavbarLinks = (userRole) => {
             path: "/customer/home",
           },
           {
-            name: "Tickes",
-            path: "/customer/tickes",
+            name: "Tickets",
+            path: "/customer/tickets",
           },
           {
             name: "FAQs",
-            path: "/",
-          },
-          {
-            name: "Contact Us",
-            path: "/customer/contact-us",
+            path: "/customer/faqs",
           },
         ],
         notifications: {

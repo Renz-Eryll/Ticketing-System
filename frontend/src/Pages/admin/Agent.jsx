@@ -74,7 +74,7 @@ export const Agent = () => {
         });
         if (!res.ok) throw new Error("Failed to fetch agents");
         const data = await res.json();
-        
+
         if (data && Array.isArray(data.agents)) {
           setAllAgents(data.agents);
         } else {
@@ -130,7 +130,7 @@ export const Agent = () => {
       reset();
       setIsAddModalOpen(false);
     } catch (err) {
-      console.error("Error add agent:", err);
+      toast.error("Error add agent:", err);
       toast.error("Failed to add agent.");
     } finally {
       setIsAdding(false);
@@ -228,7 +228,6 @@ export const Agent = () => {
   const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
   const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
-  // Make sure we don't have less than maxVisiblePages if possible
   const adjustedStartPage = Math.max(
     1,
     Math.min(startPage, totalPages - maxVisiblePages + 1)
@@ -252,48 +251,58 @@ export const Agent = () => {
           <div className="text-sm font-semibold text-gray-500">
             Manage agent accounts
           </div>
-          <div className="max-w mt-7 p-8 bg-white shadow-sm rounded-md min-h-[400px]">
+          <div className="max-w mt-7 p-8 bg-white shadow-sm rounded-xl min-h-[430px]">
             <div className="mb-3 text-md font-semibold text-gray-500">
               Agent List
             </div>
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="flex items-center text-sm px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
+                className="flex items-center text-sm px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
               >
                 <AiOutlinePlus className="text-sm mr-2" /> Add Agent
               </button>
             </div>
 
             <>
-              <div className="mt-3 hidden md:grid grid-cols-[repeat(3,_1fr)] text-center font-semibold text-gray-600 text-sm py-2">
+              <div className="mt-3 hidden md:grid grid-cols-[repeat(3,_1fr)] text-center font-semibold text-gray-600 text-sm py-2 mb-5">
                 <div>Name</div>
                 <div>Email</div>
                 <div>Category</div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-0.5">
                 {loading ? (
-                  <div className="p-6 text-center text-gray-500 flex items-center justify-center gap-3">
+                  <div className="col-span-full p-6 text-center text-gray-500 flex flex-row items-center justify-center gap-3">
                     <svg
-                      className="animate-spin h-8 w-8 text-blue-600"
-                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      className="animate-spin h-10 w-10 text-gray-200 fill-blue-600"
+                      viewBox="0 0 100 101"
                       fill="none"
-                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
                       <path
-                        className="opacity-75"
+                        d="M100 50.5C100 78.3 77.6 100.5 50 
+      100.5C22.4 100.5 0 78.3 0 50.5C0 22.7 
+      22.4 0.5 50 0.5C77.6 0.5 100 22.7 100 
+      50.5ZM9.1 50.5C9.1 73.5 27 91.4 50 
+      91.4C73 91.4 90.9 73.5 90.9 50.5C90.9 
+      27.5 73 9.6 50 9.6C27 9.6 9.1 27.5 9.1 
+      50.5Z"
                         fill="currentColor"
-                        d="M4 12a8 8 0 018-8v8H4z"
-                      ></path>
+                      />
+                      <path
+                        d="M93.9 39.0C96.8 38.3 98.5 35.2 
+      97.4 32.4C95.5 27.7 92.9 23.3 
+      89.5 19.4C85.5 14.9 80.6 11.3 
+      75.1 8.8C69.6 6.3 63.6 5 57.5 
+      5C54.4 5 52 7.4 52 10.5C52 13.6 
+      54.4 16 57.5 16C61.8 16 66 16.9 
+      69.8 18.7C73.6 20.5 77 23.1 79.7 
+      26.4C81.8 28.9 83.5 31.8 84.7 
+      35C85.7 37.8 91.1 39.7 93.9 39Z"
+                        fill="currentFill"
+                      />
                     </svg>
                     <span>Loading Agents...</span>
                   </div>
@@ -301,7 +310,8 @@ export const Agent = () => {
                   currentRows.map((agent, i) => (
                     <div
                       key={i}
-                      className="bg-[#EEF0FF] mt-5 lg:mt-2 rounded-md text-sm text-gray-700 py-3 px-4 cursor-pointer hover:bg-[#dfe3ff] transition
+                      className="bg-[#FAFAFA] rounded-lg text-sm text-gray-700 py-3  
+                      cursor-pointer hover:bg-[#f5f5f5] transition
               grid md:grid-cols-[repeat(3,_1fr)] items-center gap-2"
                       onClick={() => handleAgentClick(agent)}
                     >
@@ -400,35 +410,38 @@ export const Agent = () => {
           {isAddModalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="absolute inset-0 bg-black opacity-50" />
-              <div className="relative bg-white rounded-lg shadow-lg w-full max-w-md p-7">
+              <div className="relative bg-white rounded-xl shadow-sm w-full max-w-lg p-9">
                 <h2 className="text-xl font-semibold mb-4">Add New Agent</h2>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                   {/* Form fields */}
                   <input
                     {...register("name")}
-                    className="w-full border text-sm px-4 p-2 rounded-sm"
+                    className="appearance-none w-full px-3 py-2 border border-gray-600 rounded-lg text-sm 
+                    focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition"
                     placeholder="Full Name"
                   />
                   {errors.name && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-500 text-xs">
                       {errors.name.message}
                     </p>
                   )}
 
                   <input
                     {...register("email")}
-                    className="w-full border text-sm px-4 p-2 rounded-sm"
+                    className="appearance-none w-full px-3 py-2 border border-gray-600 rounded-lg text-sm 
+                    focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition"
                     placeholder="Email"
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-500 text-xs ">
                       {errors.email.message}
                     </p>
                   )}
 
                   <select
                     {...register("category")}
-                    className="w-full border text-sm p-2 rounded-sm"
+                    className="appearance-none w-full px-3 py-2 border border-gray-600 rounded-lg text-sm 
+                    focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition"
                     defaultValue=""
                   >
                     <option value="" disabled>
@@ -443,7 +456,7 @@ export const Agent = () => {
                     <option>QSA (Quick and Single Accounting)</option>
                   </select>
                   {errors.category && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-500 text-xs">
                       {errors.category.message}
                     </p>
                   )}
@@ -451,11 +464,12 @@ export const Agent = () => {
                   <input
                     {...register("password")}
                     type="password"
-                    className="w-full border text-sm px-4 p-2 rounded-sm"
+                    className="appearance-none w-full px-3 py-2 border border-gray-600 rounded-lg text-sm 
+                    focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition"
                     placeholder="Password"
                   />
                   {errors.password && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-500 text-xs">
                       {errors.password.message}
                     </p>
                   )}
@@ -463,11 +477,12 @@ export const Agent = () => {
                   <input
                     {...register("confirmPassword")}
                     type="password"
-                    className="w-full border text-sm px-4 p-2 rounded-sm"
+                    className="appearance-none w-full px-3 py-2 border border-gray-600 rounded-lg text-sm 
+                    focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition"
                     placeholder="Confirm Password"
                   />
                   {errors.confirmPassword && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-500 text-xs">
                       {errors.confirmPassword.message}
                     </p>
                   )}
@@ -476,7 +491,7 @@ export const Agent = () => {
                     <button
                       type="submit"
                       disabled={isAdding}
-                      className={`px-4 py-2 text-white rounded-sm cursor-pointer ${
+                      className={`px-4 py-2 text-white rounded-lg cursor-pointer ${
                         isAdding
                           ? "bg-blue-400 cursor-not-allowed"
                           : "bg-blue-600 hover:bg-blue-700"
@@ -490,7 +505,7 @@ export const Agent = () => {
                         reset();
                         setIsAddModalOpen(false);
                       }}
-                      className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
+                      className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 cursor-pointer"
                     >
                       Cancel
                     </button>
@@ -507,7 +522,7 @@ export const Agent = () => {
                 className="absolute inset-0 bg-black opacity-50"
                 onClick={() => setIsActionModalOpen(false)}
               />
-              <div className="relative bg-white rounded-lg shadow-lg w-full max-w-sm p-6">
+              <div className="relative bg-white rounded-xl shadow-sm w-full max-w-lg p-9">
                 <h2 className="text-xl font-semibold mb-4">Manage Agent</h2>
                 <p className="mb-6 text-gray-700">
                   What would you like to do with{" "}
@@ -516,13 +531,13 @@ export const Agent = () => {
                 <div className="flex justify-between gap-4">
                   <button
                     onClick={handleEditAgent}
-                    className="w-full py-2 bg-blue-400 hover:bg-blue-500 text-white rounded cursor-pointer"
+                    className="w-full py-2 bg-blue-400 hover:bg-blue-500 text-white rounded-lg cursor-pointer"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => setIsConfirmOpen(true)}
-                    className={`w-full py-2 text-white rounded-sm cursor-pointer ${
+                    className={`w-full py-2 text-white rounded-lg cursor-pointer ${
                       isDeleting
                         ? "bg-red-500 cursor-not-allowed"
                         : "bg-red-600 hover:bg-red-700"
@@ -535,7 +550,7 @@ export const Agent = () => {
 
                 <button
                   onClick={() => setIsActionModalOpen(false)}
-                  className="mt-4 w-full py-2 bg-gray-200 hover:bg-gray-300 text-black rounded cursor-pointer"
+                  className="mt-4 w-full py-2 bg-gray-200 hover:bg-gray-300 text-black rounded-lg cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -546,7 +561,7 @@ export const Agent = () => {
           {isConfirmOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="absolute inset-0 bg-black opacity-50" />
-              <div className="relative bg-white rounded-lg shadow-lg w-full max-w-sm p-6">
+              <div className="relative bg-white rounded-xl shadow-sm w-full max-w-lg p-9">
                 <h2 className="text-xl font-semibold mb-4">Confirm Deletion</h2>
                 <p className="mb-6">Do you really want to delete this agent?</p>
                 <div className="flex justify-center gap-4">
@@ -555,13 +570,13 @@ export const Agent = () => {
                       handleDeleteAgent();
                       setIsConfirmOpen(false);
                     }}
-                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-sm"
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg"
                   >
                     Yes, Delete
                   </button>
                   <button
                     onClick={() => setIsConfirmOpen(false)}
-                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-sm"
+                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg"
                   >
                     Cancel
                   </button>
@@ -574,22 +589,22 @@ export const Agent = () => {
           {isEditModalOpen && selectedAgent && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="absolute inset-0 bg-black opacity-50" />
-              <div className="relative bg-white rounded-lg shadow-lg w-full max-w-sm p-6">
+              <div className="relative bg-white rounded-xl shadow-sm w-full max-w-lg p-9">
                 <h2 className="text-xl font-semibold mb-4">Edit Agent</h2>
                 <form onSubmit={handleSubmit(submitEdit)} className="space-y-4">
                   <input
                     {...register("name", { required: "Name required" })}
-                    className="w-full border text-sm p-2 rounded"
+                    className="w-full border text-sm p-2 rounded-lg"
                     placeholder="Full Name"
                   />
                   <input
                     {...register("email", { required: "Email required" })}
-                    className="w-full border text-sm  p-2 rounded"
+                    className="w-full border text-sm  p-2 rounded-lg"
                     placeholder="Email"
                   />
                   <select
                     {...register("category", { required: "Category required" })}
-                    className="w-full border text-sm p-2 rounded"
+                    className="w-full border text-sm p-2 rounded-lg"
                   >
                     <option>QTech Inventory Support System</option>
                     <option>QTech Utility Billing System</option>
@@ -603,7 +618,7 @@ export const Agent = () => {
                   <div className="flex justify-end gap-3">
                     <button
                       type="submit"
-                      className={`px-4 py-2 text-white rounded-sm cursor-pointer ${
+                      className={`px-4 py-2 text-white rounded-lg cursor-pointer ${
                         isEdit
                           ? "bg-blue-400 cursor-not-allowed"
                           : "bg-blue-600 hover:bg-blue-700"

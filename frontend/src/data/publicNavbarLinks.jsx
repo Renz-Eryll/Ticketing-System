@@ -6,12 +6,9 @@ export const publicNavbarLinks = {
     },
     {
       name: "FAQs",
-      path: "/customer/tickets",
+      path: "/customer/faqs",
     },
-    {
-      name: "Contact Us",
-      path: "/contact-us",
-    },
+
     {
       name: "About",
       path: "/about",

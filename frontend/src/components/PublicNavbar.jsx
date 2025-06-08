@@ -32,87 +32,90 @@ export const PublicNavbar = () => {
 
   return (
     <div
-      className={`fixed top-0 z-30 w-full flex justify-end items-center px-4 sm:px-6 py-4 transition-all duration-400
-        ${activeMenu ? "lg:pl-35" : "xl:pl-35"}
-        ${scrolled ? "bg-white shadow-lg " : "text-white"}
-      `}
+      className={`fixed top-0 z-30 w-full bg-transparent transition-all duration-400 ${
+        scrolled ? "bg-white shadow-lg" : "text-white"
+      }`}
     >
-      <button
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        className="text-2xl mx-5 lg:hidden flex-2 cursor-pointer"
-      >
-        {mobileMenuOpen && (
-          <div className="fixed inset-0 bg-[#08032B] text-white max-w-3/4 z-50 overflow-hidden flex flex-col items-center justify-center gap-6 p-6 transition-all duration-300">
-            {publicNavbarLinks.navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={({ isActive }) =>
-                  `text-lg transition ${
-                    isActive
-                      ? "text-blue-500 font-semibold"
-                      : "text-white hover:text-blue-500 font-semibold"
-                  }`
-                }
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <div className="relative">
-              <Link to="/about" className="">
-                About
-              </Link>
-            </div>
+      <div className="flex items-center justify-between w-full max-w-7xl mx-auto px-8 sm:px-13 lg:px-8 py-5">
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="text-2xl lg:hidden cursor-pointer"
+        >
+          <MdMenuOpen className="rotate-180" />
+        </button>
 
-            <div className="relative">
-              <Link to="/">Sign in</Link>
-            </div>
-
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="absolute top-8 right-8 text-4xl cursor-pointer hover:text-blue-500"
-            >
-              &times;
-            </button>
-          </div>
-        )}
-        <MdMenuOpen className="rotate-180" />
-      </button>
-
-      <div className="flex-3 items-center mx-3.5 xl:mx-0 hidden lg:flex">
-        <Link to="/customer/home">
-          <img
-            src={qtechLogo}
-            alt="Qtech Logo"
-            className="h-14 cursor-pointer"
-          />
-        </Link>
-      </div>
-
-      <div className="items-center justify-center flex-3 hidden xl:flex gap-10">
-        {publicNavbarLinks.navLinks.map((link) => (
-          <Link
-            key={link.name}
-            to={link.path}
-            className={`hover:text-blue-400 font-medium transition-all duration-300  ${
-              scrolled ? "text-gray-700" : ""
-            }`}
-          >
-            {link.name}
+        {/* Logo */}
+        <div className="hidden lg:flex items-center">
+          <Link to="/customer/home">
+            <img
+              src={qtechLogo}
+              alt="Qtech Logo"
+              className="h-12 cursor-pointer"
+            />
           </Link>
-        ))}
-      </div>
+        </div>
+        <div className="hidden xl:flex items-center gap-10"></div>
+        <div className="hidden xl:flex items-center gap-10"></div>
 
-      <div className="mr-8 lg:mr-0 lg:flex-1 items-center gap-4 relative">
-        <div className="relative">
+        {/* Nav Links */}
+        <div className="hidden xl:flex items-center gap-10">
+          {publicNavbarLinks.navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              className={`hover:text-blue-400 font-medium transition-all duration-300 ${
+                scrolled ? "text-gray-700" : ""
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Sign In Button */}
+        <div className="flex items-center gap-4">
           <Link to="/signin">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white text-md p-2 px-5 rounded-sm flex items-center justify-center cursor-pointer">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white text-md p-2 px-5 rounded-lg flex items-center justify-center cursor-pointer">
               Sign In
             </button>
           </Link>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 bg-[#08032B] text-white max-w-3/4 z-50 overflow-hidden flex flex-col items-center justify-center gap-6 p-6 transition-all duration-300">
+          {publicNavbarLinks.navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              className={({ isActive }) =>
+                `text-lg transition ${
+                  isActive
+                    ? "text-blue-500 font-semibold"
+                    : "text-white hover:text-blue-500 font-semibold"
+                }`
+              }
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {link.name}
+            </Link>
+          ))}
+          <div className="relative">
+            <Link to="/about">About</Link>
+          </div>
+          <div className="relative">
+            <Link to="/">Sign in</Link>
+          </div>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="absolute top-8 right-8 text-4xl cursor-pointer hover:text-blue-500"
+          >
+            &times;
+          </button>
+        </div>
+      )}
     </div>
   );
 };

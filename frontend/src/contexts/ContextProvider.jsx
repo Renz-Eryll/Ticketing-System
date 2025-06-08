@@ -24,11 +24,7 @@ export const ContextProvider = ({ children }) => {
       const storedUser = localStorage.getItem("user");
       const storedToken = localStorage.getItem("token");
 
-      if (
-        storedUser &&
-        storedUser !== "undefined" &&
-        storedUser !== "null"
-      ) {
+      if (storedUser && storedUser !== "undefined" && storedUser !== "null") {
         setUser(JSON.parse(storedUser));
       }
 

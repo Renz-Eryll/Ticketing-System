@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
+import toast from "react-hot-toast";
 
 const Createticket = () => {
   const { activeMenu, user, login, token } = useStateContext();
@@ -13,6 +14,7 @@ const Createticket = () => {
   const [ticketBody, setTicketBody] = useState("");
   const [image_path, setImage_path] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user?.email) {
@@ -22,6 +24,7 @@ const Createticket = () => {
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
+    setLoading(true); // start loading
     try {
       const formData = new FormData();
       formData.append("email", email);
@@ -31,7 +34,7 @@ const Createticket = () => {
       formData.append("customer_name", user.name);
 
       if (fileRef.current && fileRef.current.files[0]) {
-        formData.append("image_path", fileRef.current.files[0]); // Append the file
+        formData.append("image_path", fileRef.current.files[0]);
       }
 
       const response = await fetch("http://localhost:8000/api/tickets", {
@@ -39,36 +42,34 @@ const Createticket = () => {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
-          // Note: DO NOT set Content-Type manually when using FormData.
         },
         body: formData,
         credentials: "include",
       });
+
       const result = await response.json();
-      const res = await fetch("http://localhost:8000/api/notification", {
+
+      const notifRes = await fetch("http://localhost:8000/api/notification", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          
         },
-         body: JSON.stringify({
-          ticket_id:result.ticket.id,
-          name:result.ticket.customer_name,
+        body: JSON.stringify({
+          ticket_id: result.ticket.id,
+          name: result.ticket.customer_name,
           title: "New Ticket",
           message: "A new ticket has been submitted.",
         }),
         credentials: "include",
       });
 
-
-      console.log("User Token:", token);
       if (!response.ok) {
-        throw new Error("Failed to create ticket.");
+        throw new Error(result.message || "Failed to create ticket.");
       }
 
-      alert("Ticket created successfully!");
+      toast.success("Ticket created successfully!");
 
       // Clear form
       setCategory("");
@@ -76,8 +77,10 @@ const Createticket = () => {
       setPreview(null);
       fileRef.current.value = "";
     } catch (error) {
-      alert("Error creating ticket. Please try again.");
       console.error(error);
+      toast.error("Error creating ticket. Please try again.");
+    } finally {
+      setLoading(false); // stop loading
     }
   };
 
@@ -91,7 +94,6 @@ const Createticket = () => {
     const file = ev.target.files[0];
     if (file) {
       const reader = new FileReader();
-
       reader.onloadend = () => {
         setPreview(reader.result);
       };
@@ -101,23 +103,15 @@ const Createticket = () => {
   };
 
   // Redirect if not logged in
-    if (!login && !user?.id) {
-      return <Navigate to="/" />;
-    }
-  
+  if (!login && !user?.id) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <div className={`mx-5 md:mx-5 lg:mx-5 transition-all duration-300 `}>
-      <main className=" max-w-7xl mx-auto">
-        <div className="flex gap-4 mt-30">
-          <IoMdArrowBack
-            className="text-4xl cursor-pointer"
-            onClick={() => navigate("/customer/home")}
-          />
-          <h1 className="text-3xl font-bold text-blue-600 mb-6">
-            Create Ticket
-          </h1>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-md">
+      <main className=" max-w-7xl mx-auto px-4 sm:px-10 lg:px-8 mt-35 lg:mt-35 mb-5">
+        <div className="text-3xl font-bold text-[#1D4ED8] ">Create Tickets</div>
+        <div className="bg-white mt-5 p-6 rounded-xl shadow-md">
           <h2 className="text-lg font-semibold mb-1">Create Quick Ticket</h2>
           <p className="text-gray-400 mb-4">
             Write and address new queries and issues
@@ -220,11 +214,14 @@ const Createticket = () => {
             <div className="text-right">
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
+                className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 disabled:opacity-50"
+                disabled={loading}
               >
-                Send Ticket
+                {loading ? "Sending..." : "Send Ticket"}
               </button>
             </div>
+
+            {loading && <div className="loading-line"></div>}
           </form>
         </div>
       </main>

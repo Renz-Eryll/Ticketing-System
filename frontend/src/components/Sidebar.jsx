@@ -67,8 +67,12 @@ export const Sidebar = () => {
         }
 
         const data = await response.json();
-        const readTicketIds = JSON.parse(localStorage.getItem("readTicketIds") || "[]");
-        const unreadTickets = data.filter(ticket => !readTicketIds.includes(ticket.id));
+        const readTicketIds = JSON.parse(
+          localStorage.getItem("readTicketIds") || "[]"
+        );
+        const unreadTickets = data.filter(
+          (ticket) => !readTicketIds.includes(ticket.id)
+        );
         setNewTicketsCount(unreadTickets.length);
       } catch (error) {
         console.error("Error fetching tickets:", error);
@@ -123,7 +127,13 @@ export const Sidebar = () => {
 
       <div
         className={`fixed top-0 left-0 h-screen bg-[#08032B] text-white z-40 transition-all duration-300 ${
-          screenSize < 1024 ? (activeMenu ? "w-64" : "w-0") : activeMenu ? "w-72" : "w-25"
+          screenSize < 1024
+            ? activeMenu
+              ? "w-64"
+              : "w-0"
+            : activeMenu
+            ? "w-72"
+            : "w-25"
         } overflow-y-auto`}
       >
         <span
@@ -145,10 +155,8 @@ export const Sidebar = () => {
           </h1>
         </div>
 
-        <div className="mt-6 border-t border-gray-500" />
-
-        <div className="mt-10 px-3">
-          <div className="border-t border-gray-500 mt-8" />
+        <div className="mt-2 px-3">
+          <div className="mt-0 border-t border-gray-500" />
           {user && (
             <div
               className={`flex flex-col items-center gap-2 mt-15 transition-all duration-300 ${
@@ -157,13 +165,15 @@ export const Sidebar = () => {
             >
               <FaUserCircle
                 className={`text-gray-300 transition-all duration-300 ${
-                  activeMenu ? "text-7xl" : "text-3xl"
+                  activeMenu ? "text-7xl" : "ml-7 text-3xl"
                 }`}
               />
               {activeMenu && (
                 <div className="text-md text-center capitalize">
                   <div className="font-semibold">{user.name}</div>
-                  <div className="text-gray-400 text-sm capitalize">{user.role}</div>
+                  <div className="text-gray-400 text-sm capitalize">
+                    {user.role}
+                  </div>
                 </div>
               )}
             </div>
@@ -183,7 +193,8 @@ export const Sidebar = () => {
 
               {links.links &&
                 links.links.map((link) => {
-                  const isNotificationLink = link.name.toLowerCase() === "notification";
+                  const isNotificationLink =
+                    link.name.toLowerCase() === "notification";
 
                   return (
                     <Link
@@ -193,7 +204,7 @@ export const Sidebar = () => {
                         setActive(link.name);
                         if (screenSize < 1024) setActiveMenu(false);
                       }}
-                      className={`flex items-center gap-4 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300 ${
+                      className={`flex items-center gap-4 px-4 py-2.5 rounded-xl cursor-pointer transition-all duration-300 ${
                         active === link.name
                           ? "bg-[#1D4ED8] text-white"
                           : "text-white hover:bg-[#1a1445]"

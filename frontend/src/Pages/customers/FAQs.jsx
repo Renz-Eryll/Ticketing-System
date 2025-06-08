@@ -12,7 +12,7 @@ import {
   FaQuestionCircle,
 } from "react-icons/fa";
 
-const CustomerTicket = () => {
+const FAQs = () => {
   const { user } = useStateContext();
   if (!user) {
     return <Navigate to="/signin" />;
@@ -33,23 +33,13 @@ const CustomerTicket = () => {
               </h1>
 
               {/* Subtext */}
-              <p className="text-center text-lg text-gray-600 mb-6">
+              <p className="text-center text-lg text-gray-600 mb-2">
                 Have any questions? We're here to assist you.
               </p>
-
-              {/* Search */}
-              <div className="relative max-w-md mt-4 mx-auto">
-                <FaSearch className="absolute text-xl left-5 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Ask your questions..."
-                  className="w-full border border-gray-300 text-lg rounded-lg pl-13 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 mb-10 max-w-6xl mx-auto  text-justify">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 mb-10 max-w-6xl mx-auto text-justify">
             {/* Card 1 */}
             <div className="p-6 ">
               <div className="flex items-start space-x-4">
@@ -160,4 +150,4 @@ const CustomerTicket = () => {
   );
 };
 
-export default CustomerTicket;
+export default FAQs;

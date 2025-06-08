@@ -22,37 +22,37 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 
 const LandingPage = () => {
-const { user, login } = useStateContext();
-const navigate = useNavigate();
-
-useEffect(() => {
-  if (!localStorage.getItem("pageReloaded")) {
-    localStorage.setItem("pageReloaded", "true");
-    window.location.reload();
-  }
-}, []);
+  const { user, login } = useStateContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
-      if (login && user) {
-        const { role } = user;
-        switch (role) {
-          case "customer":
-            navigate("/customer/home");
-            break;
-          case "admin":
-            navigate("/admin/dashboard");
-            break;
-          case "agent":
-            navigate("/agent/dashboard");
-            break;
-          default:
-            navigate("/");
-        }
+    if (!localStorage.getItem("pageReloaded")) {
+      localStorage.setItem("pageReloaded", "true");
+      window.location.reload();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (login && user) {
+      const { role } = user;
+      switch (role) {
+        case "customer":
+          navigate("/customer/home");
+          break;
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+        case "agent":
+          navigate("/agent/dashboard");
+          break;
+        default:
+          navigate("/");
       }
-    }, [login, user, navigate]);
+    }
+  }, [login, user, navigate]);
 
   return (
-    <div className={`transition-all duration-300 bg-gray-100`}>
+    <div className={`transition-all duration-300  bg-gray-100`}>
       <PublicNavbar />
       <ScrollToTopButton />
       <motion.div
@@ -94,21 +94,9 @@ useEffect(() => {
               viewport={{ once: true }}
             >
               <div className="flex justify-between gap-9 mt-10">
-                <Link
-                  to="/customer/create-ticket"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <button className="bg-blue-500 hover:scale-105 text-white text-lg py-3 px-5 rounded-sm flex items-center justify-center cursor-pointer group transition-all duration-400">
+                <Link to="/signin" onClick={() => setMobileMenuOpen(false)}>
+                  <button className="bg-blue-500 hover:scale-105 text-white text-md font-medium py-2.5 px-4 rounded-lg flex items-center justify-center cursor-pointer group transition-all duration-400">
                     Create Ticket
-                    <FaArrowRight className="ml-2 transform -rotate-45 transition duration-400 group-hover:rotate-0" />
-                  </button>
-                </Link>
-                <Link
-                  to="/customer/create-ticket"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <button className="bg-white hover:scale-105 text-gray-800 text-lg py-3 px-5 rounded-sm flex items-center justify-center cursor-pointer group transition-all duration-400">
-                    Contact Us
                     <FaArrowRight className="ml-2 transform -rotate-45 transition duration-400 group-hover:rotate-0" />
                   </button>
                 </Link>
@@ -124,7 +112,7 @@ useEffect(() => {
         transition={{ duration: 1.5 }}
         viewport={{ once: true }}
       >
-        <div className="py-12 max-w-7xl mx-auto text-center cursor-pointer">
+        <div className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center cursor-pointer">
           <div className="flex flex-col items-center mb-0 lg:mb-10">
             <div className="text-2xl lg:text-4xl font-bold text-gray-900 mb-2 ">
               Why Choose Us?
@@ -136,8 +124,8 @@ useEffect(() => {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-3 p-12 lg:p-2 gap-6">
-            <div className="bg-white px-15 py-10  rounded-lg shadow-md text-left transform transition-all duration-200 hover:scale-103">
+          <div className="grid lg:grid-cols-3 p-4 sm:p-8 lg:p-2 gap-6">
+            <div className="bg-white px-10 py-10 rounded-xl shadow-md text-left transform transition-all duration-200 hover:scale-103">
               <div className="flex flex-col items-center text-[#1D4ED8]">
                 <div className="text-2xl mb-5">
                   <img
@@ -158,7 +146,7 @@ useEffect(() => {
               </p>
             </div>
 
-            <div className="bg-white px-15 py-10 rounded-lg shadow-md text-left transform transition-all duration-200 hover:scale-103">
+            <div className="bg-white px-10 py-10 rounded-xl shadow-md text-left transform transition-all duration-200 hover:scale-103">
               <div className="flex flex-col items-center text-blue-600">
                 <div className="text-2xl mb-5">
                   <img
@@ -179,7 +167,7 @@ useEffect(() => {
               </p>
             </div>
 
-            <div className="bg-white px-15 py-10 rounded-lg shadow-md text-left transform transition-all duration-200 hover:scale-103">
+            <div className="bg-white px-10 py-10 rounded-xl shadow-md text-left transform transition-all duration-200 hover:scale-103">
               <div className="flex flex-col items-center text-blue-600">
                 <div className="text-2xl mb-5">
                   <img
@@ -203,7 +191,7 @@ useEffect(() => {
         </div>
       </motion.div>
 
-      <div className="text-[#08032B] max-w-8xl mx-auto px-15 lg:px-32">
+      <div className="text-[#08032B] max-w-7xl mx-auto px-15 lg:px-12">
         <div className="flex justify-between items-center gap-10">
           <motion.div
             initial={{ opacity: 0, x: -100 }}
@@ -241,13 +229,13 @@ useEffect(() => {
         transition={{ duration: 1.5 }}
         viewport={{ once: true }}
       >
-        <div className="py-12 max-w-7xl mx-auto text-center cursor-pointer">
+        <div className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center cursor-pointer">
           <div className="flex flex-col items-center  text-3xl lg:text-4xl  font-bold text-gray-900 mb-0 lg:mb-10">
             Client's Testimonials
           </div>
 
-          <div className="grid lg:grid-cols-3 p-12 lg:p-2 gap-6">
-            <div className="bg-gray-50 px-12 py-10 rounded-lg shadow-md text-left ">
+          <div className="grid lg:grid-cols-3 p-4 sm:p-8 lg:p-2 gap-6">
+            <div className="bg-gray-50 px-10 py-8 rounded-xl shadow-md text-left ">
               <p className="text-gray-600 text-xl lg:text-xl text-justify max-w-md mx-auto lg:text-justify">
                 “We have tried other HRIS providers before, but Qtech’s systems
                 is the only one that fits our construction company well. It
@@ -273,7 +261,7 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 px-12 py-10 rounded-lg shadow-md text-left ">
+            <div className="bg-gray-50 px-10 py-8 rounded-xl shadow-md text-left ">
               <p className="text-gray-600 text-xl lg:text-xl text-justify max-w-md mx-auto lg:text-justify">
                 “Fast and Friendly Assistance All you guys are awesome! Thanks
                 for always helping me. Always very nice and friendly. It was
@@ -298,7 +286,7 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 px-12 py-10 rounded-lg shadow-md text-left ">
+            <div className="bg-gray-50 px-10 py-8 rounded-xl shadow-md text-left ">
               <p className="text-gray-600 text-xl lg:text-xl text-justify max-w-md mx-auto lg:text-justify">
                 “QTECH is our partner for IT solutions for over 10 years now.
                 Thank you for the wonderful job in helping us develop our
@@ -392,12 +380,8 @@ useEffect(() => {
       >
         <div className="px-10 lg:px-2">
           <div
-            className=" max-w-7xl mx-auto text-white px-15 lg:px-3 py-10 lg:py-10 mb-14 
-      flex flex-col rounded-lg lg:flex-row items-center justify-between shadow-md bg-cover bg-no-repeat bg-center"
-            style={{
-              backgroundImage: `linear-gradient(to right, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.7)), url(${BackgroundBottom})`,
-              backgroundBlendMode: "multiply",
-            }}
+            className="  max-w-7xl bg-blue-600 mx-auto px-4 sm:px-6 lg:px-8 text-white py-10 lg:py-20 mb-14 
+             flex flex-col rounded-xl lg:flex-row items-center justify-between shadow-md bg-cover bg-no-repeat bg-center"
           >
             <div className="flex flex-col text-center space-y-2 mx-auto mt-2">
               <h1 className="text-2xl lg:text-4xl font-bold">
@@ -406,17 +390,6 @@ useEffect(() => {
               <p className="mt-5 text-md lg:text-lg text-center mx-auto">
                 as an ICT company for those who have no ICT department.
               </p>
-              <div className="flex justify-center items-center mx-auto gap-5">
-                <Link to="/contact-us">
-                  <button
-                    className="mt-10 text-gray-950 bg-white hover:bg-gray-200 text-lg py-2 md:py-3 px-3 md:px-5 rounded-md flex 
-              items-center justify-center w-full md:w-auto cursor-pointer"
-                  >
-                    <FaPhoneAlt className="mr-3" />
-                    Contact Us
-                  </button>
-                </Link>
-              </div>
             </div>
           </div>
         </div>

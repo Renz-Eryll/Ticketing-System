@@ -7,6 +7,7 @@ import { Navigate } from "react-router-dom";
 import Layout from "../../layout/Layout";
 import { useState } from "react";
 import { useEffect } from "react";
+import { FaUserCircle } from "react-icons/fa";
 
 const profileSchema = yup.object().shape({
   fullName: yup.string().required("Full name is required."),
@@ -26,7 +27,7 @@ const passwordSchema = yup.object().shape({
 });
 
 export const Profile = () => {
-    const { activeMenu, user, login, token } = useStateContext(); // Assume token comes from context
+  const { activeMenu, user, login, token } = useStateContext(); // Assume token comes from context
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
@@ -53,8 +54,9 @@ export const Profile = () => {
     resolver: yupResolver(passwordSchema),
   });
 
-
   useEffect(() => {
+    if (!user || !user.id) return; // skip if no user
+
     async function fetchUser() {
       try {
         setLoading(true);
@@ -82,192 +84,243 @@ export const Profile = () => {
     }
 
     fetchUser();
-  }, [token, user.id, setValue]);
+  }, [token, user, setValue]);
 
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/users/${user.id}/update-name-email`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: data.fullName,
+            email: data.email,
+          }),
+        }
+      );
 
-const onSubmit = async (data) => {
-  try {
-    const response = await fetch(`http://localhost:8000/api/users/${user.id}/update-name-email`, {
-      method: "PUT", 
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        name: data.fullName,
-        email: data.email,
-      }),
-    });
+      if (!response.ok) {
+        throw new Error("Failed to update profile");
+      }
 
-    if (!response.ok) {
-      throw new Error("Failed to update profile");
+      const result = await response.json();
+      console.log("Profile updated:", result);
+
+      // Optionally show a success message or toast
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error("Update error:", error);
+      alert("Something went wrong while updating the profile.");
     }
+  };
+  const onChangePassword = async (data) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/update-password/${user.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            current_password: data.currentPassword,
+            new_password: data.newPassword,
+            new_password_confirmation: data.confirmPassword,
+          }),
+        }
+      );
 
-    const result = await response.json();
-    console.log("Profile updated:", result);
+      const result = await response.json();
 
-    // Optionally show a success message or toast
-    alert("Profile updated successfully!");
-  } catch (error) {
-    console.error("Update error:", error);
-    alert("Something went wrong while updating the profile.");
-  }
-};
-const onChangePassword = async (data) => {
-  try {
-    const response = await fetch(`http://localhost:8000/api/update-password/${user.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-       current_password: data.currentPassword,
-        new_password: data.newPassword,
-        new_password_confirmation: data.confirmPassword,
-      }),
-    });
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to change password");
+      }
 
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.message || "Failed to change password");
+      alert("Password changed successfully!");
+    } catch (error) {
+      console.error("Password change error:", error);
     }
-
-    alert("Password changed successfully!");
-  } catch (error) {
-    console.error("Password change error:", error)
-  }
-};
+  };
   return (
     <Layout>
-      <div
-        className={`
-mx-5 md:mx-5 lg:mx-5
-transition-all duration-300 
-${activeMenu ? "lg:pl-75" : "lg:pl-25"}
-`}
-      >
-        <div className="text-3xl font-bold text-[#1D4ED8]">Profile</div>
-        <div className="text-sm font-semibold text-gray-500">
-          Manage and protect your account
-        </div>
-        <div className="mt-10 grid grid-cols-12 gap-8 ">
-          <div className="flex justify-center items-center col-span-12 md:col-span-4 p-4 rounded-xl shadow "></div>
-          <div className="col-span-12 md:col-span-8 p-4 rounded-xl shadow">
-            <div className="p-6 text-md font-semibold">
-              Edit Profile Details
-              <div className="mt-3 border-t border-gray-300" />
+      <div className={`transition-all ${activeMenu ? "lg:pl-72" : "lg:pl-23"}`}>
+        <div className="container px-8 py-6">
+          <div className="text-3xl font-bold text-[#1D4ED8]">Profile</div>
+          <div className="text-sm font-semibold text-gray-500">
+            Manage and protect your account
+          </div>
+          <div className="mt-10 grid grid-cols-12 gap-8 ">
+            <div className="col-span-12 md:col-span-4 p-8 rounded-xl shadow bg-white space-y-6">
+              <div className="mt-8 flex justify-center">
+                <FaUserCircle className="text-gray-600 text-9xl" />
+              </div>
+
+              {loading ? (
+                <p className="text-gray-600 text-center">
+                  Loading user info...
+                </p>
+              ) : userData ? (
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <h2 className="text-xl font-semibold text-gray-800">
+                      {userData.name}
+                    </h2>
+                    <p className="text-sm text-gray-500">{userData.email}</p>
+                  </div>
+
+                  <div className="mt-25">
+                    <h3 className=" text-lg font-semibold text-gray-700 mb-2">
+                      Profile Details
+                    </h3>
+                    <div className="border-t border-gray-300 mb-4" />
+
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-sm text-gray-500">Full Name:</p>
+                        <p className="text-md font-medium text-gray-800">
+                          {userData.name}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Email:</p>
+                        <p className="text-md font-medium text-gray-800">
+                          {userData.email}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-red-500 text-center">
+                  Unable to load user information.
+                </p>
+              )}
             </div>
-            <form className="p-6 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-              <div className="">
+
+            <div className="col-span-12 md:col-span-8 p-4 bg-white rounded-xl shadow">
+              <div className="p-6 text-md font-semibold">
+                Edit Profile Details
+                <div className="mt-0 border-t border-gray-300" />
+              </div>
+              <form
+                className="px-6 space-y-2"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <div className="">
+                  <div>
+                    <span className="text-sm font-medium">Full Name</span>
+                    <input
+                      type="text"
+                      placeholder="Full Name"
+                      {...register("fullName")}
+                      className="w-full p-2 border rounded-lg mt-1 text-sm px-4"
+                    />
+                    {errors.fullName && (
+                      <p className="mt-1.5 text-red-500 text-sm">
+                        {errors.fullName.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
                 <div>
+                  <span className="text-sm font-medium">Email</span>
                   <input
-                    type="text"
-                    placeholder="Full Name"
-                    {...register("fullName")}
-                    className="w-full p-2 border rounded-lg text-sm px-4"
+                    type="email"
+                    placeholder="Email"
+                    {...register("email")}
+                    className="w-full p-2 border rounded-lg mt-1 text-sm px-4"
                   />
-                  {errors.fullName && (
+                  {errors.email && (
                     <p className="mt-1.5 text-red-500 text-sm">
-                      {errors.fullName.message}
+                      {errors.email.message}
                     </p>
                   )}
                 </div>
-              </div>
-              <div>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  {...register("email")}
-                  className="w-full p-2 border rounded-lg text-sm px-4"
-                />
-                {errors.email && (
-                  <p className="mt-1.5 text-red-500 text-sm">
-                    {errors.email.message}
-                  </p>
-                )}
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className=" bg-blue-600 text-sm text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                >
-                  Save Changes
-                </button>
+                <div className="grid grid-cols-1 md:grid-cols-2"></div>
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className=" bg-blue-600 text-sm text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+              <div className="px-6 mt-3 text-md font-semibold">
+                Change Password
+                <div className="mt-3 border-t border-gray-300" />
               </div>
-            </form>
-          </div>
-
-          <div className="col-span-12 md:col-span-4 p-4 rounded-xl shadow "></div>
-          <div className="col-span-12 md:col-span-8 p-4 rounded-xl shadow">
-            <div className="p-6 text-md font-semibold">
-              Change Password
-              <div className="mt-3 border-t border-gray-300" />
+              <form
+                className="px-6 space-y-3"
+                onSubmit={handlePasswordSubmit(onChangePassword)}
+              >
+                <div>
+                  <span className="text-sm font-medium">Current Password</span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Current Password"
+                    {...registerPassword("currentPassword")}
+                    className="w-full p-2 border rounded-lg text-sm px-4"
+                  />
+                  {passwordErrors.currentPassword && (
+                    <p className="mt-1.5 text-red-500 text-sm">
+                      {passwordErrors.currentPassword.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <span className="text-sm font-medium">New Password</span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="New Password"
+                    {...registerPassword("newPassword")}
+                    className="w-full p-2 border rounded-lg text-sm px-4"
+                  />
+                  {passwordErrors.newPassword && (
+                    <p className="mt-1.5 text-red-500 text-sm">
+                      {passwordErrors.newPassword.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <span className="text-sm font-medium">Confirm Password</span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    {...registerPassword("confirmPassword")}
+                    className="w-full p-2 border rounded-lg text-sm px-4"
+                  />
+                  {passwordErrors.confirmPassword && (
+                    <p className="mt-1.5 text-red-500 text-sm">
+                      {passwordErrors.confirmPassword.message}
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={showPassword}
+                    onChange={() => setShowPassword(!showPassword)}
+                    className="mr-2"
+                  />
+                  <label className="text-sm text-gray-700">Show Password</label>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-sm text-white px-4 py-2 rounded-lg hover:bg-blue-700 mb-5"
+                  >
+                    Change Password
+                  </button>
+                </div>
+              </form>
             </div>
-            <form
-  className="p-6 space-y-6"
-  onSubmit={handlePasswordSubmit(onChangePassword)}
->
-  <div>
-    <input
-      type={showPassword ? "text" : "password"}
-      placeholder="Current Password"
-      {...registerPassword("currentPassword")}
-      className="w-full p-2 border rounded-lg text-sm px-4"
-    />
-    {passwordErrors.currentPassword && (
-      <p className="mt-1.5 text-red-500 text-sm">
-        {passwordErrors.currentPassword.message}
-      </p>
-    )}
-  </div>
-  <div>
-    <input
-      type={showPassword ? "text" : "password"}
-      placeholder="New Password"
-      {...registerPassword("newPassword")}
-      className="w-full p-2 border rounded-lg text-sm px-4"
-    />
-    {passwordErrors.newPassword && (
-      <p className="mt-1.5 text-red-500 text-sm">
-        {passwordErrors.newPassword.message}
-      </p>
-    )}
-  </div>
-  <div>
-    <input
-      type={showPassword ? "text" : "password"}
-      placeholder="Confirm Password"
-      {...registerPassword("confirmPassword")}
-      className="w-full p-2 border rounded-lg text-sm px-4"
-    />
-    {passwordErrors.confirmPassword && (
-      <p className="mt-1.5 text-red-500 text-sm">
-        {passwordErrors.confirmPassword.message}
-      </p>
-    )}
-  </div>
-  <div className="flex items-center">
-    <input
-      type="checkbox"
-      checked={showPassword}
-      onChange={() => setShowPassword(!showPassword)}
-      className="mr-2"
-    />
-    <label className="text-sm text-gray-700">Show Password</label>
-  </div>
-  <div className="flex justify-end">
-    <button
-      type="submit"
-      className="bg-blue-600 text-sm text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-    >
-      Change Password
-    </button>
-  </div>
-</form>
           </div>
         </div>
       </div>

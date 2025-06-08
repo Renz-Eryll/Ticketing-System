@@ -84,7 +84,9 @@ const AgentTicketdetails = () => {
             activeMenu ? "lg:pl-75" : "lg:pl-25"
           }`}
         >
-          <div className="text-red-500">Error: {error || "Data not available."}</div>
+          <div className="text-red-500">
+            Error: {error || "Data not available."}
+          </div>
         </div>
       </Layout>
     );
@@ -156,11 +158,15 @@ const AgentTicketdetails = () => {
 
             <div className="col-span-12 md:col-span-6 px-4">
               <div className="mb-4">
-                <div className="text-gray-600 font-semibold">Help Topic (Category):</div>
+                <div className="text-gray-600 font-semibold">
+                  Help Topic (Category):
+                </div>
                 <div className="mt-1 font-bold">{ticketData.helpTopic}</div>
               </div>
               <div className="mb-4">
-                <div className="text-gray-600 font-semibold">Last Response:</div>
+                <div className="text-gray-600 font-semibold">
+                  Last Response:
+                </div>
                 <div className="mt-1 font-bold">{ticketData.lastResponse}</div>
               </div>
             </div>
@@ -185,29 +191,53 @@ const AgentTicketdetails = () => {
           <div className="border-t border-gray-300 my-6" />
 
           <div className="px-4 text-sm">
-            <div className="text-3xl font-bold text-[#1D4ED8] mb-6">Ticket Details</div>
+            <div className="text-3xl font-bold text-[#1D4ED8] mb-6">
+              Ticket Details
+            </div>
 
             <div className="grid grid-cols-12 gap-6">
               <div className="col-span-12 md:col-span-6">
-                <div className="font-semibold text-gray-600 mt-2">Ticket ID</div>
+                <div className="font-semibold text-gray-600 mt-2">
+                  Ticket ID
+                </div>
                 <div className="text-black font-bold">{ticketData.id}</div>
 
-                <div className="font-semibold text-gray-600 mt-6">Customer Name</div>
-                <div className="text-black font-bold">{ticketData.customer_name}</div>
+                <div className="font-semibold text-gray-600 mt-6">
+                  Customer Name
+                </div>
+                <div className="text-black font-bold">
+                  {ticketData.customer_name}
+                </div>
 
-                <div className="font-semibold text-gray-600 mt-6">Description</div>
-                <div className="text-black font-bold">{ticketData.ticket_body}</div>
+                <div className="font-semibold text-gray-600 mt-6">
+                  Description
+                </div>
+                <div className="text-black font-bold">
+                  {ticketData.ticket_body}
+                </div>
 
                 <div className="font-semibold text-gray-600 mt-6">Timeline</div>
-                <div className="text-black font-bold mt-2">Initial Response</div>
-                <div className="text-black font-bold">March 2, 2025 | 9:02 AM</div>
-                <div className="text-black font-bold mt-4">Technician Assigned</div>
-                <div className="text-black font-bold">March 2, 2025 | 9:15 AM</div>
+                <div className="text-black font-bold mt-2">
+                  Initial Response
+                </div>
+                <div className="text-black font-bold">
+                  March 2, 2025 | 9:02 AM
+                </div>
+                <div className="text-black font-bold mt-4">
+                  Technician Assigned
+                </div>
+                <div className="text-black font-bold">
+                  March 2, 2025 | 9:15 AM
+                </div>
               </div>
 
               <div className="col-span-12 md:col-span-6">
-                <div className="font-semibold text-gray-600 mt-2">Created Date</div>
-                <div className="text-black font-bold">{ticketData.created_at}</div>
+                <div className="font-semibold text-gray-600 mt-2">
+                  Created Date
+                </div>
+                <div className="text-black font-bold">
+                  {ticketData.created_at}
+                </div>
 
                 <div className="font-semibold text-gray-600 mt-6">Status</div>
                 <div className="flex items-center gap-2 mt-1">
@@ -230,7 +260,9 @@ const AgentTicketdetails = () => {
                 </div>
 
                 <div className="font-semibold text-gray-600 mt-6">Priority</div>
-                <div className="text-black font-bold mt-1">{ticketData.priority}</div>
+                <div className="text-black font-bold mt-1">
+                  {ticketData.priority}
+                </div>
               </div>
             </div>
           </div>
