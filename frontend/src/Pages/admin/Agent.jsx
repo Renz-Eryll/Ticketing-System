@@ -22,6 +22,8 @@ export const Agent = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const { setValue } = useForm();
+
   const [currentPage, setCurrentPage] = useState(() => {
     const savedPage = localStorage.getItem("agentsCurrentPage");
     return savedPage ? parseInt(savedPage) : 1;
