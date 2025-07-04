@@ -16,13 +16,13 @@
 <h2>🧐 Features</h2>
 
 Here're some of the project's best features:
-<h3>For Users</h3>
+For Users
 
 *   ✅ Submit support tickets through a web-based form.
 *   ✅ Track the status and updates of their submitted tickets.
 *   ✅ Receive notifications or updates when their ticket status changes or is resolved.
 
-<h3>For Agents</h3>
+For Agents
 *   ✅ View assigned support tickets.
 *   ✅ Update ticket status (e.g. In Progress Resolved Closed).
 *   ✅ Add comments or resolutions to support tickets.
